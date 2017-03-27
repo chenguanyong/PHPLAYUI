@@ -1,0 +1,31 @@
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+		<script src="{$Think.config.__PUBLIC__}/static/components/jquery/dist/jquery.js"></script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script src="components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='{$Think.config.__PUBLIC__}/static/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
+		</script>
+		<script src="{$Think.config.__PUBLIC__}/static/components/bootstrap/dist/js/bootstrap.js"></script>
+
+		<!-- page specific plugin scripts -->
+
+		<!--[if lte IE 8]>
+		  <script src="components/ExplorerCanvas/excanvas.js"></script>
+		<![endif]-->
+
+
+
+		<!-- ace scripts -->
+
+		<script src="{$Think.config.__PUBLIC__}/static/assets/js/src/ace.js"></script>
+		<script src="{$Think.config.__PUBLIC__}/static/assets/js/src/ace.basics.js"></script>
+
+
+		<script src="{$Think.config.__PUBLIC__}/static/assets/js/src/ace.sidebar.js"></script>
+		<script src="{$Think.config.__PUBLIC__}/static/assets/js/src/ace.sidebar-scroll-1.js"></script>
