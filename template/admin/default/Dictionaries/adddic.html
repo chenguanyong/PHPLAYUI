@@ -1,0 +1,126 @@
+{include file="public/header" /}
+<div class="main-wrap">
+    <blockquote class="layui-elem-quote fhui-admin-main_hd">
+        <h2>{$title}</h2>
+    </blockquote>
+    <form  class="layui-form layui-form-pane" id="formrec" method="post" role="form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">默认顶级</label>
+            <div class="layui-input-inline" style="width: 30%">
+                <select value={$data.pid} data-val="true" lay-filter="pid" name="pid"  lay-verify="required">
+                    <option selected="selected" value="0">默认顶级</option>
+                    {foreach name="admin_rule" item="v"}
+                        <option value="{$v.id}">
+                            {if $v.pid eq 0}{else}{if $v.lvl eq 2}　├{else}　　├{/if}{/if}{$v.title}
+                        </option>
+
+                    {/foreach}
+                </select>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">子典名称</label>
+            <div class="layui-input-block">
+                <input name="title" autocomplete="off"  placeholder="字典名称" class="layui-input" type="text" required value="{$data.name}"  lay-verify="title">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-block">
+                <input name="bianma" autocomplete="off"  placeholder="输入编码" class="layui-input" type="text" required value="{$data.bianma}"  lay-verify="required">
+                
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input name="bz" autocomplete="off"  placeholder="输入备注" class="layui-input" value="{$data.bz}" type="text">
+               
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input checked="{$data.state}" name="status" lay-skin="switch" lay-filter="switchTest" title="是" type="checkbox">
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <a class="layui-btn layui-btn-small do-action" data-type="doGoBack" data-href=""><i class="fa fa-mail-reply"></i>返回上一页</a>
+            <button class="layui-btn" data-key={$key_id} data-type={$type} lay-submit="" lay-filter="add-role" data-href="/index.php/admin/Dictionaries/ajaxaddDic">提交</button>
+        </div>
+
+    </form>
+</div>
+{include file="public/footer" /}
+
+<script>
+
+    layui.use(['form','common'], function(){
+        var $ = layui.jquery
+                ,common=layui.common
+        ,form = layui.form();
+        //自定义验证规则
+        form.verify({
+            pid: function(value){
+                if(value == ""){
+                    return '字典分类不能为空';
+                }
+            }
+            ,title:function(value){
+                if(value == ""){
+                    return '字典名称不能为空';
+                }
+            }
+
+        });
+
+        //监听提交
+        form.on('submit(add-role)', function(data){
+            var sub=true;
+            var url=$(this).data('href');
+            var type =$(this).data('type');
+            var id = $(this).data('key');
+            data.field.type=type;
+            data.field.id=id;
+            if(url){
+                if(sub){
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                           // if (data.state == 1) {
+                               // location.href = rturl;
+                              //  common.layerAlertS(data.msg, '提示');
+                                window.location.href="{:url('Dictionaries/index')}";
+                            //}
+                           // else {
+                              //  common.layerAlertE(data.msg, '提示');
+                           /// }
+                        },
+                        beforeSend: function () {
+                        //    // 一般是禁用按钮等防止用户重复提交
+                            $(data.elem).attr("disabled", "true").text("提交中...");
+                        },
+                        //complete: function () {
+                        //    $(sbbtn).removeAttr("disabled");
+                        //},
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            common.layerAlertE(textStatus, '提示');
+                        }
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+
+            return false;
+        });
+    });
+</script>
