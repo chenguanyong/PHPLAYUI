@@ -94,10 +94,6 @@ echo '</tr>';
 </div>
 <!--  -->
 <div id="addtree" class="main-wrap" style="display:none">
-    <blockquote class="layui-elem-quote fhui-admin-main_hd">
-        <h2 id="tan_title"></h2>
-    </blockquote>
-    
     <form  class="layui-form layui-form-pane" id="formrec" method="post" role="form">
 
         <div class="layui-form-item">
@@ -244,15 +240,16 @@ $.ajax({
               
               //触发事件
           	  var active = {
-          	    setTop: function(){
+          	    add: function(){
           	      var that = this; 
           	      //多窗口模式，层叠置顶
           	      layer.open({
           	        type: 1 //此处以iframe举例
-          	        ,title: false,
-          	      	closeBtn: 0,
-          	        shade: 0,
-          	      	shadeClose: true
+          	        ,title: "添加节点",
+          	      	closeBtn: 1,
+          	        shade: 0.001,
+          	      	shadeClose: false
+          	        ,maxmin: true
           	        ,content: $('#addtree')
           	        ,btn: ['确定', '关闭'] //只是为了演示
           	        ,yes: function(){
@@ -263,7 +260,28 @@ $.ajax({
           	          layer.closeAll();
           	        } 
           	      });
-          	    }
+          	    },
+          	  modify: function(){
+            	      var that = this; 
+            	      //多窗口模式，层叠置顶
+            	      layer.open({
+            	        type: 1 //此处以iframe举例
+            	        ,title: "修改节点",
+            	      	closeBtn: 1,
+            	        shade: 0.001,
+            	      	shadeClose: false
+            	        ,maxmin: true
+            	        ,content: $('#addtree')
+            	        ,btn: ['确定', '关闭'] //只是为了演示
+            	        ,yes: function(){
+            	        	layer.closeAll();
+            	        	$('#submit').click();
+            	        }
+            	        ,btn2: function(){
+            	          layer.closeAll();
+            	        } 
+            	      });
+            	    }
           	  };
               $('#add').on('click', function(){
              	 $('#tan_title').text('添加节点');
@@ -274,7 +292,7 @@ $.ajax({
               	 $('[name=css]').val('');
               	 $('#submit').data('type',1); //
               	 $('#submit').attr('data-key',tr.data('id'));
-                   var othis = $(this), method = 'setTop';
+                   var othis = $(this), method = 'add';
                    active[method] ? active[method].call(this, othis) : '';
                  });
         	$('[data-type=doEdit]').on('click', function(){
@@ -286,7 +304,7 @@ $.ajax({
           	 $('[name=css]').val(tr.children().eq(3).text());
           	 $('#submit').data('type',2); //
           	 $('#submit').attr('data-key',tr.data('id'));
-          	 var othis = $(this), method = 'setTop';
+          	 var othis = $(this), method = 'modify';
               active[method] ? active[method].call(this, othis) : '';
             });
         $('[data-type=doAdd]').on('click', function(){
@@ -297,7 +315,7 @@ $.ajax({
           	 $('[name=title]').val('');
           	 $('[name=css]').val('');
           	 $('#submit').data('type',1);
-             var othis = $(this), method = 'setTop';
+             var othis = $(this), method = 'add';
              active[method] ? active[method].call(this, othis) : '';
            });
         //自定义验证规则

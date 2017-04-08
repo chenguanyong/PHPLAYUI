@@ -9,18 +9,24 @@ class ImageModel extends Model
     protected $table = 'xx_image';
     protected $pk ='id';
     public function initialize(){
-    
         parent::initialize();
     }
-    
     //返回所有图片
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getAllImage(){
-    
         $dic = $this->select();
-    
         return $dic;
     }
     //返回所有指定父id的图片
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getImageByParent($id,$limit,$start){
         $start = ($start-1)*$limit;
         $dic = $this->where(['nodeID'=>$id,'IsDelete'=>0])->limit($start,$limit)
@@ -28,6 +34,11 @@ class ImageModel extends Model
         return $dic;
     }
     //添加图片
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function addImage($data){
         //$dic = $this->where(["name"=>$data['name']])
        // ->find();
@@ -37,48 +48,54 @@ class ImageModel extends Model
        // }
        
         //var_dump($data);
-        $result = $this->save($data);
+        $result = $this->validate("ImageValidate")->save($data);
         return $result;
     }
     //更新图片
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function updateImagetion($data,$id){
         $dic = $this->where(["bianma"=>$data['bianma'],"parentID"=>$data['parentID']])
         ->find();
         if($dic != null){
-    
             if($dic->getdata()['bz'] != trim($data['bz'])){
-    
-                $result = $this->save($data,['id'=>$id]);
+                $result = $this->validate("ImageValidate")->save($data,['id'=>$id]);
                 return $result;
-    
             }else{return null;}
         }
-        $result = $this->save($data,['id'=>$id]);
+        $result = $this->validate("ImageValidate")->save($data,['id'=>$id]);
         return $result;
-    
     }
     //删除图片
     public function deleImagetion($data){
         $image = $this->get(["id"=>$data]);
         if($image == null){
-            
             return null;
         }else{
-            
             unlink(ROOT_PATH . $image['path']);
-            
         }
         $result = $this->save(['IsDelete'=>'1'],['id'=>$data]);
         return $result;
-    
     }
     //获取指点父id的字节的数量
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getAllImageSize($parentID){
-    
         $count = $this->where(['nodeID'=>$parentID,'IsDelete'=>0])->count();
         return $count;
     }
     //获取所有的图片选项
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getImageParent(){
     
         $reault = $this->where(['parentID'=>0,'IsDelete'=>0])->select();
@@ -91,6 +108,11 @@ class ImageModel extends Model
         return $reault;
     }
     //
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getImagetree($id=0){
         if($id == 0){
             
@@ -100,6 +122,11 @@ class ImageModel extends Model
         $result = $Currency->getbufenTree($id);
         return $result;
     }
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function initTree($id=0){
         if($id == 0){
     

@@ -1,16 +1,16 @@
 <?php
 namespace app\admin\controller;
-use app\admin\model\MemberModel;
-use think\Controller;
+use app\admin\controller\Base;
+use app\admin\model\MemberlevelModel;
 use think\Db;
-class Member extends Base
+class Memberlevel extends Base
 {
     /**
      * [index 首页]
      * @return [type] [description]
      * @author
      */
-    public function index(){
+   public function index(){
         $key = input('key');
         $map = [];
         if($key&&$key!=="")
@@ -19,16 +19,16 @@ class Member extends Base
         }
         $Nowpage = input('get.page') ? input('get.page'):1;
         $limits = 10;// 获取总条数
-        $count = Db::name('user')->where($map)->count();//计算总页面
+        $count = Db::name('user_leval')->where($map)->count();//计算总页面
         $allpage = intval(ceil($count / $limits));
-        $user = new MemberModel();
-        $lists = $user->getMembersByWhere($map, $Nowpage, $limits);
+        $user = new MemberlevelModel();
+        $lists = $user->getMemberlevelByWhere($map, $Nowpage, $limits);
        // var_dump($lists);
         //exit;
-        foreach($lists as $k=>$v)
-        {
-            $lists[$k]['last_login_time']=date('Y-m-d H:i:s',$v['last_login_time']);
-        }
+//         foreach($lists as $k=>$v)
+//         {
+//             $lists[$k]['last_login_time']=date('Y-m-d H:i:s',$v['last_login_time']);
+//         }
         $this->assign('Nowpage', $Nowpage); //当前页
         $this->assign('allpage', $allpage); //总页数
         $this->assign('count',$count);
@@ -39,84 +39,86 @@ class Member extends Base
         }
         return $this->fetch();
     }
-    //通过id获取指定会员信息
+    
     /**
-     * [index 首页]
+     * [getMemberlevelInfoByID 通过id获取指定会员信息]
      * @return [type] [description]
      * @author
      */
-    public function getUserInfoByID(){
+    public function getMemberlevelInfoByID(){
         $key = input('post.id');
         if(!is_numeric($key)){
             //echo "ds";
             return json(array('state'=>0));
         }
-        $user = new MemberModel();
-        $result = $user->getOneMembers($key);
+        $user = new MemberlevelModel();
+        $result = $user->getOneMemberlevel($key);
         if($result == null){
+            
           return json(array('state'=>0));  
         }else{
+            
           return json(array('state'=>1,"data"=>$result));
         }
     }
-    //添加会员
     /**
-     * [index 首页]
+     * [Memberleveladd 添加会员等级]
      * @return [type] [description]
      * @author
      */
-    public function memberadd(){
+    public function Memberleveladd(){
+        
         if(request()->isAjax()){
+        
             $param = input('post.');
-            $param['password'] = md5(md5($param['password']) . config('auth_key'));
-            $user = new MemberModel();
+            $param['status'] = $param['status'] == "on"?1:0;
+            $user = new MemberlevelModel();
             if($param["type"] == 1){
                 unset($param["type"]);
-                $flag = $user->insertMembers($param);
+                $flag = $user->insertMemberlevel($param);
             }else if($param["type"] == 2){
                 unset($param["type"]);
-                $flag = $user->editMembers($param);
+                $flag = $user->editMemberlevel($param);
             }
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
-        $role = new UserType();
-        $this->assign('role',$role->getRole());
-        return $this->fetch();
+        
+
+        return $this->fetch("index");
     }
     /**
-     * [UserDel 删除用户]
+     * [MemberlevelDel 删除用户]
      * @return [type] [description]
      * @author
      */
-    public function memberDel()
+    public function MemberlevelDel()
     {
         $id = input('param.id');
-        $role = new MemberModel();
-        $flag = $role->delMembers($id);
+        $role = new MemberlevelModel();
+        $flag = $role->delMemberlevel($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
     
     /**
-     * [user_state 用户状态]
+     * [Memberlevel_state 会员等级状态]
      * @return [type] [description]
      * @author
      */
-    public function member_state()
+    public function Memberlevel_state()
     {
         $id = input('param.id');
-        $status = Db::name('user')->where(array('id'=>$id))->value('status');//判断当前状态情况
+        $status = Db::name('user_leval')->where(array('id'=>$id))->value('status');//判断当前状态情况
         if($status==1)
         {
-            $flag = Db::name('user')->where(array('id'=>$id))->setField(['status'=>0]);
+            $flag = Db::name('user_leval')->where(array('id'=>$id))->setField(['status'=>0]);
             return json(['code' => 1, 'data' => $flag['data'], 'msg' => '已禁止']);
         }
         else
         {
-            $flag = Db::name('user')->where(array('id'=>$id))->setField(['status'=>1]);
+            $flag = Db::name('user_leval')->where(array('id'=>$id))->setField(['status'=>1]);
             return json(['code' => 0, 'data' => $flag['data'], 'msg' => '已开启']);
         }
     }
-    
 }
 
 ?>

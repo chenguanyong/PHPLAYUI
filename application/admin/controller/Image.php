@@ -5,18 +5,31 @@ use app\admin\controller\Base;
 use app\admin\model\ImageModel;
 class Image extends Base
 {
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function index()
     {
         return $this->fetch();
     }
+    /**
+     * [getImageList 打开图片列表页面]
+     * @return [type] [description]
+     * @author
+     */
     public function getImageList()
     {
         return $this->fetch('list');
     }
+    /**
+     * [getImageListByPage 获取图片列表]
+     * @return [type] [description]
+     * @author
+     */
     public function getImageListByPage(){
-
             $key = input('get.id');
-            
             $map = [];
             $dic = new ImageModel();
             $Nowpage = input('get.page') ? input('get.page'):1;
@@ -30,18 +43,24 @@ class Image extends Base
             $this->assign('val', $key);
             $this->assign('lists', $lists);
             $this->assign('nodeID', $key);
-            
-
             return $this->fetch('list');
     }
-
-    //添加字典页面
+    /**
+     * [addImage 添加字典页面]
+     * @return [type] [description]
+     * @author
+     */
     public function addImage(){
         $nodeid = input('get.id');
         $this->assign('nodeid',$nodeid);
         return  $this->fetch('addImage');
-    }
-    //添加字典
+    }  
+    /**
+     * [ajaxAddImage 添加字典]
+     * @return [type] [description]
+     * @author
+     */
+    //
     public function ajaxAddImage(){
         $dic = new ImageModel();
         $data['Isrecommend'] = input('post.is_recommend');
@@ -77,7 +96,6 @@ class Image extends Base
                 continue;
             }
             $result[] = $data;
-            
         }
         foreach ($bigdata as $value){
             $data['name'] = $value->name;
@@ -87,12 +105,15 @@ class Image extends Base
                 continue;
             }
             $result[] = $data;
-        
         }
         $result = $dic->saveAll($result);
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
     }
-    //添加字典页面
+    /**
+     * [editImage 添加图片页面]
+     * @return [type] [description]
+     * @author
+     */
     public function editImage(){
         $id = input('get.id');
         $dic = new ImageModel();
@@ -101,7 +122,11 @@ class Image extends Base
         $this->assign('data',$data);
         return  $this->fetch('editImage');
     }
-    //添加字典
+    /**
+     * [ajaxeditImage 编辑图片]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxeditImage(){
         $dic = new ImageModel();
         $data['Isrecommend'] = input('post.is_recommend');
@@ -111,7 +136,11 @@ class Image extends Base
         $result = $dic->save($data,['id'=>$key]);
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
     }
-    //删除字典
+    /**
+     * [ajaxDeleImage 删除图片]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxDeleImage(){
         
         $dic = new ImageModel();
@@ -119,16 +148,11 @@ class Image extends Base
         $result = $dic->deleImagetion($key);
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
     }
-    //排序
-    public function ajaxOrder(){
-        $dic = new ImageModel();
-        $key = input('post.id');
-        $order = input('post.order');
-        $result = $dic->save(["orderby"=>$order],["id"=>$key]);
-        return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));        
-    }
-    
-    //获取通用树中图片相关的数据
+    /**
+     * [ajaxGetImageData 获取通用树中图片相关的数据]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxGetImageData($nodeStr=0){
         $Image = new ImageModel();
         $id = input('post.id');

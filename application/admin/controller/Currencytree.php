@@ -3,20 +3,31 @@ namespace app\admin\controller;
 use app\admin\controller\Base;
 class Currencytree extends Base
 {
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
    public function index()
     {
-    
         return $this->fetch();
     }
+    /**
+     * [getCurrenyList 获取通用树列表]
+     * @return [type] [description]
+     * @author
+     */
     public function getCurrenyList()
     {
-    
         return $this->fetch('list');
     }
+    /**
+     * [getCurrenyListByPage 获取通用树列表]
+     * @return [type] [description]
+     * @author
+     */
     public function getCurrenyListByPage(){
-
             $key = input('get.id');
-            
             $map = [];
             $dic = new \app\admin\model\CurrencyTreeModel();
             $dics = $dic->get(['id'=>$key]);
@@ -34,12 +45,15 @@ class Currencytree extends Base
             $this->assign('content', '顶级节点');
             }else{
                 $this->assign('content', $dics['name']);
-                
             }
             return $this->fetch('list');
     }
-
-    //添加字典页面
+    
+    /**
+     * [addCurrency 添加通用树]
+     * @return [type] [description]
+     * @author
+     */
     public function addCurrency(){
         $key = input('get.id');
         $parentID = input('get.node');
@@ -62,8 +76,6 @@ class Currencytree extends Base
             }else{
             $dics = $dic->get(["id"=>$parentID]);
             $ParentNode = $dics['name'];}
-
-        
         }else{
             //echo 22;
             $parentID = 0;
@@ -74,14 +86,11 @@ class Currencytree extends Base
         $type = 0;
         $title = '添加节点';
         if($pid == null){
-            
             //$data['pid'] = $pid;
             $type = 1;
         }else
-        
         if(is_numeric($key)){
             $datas = $dic->get(['id'=>$key]);
-
             $data['pid']=$datas['parentID'];
             $data['name']=$datas['name'];
             $data['css']=$datas['css'];
@@ -99,7 +108,11 @@ class Currencytree extends Base
         $this->assign('title',$title);
         return  $this->fetch('addCurrency');
     }
-    //添加字典
+    /**
+     * [addCurrency 添加字典(ajax)]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxAddCurrency(){
         $dic = new \app\admin\model\CurrencyTreeModel();
         $data['parentID'] = input('post.nodeid');
@@ -122,7 +135,11 @@ class Currencytree extends Base
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
         
     }
-    //删除字典
+    /**
+     * [ajaxDeleCurrency 删除字典(ajax)]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxDeleCurrency(){
         
         $dic = new \app\admin\model\CurrencyTreeModel();
@@ -133,16 +150,17 @@ class Currencytree extends Base
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
 
     }
-    //排序
+    /**
+     * [ajaxDeleCurrency 排序(ajax)]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxOrder(){
         $dic = new \app\admin\model\CurrencyTreeModel();
         $key = input('post.id');
         $order = input('post.order');
         $result = $dic->save(["orderby"=>$order],["id"=>$key]);
-        
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));        
-        
-        
     }
 
    

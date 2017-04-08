@@ -5,55 +5,74 @@ use app\admin\controller\Base;
 
 class Dictionaries extends Base
 {
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function index()
     {
-    
         return $this->fetch();
     }
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getDicList()
     {
-    
         return $this->fetch('list');
     }
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function getDicListByPage(){
-
-            $key = input('get.id');
-            
-            $map = [];
-            $dic = new \app\admin\model\Dictionaries();
-            $dics = $dic->get(["id"=>$key]);
-            $Nowpage = input('get.page') ? input('get.page'):1;
-            $limits = 10;// 获取总条数
-            $count = $dic->getAllDicSize($key);  //总数据
-            $allpage = intval(ceil($count / $limits));
-            $lists = $dic->getDicByParent($key, $limits, $Nowpage);
-            $this->assign('Nowpage', $Nowpage); //当前页
-            $this->assign('allpage', $allpage); //总页数
-            $this->assign('count', $count);
-            $this->assign('val', $key);
-            $this->assign('lists', $lists);
-            $this->assign('content', $dics['name']);
-            return $this->fetch('list');
+        $key = input('get.id');
+        $map = [];
+        $dic = new \app\admin\model\Dictionaries();
+        $dics = $dic->get(["id"=>$key]);
+        $Nowpage = input('get.page') ? input('get.page'):1;
+        $limits = 10;// 获取总条数
+        $count = $dic->getAllDicSize($key);  //总数据
+        $allpage = intval(ceil($count / $limits));
+        $lists = $dic->getDicByParent($key, $limits, $Nowpage);
+        $this->assign('Nowpage', $Nowpage); //当前页
+        $this->assign('allpage', $allpage); //总页数
+        $this->assign('count', $count);
+        $this->assign('val', $key);
+        $this->assign('lists', $lists);
+        $this->assign('content', $dics['name']);
+        return $this->fetch('list');
     }
     //设置字典状态
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function setState(){
         $key = input('post.id');
         $dic = new \app\admin\model\Dictionaries();
         $dics = $dic->get(['id'=>$key]);
-        //var_dump($dics);
-        $result ;
+        $result = '';
         $flag = 0;
         if($dics['state'] == 1){
             $flag=1;
-        $result = $dic->save(['state'=>0],['id'=>$key]);
+            $result = $dic->save(['state'=>0],['id'=>$key]);
         }else{            
-        $result = $dic->save(['state'=>1],['id'=>$key]);
-        $flag=0;
+            $result = $dic->save(['state'=>1],['id'=>$key]);
+            $flag=0;
         }
-        
         return $result > 0 ? json(array("code"=>$flag)):json(array('code'=>-1));
     }
     //添加字典页面
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function adddic(){
         $key = input('get.id');
         $dic = new \app\admin\model\Dictionaries();
@@ -64,25 +83,21 @@ class Dictionaries extends Base
         $pid = input('get.pid');
         $type = 0;
         if(is_numeric($key)){
-            
             $data['pid'] = $pid;
             $type = 1;
         }
         $title = '添加子典';
         if(is_numeric($key)){
             $datas = $dic->get(['id'=>$key]);
-
             $data['pid']=$datas['parentID'];
             $data['name']=$datas['name'];
             $data['bianma']=$datas['bianma'];
             $data['bz']=$datas['bz'];
-            //=$key;
             $data['state']=$datas['state'] ==1 ? true:false;
             $data['orderby'] = $datas['orderby'];
             $type = 2;
             $title = '修改子典';
         }
-        
         $this->assign('admin_rule',$result);
         $this->assign('data',$data);
         $this->assign('type',$type);
@@ -91,6 +106,11 @@ class Dictionaries extends Base
         return  $this->fetch('adddic');
     }
     //添加字典
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxAddDic(){
         $dic = new \app\admin\model\Dictionaries();
         $data['parentID'] = input('post.pid');
@@ -103,38 +123,36 @@ class Dictionaries extends Base
         //exit;
         $type = input('post.type');
         $result = 0;
-       
         if($type == 2){
-            
             $result = $dic->updateDiction(array('bianma'=>$data['bianma'],'bz'=>$data['bz'],'name'=>$data['name'],'parentID'=>$data['parentID'],'state'=>$data['state'],'IsDelete'=>0),$id);
-        
         }else{
-        $result = $dic->addDiction($data);
+            $result = $dic->addDiction($data);
         }
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
-        
     }
     //删除字典
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */    
     public function ajaxDeleDic(){
-        
         $dic = new \app\admin\model\Dictionaries();
         $key = input('post.id');
-
         $result = $dic->deleDiction($key);
-
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
-
     }
-    //排序
+      /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author
+     */
     public function ajaxOrder(){
         $dic = new \app\admin\model\Dictionaries();
         $key = input('post.id');
         $order = input('post.order');
         $result = $dic->save(["orderby"=>$order],["id"=>$key]);
-        
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));        
-        
-        
     }
    
 }

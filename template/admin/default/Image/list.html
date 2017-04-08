@@ -106,9 +106,6 @@ echo '</tr>';
 
 <!-- 弹出层 -->
 <div class="main-wrap" id="gg" style="display:none">
-    <blockquote class="layui-elem-quote fhui-admin-main_hd">
-        <h2>修改图片</h2>
-    </blockquote>
     <form class="layui-form" action="add_article">
         <div class="layui-form-item">
             <label class="layui-form-label"> 是否推荐</label>
@@ -288,15 +285,16 @@ $.ajax({
   
         	  //触发事件
         	  var active = {
-        	    setTop: function(){
+        			  modify: function(){
         	      var that = this; 
           	      //多窗口模式，层叠置顶
           	      layer.open({
           	        type: 1 //此处以iframe举例
-          	        ,title: false,
-          	      	closeBtn: 0,
-          	        shade: 0,
-          	      	shadeClose: true
+          	        ,title: "修改图片",
+          	      	closeBtn: 1,
+          	        shade: 0.001,
+          	      	shadeClose: false
+          	        ,maxmin: true
           	        ,content: $('#gg')
           	        ,btn: ['确定', '关闭'] //只是为了演示
           	        ,yes: function(){
@@ -308,7 +306,6 @@ $.ajax({
           	        } 
           	      });
         	    }
-        	   
 
         	  };
         	  
@@ -319,7 +316,7 @@ $.ajax({
               	tr.children().eq(4).attr('value') == '1' ? $('#is_hot').find('[value=1]').prop(true):$('#is_hot').find('[value=0]').prop(true);
               	tr.children().eq(5).attr('value') == '1' ? $('#is_status').find('[value=1]').prop(true):$('#is_status').find('[value=0]').prop(true);
               	 $('#submit').attr('data-id',tr.data('id'));
-        	    var othis = $(this), method = 'setTop';
+        	    var othis = $(this), method = 'modify';
         	    active[method] ? active[method].call(this, othis) : '';
         	  });
         	    //自定义验证规则
