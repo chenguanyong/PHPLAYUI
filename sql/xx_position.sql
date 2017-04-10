@@ -1,0 +1,15 @@
+INSERT INTO `xx_position` VALUES (1, '页面设计师');
+INSERT INTO `xx_position` VALUES (2, '交互设计师');
+INSERT INTO `xx_position` VALUES (3, '产品经理');
+INSERT INTO `xx_position` VALUES (4, 'UI设计师');
+INSERT INTO `xx_position` VALUES (5, 'JS工程师');
+INSERT INTO `xx_position` VALUES (6, 'Web前端工程师');
+INSERT INTO `xx_position` VALUES (7, '移动开发工程师');
+INSERT INTO `xx_position` VALUES (8, 'PHP开发工程师');
+INSERT INTO `xx_position` VALUES (9, '软件测试工程师');
+INSERT INTO `xx_position` VALUES (10, 'Linux系统工程师');
+INSERT INTO `xx_position` VALUES (11, 'JAVA开发工程师');
+INSERT INTO `xx_position` VALUES (12, '技术总监');
+INSERT INTO `xx_position` VALUES (13, 'CEO');
+INSERT INTO `xx_position` VALUES (14, '学生');
+INSERT INTO `xx_position` VALUES (15, '其它');

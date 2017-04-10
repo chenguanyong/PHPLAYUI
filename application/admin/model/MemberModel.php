@@ -5,7 +5,6 @@ use think\Model;
 class MemberModel extends Model
 {
    protected $name = 'user';
-
     /**
      * 根据搜索条件获取用户列表信息
      */
@@ -61,8 +60,6 @@ class MemberModel extends Model
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
-
     /**
      * 根据管理员id获取角色信息
      * @param $id
@@ -78,12 +75,9 @@ class MemberModel extends Model
     public function delMembers($id)
     {
         try{
-
             $this->where('id', $id)->delete();
-         
             writelog(session('admin_uid'),session('username'),'用户【'.session('admin_username').'】删除管理员成功(ID='.$id.')',1);
             return ['code' => 1, 'data' => '', 'msg' => '删除管理员成功'];
-
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }

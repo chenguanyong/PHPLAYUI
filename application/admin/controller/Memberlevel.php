@@ -23,12 +23,6 @@ class Memberlevel extends Base
         $allpage = intval(ceil($count / $limits));
         $user = new MemberlevelModel();
         $lists = $user->getMemberlevelByWhere($map, $Nowpage, $limits);
-       // var_dump($lists);
-        //exit;
-//         foreach($lists as $k=>$v)
-//         {
-//             $lists[$k]['last_login_time']=date('Y-m-d H:i:s',$v['last_login_time']);
-//         }
         $this->assign('Nowpage', $Nowpage); //当前页
         $this->assign('allpage', $allpage); //总页数
         $this->assign('count',$count);

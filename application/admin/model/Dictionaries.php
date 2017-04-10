@@ -10,9 +10,8 @@ class Dictionaries extends Model
     
         parent::initialize();
     }
-    //返回所有字典
     /**
-     * [index 首页]
+     * [getAllDic 获取所有字典]
      * @return [type] [description]
      * @author
      */
@@ -20,9 +19,8 @@ class Dictionaries extends Model
         $dic = $this->select();
         return $dic;
     }
-    //返回所有字典指定字典
     /**
-     * [index 首页]
+     * [index 获取指定父id的字典]
      * @return [type] [description]
      * @author
      */
@@ -32,9 +30,8 @@ class Dictionaries extends Model
         ->select(); 
         return $dic;
     }
-    //添加字典
     /**
-     * [index 首页]
+     * [addDiction 添加字典]
      * @return [type] [description]
      * @author
      */
@@ -45,14 +42,10 @@ class Dictionaries extends Model
             return null;
         }
         $result = $this->validate("DictionariesValidate")->save($data);
-//         if($result == false){
-//            var_dump($this->getError());
-//         }
         return $result;
     }
-    //更新字典
     /**
-     * [index 首页]
+     * [updateDiction 更新字典]
      * @return [type] [description]
      * @author
      */
@@ -60,22 +53,16 @@ class Dictionaries extends Model
         $dic = $this->where(['name'=>$data['name'],"bianma"=>$data['bianma'],"parentID"=>$data['parentID']])
         ->find();
         if($dic != null){
-        
             if($dic->getdata()['bz'] != trim($data['bz'])||$dic->getdata()['state'] != trim($data['state'])){
-                
                 $result = $this->validate("DictionariesValidate")->save($data,['id'=>$id]);
                 return $result;
-                
             }else{return null;}
         }
         $result = $this->validate("DictionariesValidate")->save($data,['id'=>$id]);
-        
         return $result;
-        
     }
-    //删除字典
     /**
-     * [index 首页]
+     * [deleDiction 删除字典]
      * @return [type] [description]
      * @author
      */
@@ -83,9 +70,8 @@ class Dictionaries extends Model
         $result = $this->save(['IsDelete'=>'1'],['id'=>$data]);
         return $result;
     }
-    //获取指点父id的字节的数量
     /**
-     * [index 首页]
+     * [getAllDicSize 获取指点父id的字节的数量]
      * @return [type] [description]
      * @author
      */
@@ -94,9 +80,8 @@ class Dictionaries extends Model
         $count = $this->where(['parentID'=>$parentID,'IsDelete'=>0])->count();
         return $count;
     }
-    //获取所有的字典选项
     /**
-     * [index 首页]
+     * [getDicParent 获取所有的字典选项]
      * @return [type] [description]
      * @author
      */
@@ -110,9 +95,8 @@ class Dictionaries extends Model
         }
         return $reault;
     }
-    //根据编码返回数据
     /**
-     * [index 首页]
+     * [getDicByBM 根据编码返回数据]
      * @return [type] [description]
      * @author
      */

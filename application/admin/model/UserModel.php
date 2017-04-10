@@ -25,7 +25,6 @@ class UserModel extends Model
     {
         return $this->where($where)->count();
     }
-
     /**
      * 插入管理员信息
      * @param $param

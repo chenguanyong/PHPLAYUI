@@ -39,9 +39,8 @@ class Member extends Base
         }
         return $this->fetch();
     }
-    //通过id获取指定会员信息
     /**
-     * [index 首页]
+     * [getUserInfoByID 通过id获取指定会员信息]
      * @return [type] [description]
      * @author
      */
@@ -59,9 +58,8 @@ class Member extends Base
           return json(array('state'=>1,"data"=>$result));
         }
     }
-    //添加会员
     /**
-     * [index 首页]
+     * [memberadd 添加会员]
      * @return [type] [description]
      * @author
      */

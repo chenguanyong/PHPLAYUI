@@ -14,7 +14,6 @@ class MemberlevelModel extends Model
         return $this
         ->where($map)->page($Nowpage, $limits)->order('id desc')->select();
     }
-    
     /**
      * 根据搜索条件获取所有的用户等级数量
      * @param $where
@@ -23,7 +22,6 @@ class MemberlevelModel extends Model
     {
         return $this->where($where)->count();
     }
-    
     /**
      * 插入会员等级信息
      * @param $param
@@ -35,14 +33,12 @@ class MemberlevelModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                //writelog(session('admin_uid'),session('admin_username'),'用户【'.$param['username'].'】添加成功',1);
                 return ['code' => 1, 'data' => '', 'msg' => '添加用户等级成功'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-    
     /**
      * 编辑会员等级信息
      * @param $param
@@ -54,15 +50,12 @@ class MemberlevelModel extends Model
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
-               // writelog(session('admin_uid'),session('admin_username'),'用户【'.$param['username'].'】编辑成功',1);
                 return ['code' => 1, 'data' => '', 'msg' => '编辑用户等级成功'];
             }
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-    
-    
     /**
      * 根据id获取会员等级信息
      * @param $id
@@ -71,8 +64,6 @@ class MemberlevelModel extends Model
     {
         return $this->where('id', $id)->find();
     }
-    
-    
     /**
      * 删除等级
      * @param $id
@@ -80,7 +71,6 @@ class MemberlevelModel extends Model
     public function delMemberlevel($id)
     {
         try{
-    
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除等级成功'];
         }catch( PDOException $e){

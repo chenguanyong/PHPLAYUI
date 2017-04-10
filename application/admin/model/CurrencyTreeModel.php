@@ -11,7 +11,7 @@ class CurrencyTreeModel extends Model
     }
     //返回所有字典
     /**
-     * [index 首页]
+     * [getAllCurreny 获取所有节点]
      * @return [type] [description]
      * @author
      */
@@ -19,9 +19,8 @@ class CurrencyTreeModel extends Model
         $dic = $this->select();
         return $dic;
     }
-    //返回所有字典指定字典
     /**
-     * [index 首页]
+     * [getCurrenyByParent 返回所有字典指定字典]
      * @return [type] [description]
      * @author
      */
@@ -31,9 +30,8 @@ class CurrencyTreeModel extends Model
         ->select();
         return $dic;
     }
-    //删除字典
     /**
-     * [index 首页]
+     * [deleCurrency 删除字典]
      * @return [type] [description]
      * @author
      */
@@ -43,7 +41,7 @@ class CurrencyTreeModel extends Model
         return $result;
     }
     /**
-     * [index 首页]
+     * [getAllCurrenySize 获取节点数量]
      * @return [type] [description]
      * @author
      */
@@ -51,9 +49,8 @@ class CurrencyTreeModel extends Model
         $count = $this->where(['parentID'=>$parentID,'IsDelete'=>0])->count();
         return $count;
     }
-    //添加节点
     /**
-     * [index 首页]
+     * [addCurrency 添加通用节点]
      * @return [type] [description]
      * @author
      */
@@ -66,9 +63,8 @@ class CurrencyTreeModel extends Model
         $result = $this->validate("CurrencytreeValidate")->save($data);
         return $result;
     }
-    //更新字典
     /**
-     * [index 首页]
+     * [updateCurrency 更新字典]
      * @return [type] [description]
      * @author
      */
@@ -84,9 +80,8 @@ class CurrencyTreeModel extends Model
         $result = $this->validate("CurrencytreeValidate")->save($data,['id'=>$id]);
         return $result;
     }
-    // 根据树id获取部分树数据
     /**
-     * [index 首页]
+     * [getbufenTree 根据树id获取部分树数据]
      * @return [type] [description]
      * @author
      */
@@ -94,9 +89,8 @@ class CurrencyTreeModel extends Model
         $result = $this->where(["parentID"=>$id,"IsDelete"=>0])->select();
         return $result;
     }
-    // 根据树id获取单个树数据
     /**
-     * [index 首页]
+     * [getTreebyID 根据树id获取单个树数据]
      * @return [type] [description]
      * @author
      */

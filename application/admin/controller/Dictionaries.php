@@ -15,7 +15,7 @@ class Dictionaries extends Base
         return $this->fetch();
     }
     /**
-     * [index 首页]
+     * [getDicList 获取字典列表]
      * @return [type] [description]
      * @author
      */
@@ -24,7 +24,7 @@ class Dictionaries extends Base
         return $this->fetch('list');
     }
     /**
-     * [index 首页]
+     * [getDicListByPage 通过指定页码获取字典列表]
      * @return [type] [description]
      * @author
      */
@@ -46,9 +46,9 @@ class Dictionaries extends Base
         $this->assign('content', $dics['name']);
         return $this->fetch('list');
     }
-    //设置字典状态
+
     /**
-     * [index 首页]
+     * [setState 设置状态]
      * @return [type] [description]
      * @author
      */
@@ -67,9 +67,8 @@ class Dictionaries extends Base
         }
         return $result > 0 ? json(array("code"=>$flag)):json(array('code'=>-1));
     }
-    //添加字典页面
     /**
-     * [index 首页]
+     * [adddic 添加字典页面]
      * @return [type] [description]
      * @author
      */
@@ -105,9 +104,8 @@ class Dictionaries extends Base
         $this->assign('title',$title);
         return  $this->fetch('adddic');
     }
-    //添加字典
     /**
-     * [index 首页]
+     * [ajaxAddDic 添加字典]
      * @return [type] [description]
      * @author
      */
@@ -130,9 +128,8 @@ class Dictionaries extends Base
         }
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
     }
-    //删除字典
     /**
-     * [index 首页]
+     * [ajaxDeleDic 删除字典]
      * @return [type] [description]
      * @author
      */    
@@ -143,7 +140,7 @@ class Dictionaries extends Base
         return $result > 0 ? json(array("state"=>1)):json(array('state'=>0));
     }
       /**
-     * [index 首页]
+     * [ajaxOrder 排序]
      * @return [type] [description]
      * @author
      */
