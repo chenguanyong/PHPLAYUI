@@ -1,12 +1,16 @@
 <?php
 
 namespace app\admin\controller;
-
+use think\Db;
 class Index extends Base
 {
     public function index()
     {
-
+		if(request()->isAjax()){
+         $list=Db::table('xx_config')->select();
+         return $list;
+            // return 1;
+        }
         return $this->fetch();
     }
 

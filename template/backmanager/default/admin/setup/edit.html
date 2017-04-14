@@ -1,0 +1,125 @@
+{include file="public/header"/}   
+        
+
+
+       
+{include file="public/footer"}
+
+
+ <script>
+ layui.use(['form'], function(){
+        var $ = layui.jquery
+
+                form = layui.form();
+        //监听提交
+        form.on('submit(add-role)', function(data){
+            var sub=true;
+            // alert(sub);
+            var url=$(this).data('href');
+            // alert(url);
+            if(url){
+                if(sub){
+                  // alert(data.field);
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                          // alert(data);                         
+                            if (data == true) {      
+                               layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改成功'
+                                 });                                  
+                               window.location.href="{:url('setup/index')}"; 
+                            }else{
+                               
+                                layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改失败',
+                                 });   
+                                  // layer.msg('数据修改失败', {icon: 5});
+                            }
+                            if(data==3){
+                              layer.open({
+                                      title: '温馨提示',
+                                      content: '请上传图片',
+                                 });   
+                            }
+                        },                       
+                        
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+
+            return false;
+        });
+    });
+  
+
+  layui.use(['form', 'layedit', 'laydate','upload'], function(){
+        var $ = layui.jquery;
+        $form = $('form');
+        var form = layui.form()
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+        //上传图片
+        layui.upload({
+            url: "{:url('Setup/uploads')}" //上传接口
+            ,before: function(input){
+                //返回的参数item，即为当前的input DOM对象
+                console.log('图片上传中');
+            }
+            ,title:'上传封面图'
+            ,elem: '#upload-image' //指定原始元素，默认直接查找class="layui-upload-file"
+            ,method: 'post' //上传接口的http类型
+            ,ext: 'jpg|png|gif'
+            ,type:'images'
+            ,success: function(data){ //上传成功后的回调
+                //console.log(res)
+                // alert(data);
+                 if(data.status==3){
+                    layer.open({
+                      title: '温馨提示',
+                      content: '请上传图片',
+                  }); 
+                  }
+                if(data.status == 1){
+                    $("#image").val('/public/upload/image/' +data.image_name);
+                    $("#img_path").attr('src', '/public/upload/image/' + data.image_name).show();
+
+                }else{
+                    // alert(data.error_info);
+                    layer.open({
+                      title: '温馨提示',
+                      content: '请上传图片',
+                  }); 
+
+
+                }
+
+            }
+        });
+
+
+
+
+
+
+    });
+
+
+
+
+ </script>
+
+
+
+      
+
+
+

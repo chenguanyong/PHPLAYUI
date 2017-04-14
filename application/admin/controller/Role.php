@@ -51,17 +51,21 @@ class Role extends Base
      */
     public function roleAdd()
     {
+        return $this->fetch();
+    }
+    /**
+     * [ajax_add_role 添加角色]
+     * @return [type] [description]
+     * @author
+     */
+    public function ajax_add_role(){
         if(request()->isAjax()){
-
             $param = input('post.');
             $role = new UserType();
             $flag = $role->insertRole($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-
-        return $this->fetch();
+        }  
     }
-
 
 
     /**
@@ -71,20 +75,28 @@ class Role extends Base
      */
     public function roleEdit()
     {
-        $role = new UserType();
-        if(request()->isAjax()){
-            $param = input('post.');
-            $flag = $role->editRole($param);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
 
+        $role = new UserType();
         $id = input('param.id');
         $this->assign([
             'role' => $role->getOneRole($id)
         ]);
         return $this->fetch();
     }
-
+    /**
+     * [roleEdit 编辑角色]
+     * @return [type] [description]
+     * @author
+     */
+    public function ajax_role_Edit(){
+        
+        $role = new UserType();
+        if(request()->isAjax()){
+            $param = input('post.');
+            $flag = $role->editRole($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
 
 
     /**

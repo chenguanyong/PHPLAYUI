@@ -1,0 +1,296 @@
+{include file="public/header"/}
+<style>
+    .layui-form-switch {
+        padding-left: 0px;
+        transition: .1s linear;
+    }
+    .layui-table tr th{text-align: center;}
+    .layui-table tr td{text-align: center;}
+</style>
+<div class="main-wrap">
+    <blockquote class="layui-elem-quote fhui-admin-main_hd">
+        <h2>用户等级列表</h2>
+    </blockquote>
+    <div class="y-role">
+        <!--工具栏-->
+        <div id="floatHead" class="toolbar-wrap">
+            <div class="toolbar">
+                <div class="box-wrap">
+                    <a class="menu-btn"></a>
+                    <div class="l-list">
+                        <a href="javascript:;" class="layui-btn layui-btn-small" data-type="doAdd" ><i class="fa fa-plus"></i>添加用户</a>
+
+                        <a class="layui-btn layui-btn-small do-action" data-type="doRefresh" data-href=""><i class="fa fa-refresh fa-spin"></i>刷新</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--文字列表-->
+        <div class="fhui-admin-table-container">
+
+            <table class="layui-table">
+                <colgroup>
+                    <col width="5%">
+                    <col width="8%">
+                    <col width="8%">
+                    <col width="5%">
+                    <col width="15%">
+                </colgroup>
+                <thead>
+                <tr>
+
+                    <th>ID</th>
+                    <th>等级名称</th>
+                    <th>积分</th>
+                    <th>状态</th>
+                    <th>操作</th>
+
+                </tr>
+                </thead>
+
+                <script id="arlist" type="text/html">
+
+                    {{# for(var i=0;i<d.length;i++){  }}
+
+                    <tr class="long-td">
+                        <td>{{d[i].id}}</td>
+                        <td>{{d[i].leval_name}}</td>
+                        <td>{{d[i].leval_points}}</td>
+                        <td>
+                            {{# if(d[i].id!==0){ }}
+                                {{# if(d[i].status==1){ }}
+                                <a href="javascript:;" class="change_status"  data-id="{{d[i].id}}">
+                                    <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div>
+
+                                </a>
+                                {{# }else{ }}
+                                <a href="javascript:;" class="change_status" data-id="{{d[i].id}}">
+
+                                    <div class="layui-unselect layui-form-switch"><i></i></div>
+                                </a>
+                                {{# } }}
+                            {{# } }}
+                        </td>
+                        <td>
+                            
+                                <a  class="layui-btn layui-btn-small " data-type="doEdit"  data-id="{{d[i].id}}">
+                                    <i class="icon-edit  fa fa-pencil-square-o"></i>编辑
+                                </a>
+                                <a class="layui-btn layui-btn-small" data-type="doDelOne" data-url="{:url('MemberlevelDel')}" data-id="{{d[i].id}}">
+                                    <i class="icon-edit  fa fa-pencil-square-o"></i>删除
+                                </a>
+                          
+
+
+                        </td>
+                    </tr>
+                    {{# } }}
+                </script>
+                <tbody id="article_list"></tbody>
+            </table>
+
+        </div>
+        <div id="AjaxPage" style="margin-top: -57px;float: right;"></div>
+        <div style="float: right;margin-top: -9px;margin-right: 13px;">
+            共{$count}条数据，<span id="allpage"></span>
+        </div>
+    </div>
+</div>
+<!-- 添加会员 -->
+
+<div style="display:none" id="dodelete" class="layui-layer-content"><i class="layui-layer-ico layui-layer-ico3"></i>此操作不可逆，请再次确认是否要操作。</div>
+{include file="public/footer"}
+<script src="__PLUG__/jquery.min.js?v=2.1.4"></script>
+<script>
+
+    var laytpl,laypage;
+    var url='{:url("Memberlevel/index")}';
+    var allpages='{$allpage}';
+    layui.use(['layer', 'laypage', 'icheck','laytpl','laypage','form','common'], function () {
+        var $ = layui.jquery
+                , layer = layui.layer
+                , common = layui.common, form = layui.form();
+        laytpl =layui.laytpl;
+        laypage = layui.laypage;
+
+        common.Ajaxpage();
+
+        //加载单选框样式
+        $(("[type='checkbox']")).iCheck({
+            checkboxClass: 'icheckbox_square-green',
+        });
+        $(document).on('click','.change_status', function () {
+            var id=$(this).attr('data-id');
+            var obs=$(this);
+            $.ajax({
+                url: '{:url("Memberlevel_state")}',
+                dataType: "json",
+                data:{'id':id},
+                type: "POST",
+                success: function(data){
+                    if(data.code == 1){
+                        obs.find('div').removeClass('layui-form-onswitch');
+                        layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
+                    }else{
+                        obs.find('div').addClass('layui-form-onswitch');
+                        layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
+                    }
+                },
+                error:function(ajaxobj)
+                {
+                    if(ajaxobj.responseText!='')
+                        alert(ajaxobj.responseText);
+                }
+            });
+
+        });
+        $(document).on('click','#status', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+        	if(id == "1"){
+        		obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"on");
+                $(this).attr('data-on',"0");
+            }else{
+            	obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"off");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+        //全选
+        $(document).on('ifChanged','.selected-all', function (event) {
+            // alert(1);
+            var $input = $('.layui-table tbody tr td').find('input');
+            $input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
+        });
+
+      	$(document).on('click','[data-type=doAdd]', function () {  
+         	 $.post('{:url("pageAddMember")}', {id:0}, function(str){
+         		 layer.open({
+   	    	        type: 1 //此处以iframe举例
+     	    	        ,title: "添加会员等级",
+     	    	      	closeBtn: 1,
+     	    	        shade: 0.001,
+     	    	      	shadeClose: false
+     	    	        ,maxmin: true
+     	    	        ,content: str
+     	    	        ,btn: ['确定', '关闭'] //只是为了演示
+     	    	        ,yes: function(){
+     	    	        	  $("#submit").attr("data-id",0);
+     	    	    		  $("#submit").attr("data-type",1);
+     	    	        	  $('#submit').click();
+     	    	        }
+     	    	        ,btn2: function(){
+     	    	          layer.closeAll();
+     	    	        } 
+       		  });
+       		});
+     	  });
+    	  $(document).on('click','[data-type=doDelOne]', function () {  
+    		  var id = $(this).data("id");
+    		  var url = $(this).data("url");
+    		  var that = this; 
+    		  layer.confirm('您确定要删除？', {icon: 3, title:'提示'},function (){
+    			  $.ajax({
+	                  url: url ,
+	                  type: 'post',
+	                  dataType: 'json',
+	                  data: {id:id},
+	                  success: function (data) {
+	                     if (data.code == 1) {
+	                    	 window.location.href = '/index.php/admin/Memberlevel/index';
+	                      }
+	                    else {
+	                          //common.layerAlertE(data.msg, '提示');
+	                     }
+	                     layer.closeAll();
+	                  },
+	                  error: function (XMLHttpRequest, textStatus, errorThrown) {
+	                      common.layerAlertE(textStatus, '提示');
+	                  }
+	              });
+    		  });
+       	  });
+
+    	  $(document).on('click','[data-type=doEdit]', function () {
+              var id = $(this).data("id");
+         	 $.post('{:url("pageAddMember")}', {id:id}, function(str){
+       		  
+         		 layer.open({
+   	    	        type: 1 //此处以iframe举例
+     	    	        ,title: "添加会员等级",
+     	    	      	closeBtn: 1,
+     	    	        shade: 0.001,
+     	    	      	shadeClose: false
+     	    	        ,maxmin: true
+     	    	        ,content: str
+     	    	        ,btn: ['确定', '关闭'] //只是为了演示
+     	    	        ,yes: function(){
+     	    	        	  $("#submit").attr("data-id",id);
+     	    	    		  $("#submit").attr("data-type",2);
+     	    	        	  $('#submit').click();
+     	    	        }
+     	    	        ,btn2: function(){
+     	    	          layer.closeAll();
+     	    	        } 
+       		  });
+       		});
+    		
+
+    	  });
+    	  form.verify({
+              integral:function(value){
+
+                  if((!/^(\+)?\d+$/.test( value ))){
+                      return "只能大于0的合法数";
+             	 }
+              }
+
+          });
+          //监听提交
+          form.on('submit(add-role)', function(data){
+              var sub=true;
+              var url=$(this).data('href');
+              var type = $("#submit").attr("data-type");
+              var id = $("#submit").attr("data-id");
+              data.field.type = type;
+              data.field.id = id;
+              data.field.status = $("#status").attr("data-value");
+              if(url){
+                  if(sub){
+                      $.ajax({
+                          url: url,
+                          type: 'post',
+                          dataType: 'json',
+                          data: data.field,
+                          success: function (data) {
+                              if (data.code == 1) {
+                                  // location.href = rturl;
+                                  common.layerAlertS(data.msg, '提示');
+                                  window.location.href="{:url('Memberlevel/index')}";
+                              }
+                              else {
+                                  common.layerAlertE(data.msg, '提示');
+                              }
+                          },
+                          beforeSend: function () {
+                              //    // 一般是禁用按钮等防止用户重复提交
+                             // $(data.elem).attr("disabled", "true").text("提交中...");
+                          },
+                          //complete: function () {
+                          //    $(sbbtn).removeAttr("disabled");
+                          //},
+                          error: function (XMLHttpRequest, textStatus, errorThrown) {
+                              common.layerAlertE(textStatus, '提示');
+                          }
+                      });
+                  }
+              }else{
+                  common.layerAlertE('链接错误！', '提示');
+              }
+              return false;
+          });
+    });
+</script>

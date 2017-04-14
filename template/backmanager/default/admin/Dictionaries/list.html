@@ -1,0 +1,531 @@
+{include file="public/header"/}
+<style>
+    .layui-form-switch {
+        padding-left: 0px;
+        transition: .1s linear;
+    }
+    .layui-table tr th{text-align: center;}
+    .layui-table tr td{text-align: center;}
+</style>
+<div class="main-wrap">
+
+    <div class="y-role">
+        <!--工具栏-->
+        <div id="floatHead" class="toolbar-wrap">
+            <div class="toolbar">
+                <div class="box-wrap">
+                    <a class="menu-btn"></a>
+                    <div class="l-list">
+<script type="text/javascript">
+function adddic(){
+	
+	parent.location.href=$('#add').attr('data-href');
+}
+
+</script>
+                        <a href="javascript:;" id="add" class="layui-btn layui-btn-small " data-id={$val} data-what={$content}  data-href="/index.php/admin/Dictionaries/addDic?id={$val}"><i class="fa fa-plus"></i>添加字典</a>
+
+                        <a class="layui-btn layui-btn-small do-action" data-type="doRefresh" data-href=""><i class="fa fa-refresh fa-spin"></i>刷新</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--文字列表-->
+        <div class="fhui-admin-table-container">
+
+            <table class="layui-table">
+                <colgroup>
+                    <col width="5%">
+                    <col width="8%">
+                    <col width="5%">
+
+                    <col width="12%">
+                    <col width="12%">
+                    <col width="30%">
+                </colgroup>
+                <thead>
+                <tr>
+
+                    <th>id </th>
+                    <th>字典名称</th>
+                    <th>状态</th>
+                    <th>编码</th>
+                    <th>备注</th>
+                    <th>操作</th>
+
+                </tr>
+                </thead>
+
+                <tbody id="article_list">
+<?php
+foreach($lists as $value){
+echo '<tr class="long-td" data-id="' . $value['id'] . '">';
+echo '<td>' .$value['id'] . '</td>';
+echo '<td>' .$value['name'] . '</td>';
+
+echo '<td>';
+if($value['state']==1){
+echo '<a href="javascript:;" class="change_status"  data-id="' . $value['id'] . '">';
+echo '<div  class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div>';
+echo '</a>';
+  }else{                        
+echo '<a href="javascript:;" class="change_status" data-id="' . $value['id'] . '">';
+
+echo '<div  class="layui-unselect layui-form-switch"><i></i></div>';
+echo '</a>';
+   }                       
+echo '</td>';
+echo '<td>' .$value['bianma'] . '</td>';
+echo '<td>' .$value['bz'] . '</td>';
+echo '<td>';
+
+echo '<a class="layui-btn layui-btn-mini " data-type="doEdit" >';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>修改';
+echo '</a>';
+echo '<a  class="layui-btn layui-btn-mini " data-type="doAdd"  >';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>添加';
+echo '</a>';
+echo '<a class="layui-btn layui-btn-mini " data-type="doDelOne"  data-id="' . $value['id'] . '">';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>删除';
+echo '</a>';
+echo '<a class="layui-btn layui-btn-mini " data-type="doMove"  data-id="' . $value['id'] . '" data-order="' . $value['orderby'] . '">';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>上移';
+echo '</a>';
+echo '<a class="layui-btn layui-btn-mini " data-type="doDown"  data-id="' . $value['id'] . '" data-order="' . $value['orderby'] . '">';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>下移';
+echo '</a>';
+echo '</td>';
+echo '</tr>';
+
+}
+?>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="float: right;margin-top: -50px;margin-right: 13px;">
+            <div id="demo1" style="float: right"></div>
+        </div>
+        
+    </div>
+</div>
+<!-- 修改 -->
+<div id="yincang" class="hide main-wrap" style="display:none">
+    <form  class="layui-form layui-form-pane" id="formrec" method="post" role="form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">父节点名称</label>
+            <div class="layui-input-block">
+                <input name="nodename" autocomplete="off"  placeholder="父节点名称" disabled="disabled" class="layui-input" type="text" required   lay-verify="nodename">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">子典名称</label>
+            <div class="layui-input-block">
+                <input name="title" autocomplete="off"  placeholder="字典名称" class="layui-input" type="text" required   lay-verify="title">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">编码</label>
+            <div class="layui-input-block">
+                <input name="bianma" autocomplete="off"  placeholder="输入编码" class="layui-input" type="text" required   lay-verify="bianma">
+                
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <input name="bz" autocomplete="off"  placeholder="输入备注" class="layui-input"  type="text" required   lay-verify="bz">
+            </div>
+        </div>
+        <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input checked="" name="status" lay-skin="switch" lay-filter="switchTest" title="是" type="checkbox">
+            </div>
+        </div>
+		<button  id="submit" class="layui-btn" style="display:none"  lay-submit="" lay-filter="add-role" data-href="/index.php/admin/Dictionaries/ajaxaddDic">提交</button>
+    </form>
+</div>
+
+{include file="public/footer"}
+<script src="__PLUG__/jquery.min.js?v=2.1.4"></script>
+<link rel="stylesheet" href="__PLUG__/zTree/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.exedit-3.5.js"></script>
+
+<script type="text/javascript">
+$('[data-type=doDelOne]').on('click',function (){
+	
+	
+//alert($(this).data('id'));
+$.ajax({
+    url: '{:url("admin/Dictionaries/ajaxDeleDic")}',
+    dataType: "json",
+    data:{'id':$(this).data('id')},
+    type: "POST",
+    success: function(data){
+
+
+        if(data.state == 1){
+            
+            layer.msg('成功',{icon:1,time:1500,shade: 0.1,});
+           	window.location.href="/index.php/admin/dictionaries/getDicListByPage?id={$val}";
+        }else{
+            
+            layer.msg('失败',{icon:2,time:1500,shade: 0.1,});
+        }
+    },
+    error:function(ajaxobj)
+    {
+        if(ajaxobj.responseText!=''){}
+            //alert(ajaxobj.responseText);
+    }
+});
+
+})
+    zNodes = '';
+    var index = '';
+    var index2 = '';
+    //分配权限
+    function giveQx(id){
+        $("#nodeid").val(id);
+        //加载层
+        index2 = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+        //获取权限信息
+        $.getJSON('./giveAccess', {'type' : 'get', 'id' : id}, function(res){
+            layer.close(index2);
+            if(res.code == 1){
+                zNodes = JSON.parse(res.data);  //将字符串转换成obj
+
+                //页面层
+                index = layer.open({
+                    type: 1,
+                    area:['350px', '600px'],
+                    title:'权限分配',
+                    skin: 'layui-layer-demo', //加上边框
+                    content: $('#role')
+                });
+                //设置位置
+                layer.style(index, {
+                    top: '150px'
+                });
+
+                //设置zetree
+                var setting = {
+                    check:{
+                        enable:true
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    }
+                };
+
+                $.fn.zTree.init($("#treeType"), setting, zNodes);
+                var zTree = $.fn.zTree.getZTreeObj("treeType");
+                zTree.expandAll(true);
+
+            }else{
+                layer.alert(res.msg);
+            }
+
+        });
+    }
+       // common.Ajaxpage();
+        $(document).on('click','.change_status', function () {
+            var id=$(this).attr('data-id');
+            var obs=$(this);
+            $.ajax({
+                url: '{:url("admin/Dictionaries/setState")}',
+                dataType: "json",
+                data:{'id':id},
+                type: "POST",
+                success: function(data){
+
+
+                    if(data.code == 1){
+                        obs.find('div').removeClass('layui-form-onswitch');
+                        layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
+                    }else{
+                        obs.find('div').addClass('layui-form-onswitch');
+                        layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
+                    }
+                },
+                error:function(ajaxobj)
+                {
+                    if(ajaxobj.responseText!='')
+                        alert(ajaxobj.responseText);
+                }
+            });
+
+        });
+
+        //全选
+        $(document).on('ifChanged','.selected-all', function (event) {
+            // alert(1);
+            var $input = $('.layui-table tbody tr td').find('input');
+            $input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
+        });
+
+        layui.use(['laypage', 'layer','form','common'], function(){
+        	  var laypage = layui.laypage
+        	  ,layer = layui.layer,
+        	  form = layui.form(),common=layui.common;
+        	  
+        	  laypage({
+        	    cont: 'demo1'
+        	    ,pages: {$allpage}//总页数
+        	    ,groups: 5 //连续显示分页数
+        	    ,curr:{$Nowpage}
+        	    
+        	  });
+              $('[data-page]').on("click",function(){
+              	//alert("sdf");
+              	window.location.href="/index.php/admin/dictionaries/getDicListByPage?id={$val}&page="+$(this).data('page');
+              });
+              //自定义验证规则
+              form.verify({
+                 nodename: function(value){
+                      if(value == ""){
+                          return '父节点不能为空';
+                      }
+                  }
+                  ,title:function(value){
+                      if(value == ""){
+                          return '字典名称不能为空';
+                      }
+                  },
+                  bianma:function(){
+                      if(value == ""){
+                          return '编码不能为空';
+                      }                	  
+                  },
+                  bz:function(){
+                      if(value == ""){
+                          return '备注不能为空';
+                      }                 	  
+                  }
+
+              });
+            //监听提交
+              form.on('submit(add-role)', function(data){
+                  var sub=true;
+                  var url=$(this).data('href');
+                  var type =$(this).data('type');
+                  var id = $(this).data('key');
+                  var parentID = $('[name=nodename]').data('id');
+                  data.field.type=type;
+                  data.field.id=id;
+                  data.field.pid = parentID;
+                  
+                  if(url){
+                      if(sub){
+                          $.ajax({
+                              url: url,
+                              type: 'post',
+                              dataType: 'json',
+                              data: data.field,
+                              success: function (data) {
+                                 //if (data.state == 1) {
+                                     // location.href = rturl;
+                                    //  common.layerAlertS(data.msg, '提示');
+                                      parent.location.href="{:url('Dictionaries/index')}";
+                                 // }
+                                 // else {
+                                    //  common.layerAlertE(data.msg, '提示');
+                                 /// }
+                              },
+                              beforeSend: function () {
+                              //    // 一般是禁用按钮等防止用户重复提交
+                                  //$(data.elem).attr("disabled", "true").text("提交中...");
+                              },
+
+                              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                  common.layerAlertE(textStatus, '提示');
+                              }
+                          });
+                      }
+                  }else{
+                      common.layerAlertE('链接错误！', '提示');
+                  }
+
+                  return false;
+              });
+          	  //触发事件
+          	  var active = {
+          	    add: function(){
+          	      var that = this; 
+          	      //多窗口模式，层叠置顶
+          	      layer.open({
+          	        type: 1 //此处以iframe举例
+          	        ,title: "添加字典",
+          	      	closeBtn: 1,
+          	        shade: 0.001,
+          	      	shadeClose: false
+          	        ,maxmin: true
+          	        ,content: $('#yincang')
+          	        ,btn: ['确定', '关闭'] //只是为了演示
+          	        ,yes: function(){
+          	        	layer.closeAll();
+          	        	$('#submit').click();
+          	        }
+          	        ,btn2: function(){
+          	          layer.closeAll();
+          	        } 
+          	        ,zIndex: layer.zIndex //重点1
+          	        ,success: function(layero){
+          	          layer.setTop(layero); //重点2
+          	        }
+          	      });
+          	    },
+          	  modify: function(){
+            	      var that = this; 
+            	      //多窗口模式，层叠置顶
+            	      layer.open({
+            	        type: 1 //此处以iframe举例
+            	        ,title: "修改字典",
+            	      	closeBtn: 1,
+            	        shade: 0.001,
+            	      	shadeClose: false
+            	        ,maxmin: true
+            	        ,content: $('#yincang')
+            	        ,btn: ['确定', '关闭'] //只是为了演示
+            	        ,yes: function(){
+            	        	layer.closeAll();
+            	        	$('#submit').click();
+            	        }
+            	        ,btn2: function(){
+            	          layer.closeAll();
+            	        } 
+            	        ,zIndex: layer.zIndex //重点1
+            	        ,success: function(layero){
+            	          layer.setTop(layero); //重点2
+            	        }
+            	      });
+            	    }
+          	  };
+              $('#add').on('click', function(){
+     	       	 $('#tan_title').text('添加字典');
+    	      	 var tr = $(this).parent('td').parent('tr');
+              	 $('[name=nodename]').val($(this).data('what'));
+              	 $('[name=nodename]').attr('data-id',$(this).data('id'));
+              	 $('[name=title]').val('');
+              	 $('[name=bianma]').val('');
+              	 $('[name=bz]').val('');
+              	 $('#submit').data('type',1); 
+              	 $('[name=status]').attr('checked',true);
+                   var othis = $(this), method = 'add';
+                   active[method] ? active[method].call(this, othis) : '';
+                 });
+        $('[data-type=doEdit]').on('click', function(){
+        	 $('#tan_title').text('修改字典');
+          	 var tr = $(this).parent('td').parent('tr');
+          	 $('[name=nodename]').val($('#add').data('what'));
+          	 $('[name=nodename]').attr('data-id',$('#add').data('id'));
+          	 $('[name=title]').val(tr.children().eq(1).text());
+          	 $('[name=bianma]').val(tr.children().eq(3).text());
+          	 $('[name=bz]').val(tr.children().eq(4).text());
+          	 //tr.children().eq(5).find('div').hasClass('layui-form-onswitch')?'':$('[name=status]').click();
+          	 $('#submit').data('type',2); //
+          	 $('#submit').attr('data-key',tr.data('id'));
+          	 var othis = $(this), method = 'modify';
+              active[method] ? active[method].call(this, othis) : '';
+            });
+        $('[data-type=doAdd]').on('click', function(){
+	       	 $('#tan_title').text('添加字典');
+	      	 var tr = $(this).parent('td').parent('tr');
+	      	 $('[name=nodename]').val(tr.children().eq(1).text());
+	      	 $('[name=nodename]').attr('data-id',tr.data('id'));
+          	 $('[name=title]').val('');
+          	 $('[name=bianma]').val('');
+          	 $('[name=bz]').val('');
+          	 $('[name=status]').attr('checked',true);
+          	 $('#submit').data('type',1);
+             var othis = $(this), method = 'add';
+             active[method] ? active[method].call(this, othis) : '';
+           });
+        
+        });
+        $('[data-type=doMove]').on("click",function(){
+			var id = $(this).data("id");
+			var order = $(this).data("order");
+			var indexs = 0;
+			//alert(order);
+        	$('tr').each(function (index){
+        		
+        		if($(this).data('id') == id){
+        			
+        			indexs = index;
+        			return false;
+        		}
+        	});
+        	if(indexs-1 == 0){layer.msg('到顶了');return false;}
+        	//$('tbody').find('tr').eq(indexs-1);
+        	$($('tbody').find('tr').eq(indexs-1)).insertBefore($('tbody').find('tr').eq(indexs-2));
+          	var order2 = $('tbody').find('tr').eq(indexs-2).find('[data-order]').attr('data-order');
+          	if(order2 == order){
+          		
+          		order -=1;
+          	}else {
+          		
+          		order =order - (order2-order)-1;
+          	}
+          	ajax_order(id,order);
+          });
+        $('[data-type=doDown]').on("click",function(){
+			var id = $(this).data("id");
+			var order = $(this).data("order");
+			var indexs = 0;
+			var length = $('tbody').children('tr').toArray().length;
+			//alert(order);
+        	$('tr').each(function (index){
+        		
+        		if($(this).data('id') == id){
+        			
+        			indexs = index;
+        			return false;
+        		}
+        	});
+        	//$('tbody').find('tr').eq(indexs-1);
+        	if(indexs == length){layer.msg('到低了');return false;}
+        	$($('tbody').find('tr').eq(indexs-1)).insertAfter($('tbody').find('tr').eq(indexs));
+          	var order2 = $('tbody').find('tr').eq(indexs).find('[data-order]').attr('data-order');
+          	if(order2 == order){
+          		
+          		order +=1;
+          	}else {
+          		
+          		order = (order2-order)+order+1;
+          	}
+          	ajax_order(id,order);
+        });
+        
+        function ajax_order(id,orders){
+        	
+        	$.ajax({
+        	    url: '/index.php/admin/dictionaries/ajaxOrder',
+        	    dataType: "json",
+        	    data:{'id':id,'order':orders},
+        	    type: "POST",
+        	    success: function(data){
+        	        if(data.state == 1){
+        	            layer.msg('成功',{icon:1,time:1500,shade: 0.1,});
+        	           	window.location.href="/index.php/admin/dictionaries/getDicListByPage?id={$val}";
+        	        }else{
+        	            layer.msg('失败',{icon:2,time:1500,shade: 0.1,});
+        	        }
+        	    },
+        	    error:function(ajaxobj)
+        	    {
+        	        if(ajaxobj.responseText!=''){}
+        	            //alert(ajaxobj.responseText);
+        	    }
+        	});
+        	
+        }
+</script>

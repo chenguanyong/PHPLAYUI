@@ -113,6 +113,23 @@ class Memberlevel extends Base
             return json(['code' => 0, 'data' => $flag['data'], 'msg' => '已开启']);
         }
     }
+    /**
+     * [Memberlevel_state 会员等级状态]
+     * @return [type] [description]
+     * @author
+     */
+    public function pageAddMember(){
+        $id = input("post.id");
+        $mem = new MemberlevelModel();
+        $result = $mem->getOneMemberlevel($id);
+        if($result == null){
+            $this->assign("Member",array("leval_name"=>"","leval_points"=>"","status"=>1));
+        }
+        else{
+            $this->assign("Member",$result);
+        }
+        return $this->fetch("addMemberlevel");
+    }
 }
 
 ?>

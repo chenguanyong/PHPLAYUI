@@ -1,0 +1,74 @@
+<div class="main-wrap hide"  id="adduser">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="username" placeholder="会员名称"  lay-verify="title">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" id="password1" type="password" name="password" placeholder="密码"  lay-verify="password">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" id="password2" type="password" name="password" placeholder="密码"  lay-verify="password1">
+            </div>
+        </div>        
+        <div class="layui-form-item">
+            <label class="layui-form-label">昵称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="nickname" placeholder="昵称"  lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="real_name" placeholder="真实姓名" lay-verify="required">
+            </div>
+        </div>
+
+	  <div class="layui-form-item">
+	    <div class="layui-inline">
+	      <label class="layui-form-label">验证手机</label>
+	      <div class="layui-input-inline">
+	        <input type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input">
+	      </div>
+	    </div>
+
+	  </div>
+	  <div class="layui-form-item">
+	      <label class="layui-form-label">验证邮箱</label>
+	      <div class="layui-input-inline">
+	        <input type="text" name="email" lay-verify="email" autocomplete="off"  class="layui-input">
+	      </div>
+	  </div>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">是否启用</label>
+		    <div class="layui-input-inline">
+		    <?php
+				 if(true){
+					 echo '<a href="javascript:;" id="status" data-on="1" data-value="on"  >';
+					 echo '<div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div>';
+					 echo '</a>';
+					}else{
+					 echo '<a href="javascript:;" id="status" data-on="0" data-value="off"  >';
+					 echo '<div class="layui-unselect layui-form-switch"><i></i></div>';
+					 echo '</a>';
+					}
+			?>
+		    </div>
+		  </div>
+        <div class="layui-form-item" style="display:none">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" id="submit" lay-filter="add-role" data-href="{:url('memberadd')}">立即提交</button>
+                <a class="layui-btn layui-btn-small do-action" data-type="doGoBack" data-href=""><i class="fa fa-mail-reply"></i>返回上一页</a>
+            </div>
+        </div>
+    </form>
+
+</div>

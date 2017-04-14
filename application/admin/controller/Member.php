@@ -82,7 +82,7 @@ class Member extends Base
         return $this->fetch();
     }
     /**
-     * [UserDel 删除用户]
+     * [memberDel 删除用户]
      * @return [type] [description]
      * @author
      */
@@ -95,7 +95,7 @@ class Member extends Base
     }
     
     /**
-     * [user_state 用户状态]
+     * [member_state 用户状态]
      * @return [type] [description]
      * @author
      */
@@ -114,7 +114,30 @@ class Member extends Base
             return json(['code' => 0, 'data' => $flag['data'], 'msg' => '已开启']);
         }
     }
-    
+    /**
+     * [addMember 添加用户页面]
+     * @return [type] [description]
+     * @author
+     */
+    public function addMember(){
+        return $this->fetch("addMember");
+    }
+    /**
+     * [editMember 编辑用户页面]
+     * @return [type] [description]
+     * @author
+     */
+    public function editMember(){
+        $id = input("post.id");
+        $menber = new MemberModel();
+        $result = $menber->getOneMembers($id);
+        if($result==null){
+            $this->assign("Member",$result);
+        }else{
+            $this->assign("Member",$result);
+        }
+        return $this->fetch("editMember");
+    }
 }
 
 ?>

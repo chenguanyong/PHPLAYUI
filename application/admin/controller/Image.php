@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\admin\controller\Base;
 use app\admin\model\ImageModel;
+use think\Db;
 class Image extends Base
 {
     /**
@@ -167,13 +168,21 @@ class Image extends Base
             $new_result[$k]['pId']=(int)$v['parentID'];
             $new_result[$k]['name']=$v['name'];
             $new_result[$k]['iconSkin']=$v['css'];//
-            $new_result[$k]['isParent']=true;
+            $new_result[$k]['isParent']=self::isParent($v['id']);
             if($nodeStr == 0){
                 $new_result[$k]['url']='/index.php/admin/Image/getImageListByPage?id=' . $v['id'];
                 $new_result[$k]['target'] = 'list_image';
             }
         }
         return json($new_result);
+    }
+    /**
+     * [isParent 检查是否父节点]
+     * @author
+     */
+    private function isParent($id){
+        $result = Db::name("currency_tree")->where(["parentID"=>$id,"IsDelete"=>0])->count();
+        return $result==0? false:true;
     }
 }
 

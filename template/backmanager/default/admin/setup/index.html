@@ -1,0 +1,177 @@
+{include file="public/header"/}             
+<div class="layui-tab">
+  <ul class="layui-tab-title">
+    <li class="layui-this">网站设置</li>
+    <li class="">微信设置</li>
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+     <!-- 网站建设 -->
+     <form class="layui-form layui-form-pane"  method="POST"  enctype="multipart/form-data">
+  <br>
+  <br>
+   
+  <div class="layui-form-item">
+    <label class="layui-form-label">Logo：</label>
+    <div class="layui-input-inline">
+     <img src="{$list[0]['value']}" id="img_path" width="100px" height="100px">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">Logo上传：</label>
+    <div class="layui-input-inline">
+      <!-- <input name="Logo" type="file" id="upload-image"> -->
+      <input type="file" name="file" class="layui-upload-file" id="upload-image">
+      <input type="hidden" id="image" name="Logo" data-id="{$list[0]['ID']}" lay-verify="Logo">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">Logo备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr0" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[0]['remarks']}" data-id="{$list[0]['ID']}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">系统名称：</label>
+    <div class="layui-input-inline">
+      <input name="systename" lay-verify="required" placeholder="请输入系统名称" autocomplete="off" class="layui-input" type="text" value="{$list[1]['value']}" data-id="{$list[1]['ID']}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">系统备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr1" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[1]['remarks']}" data-id="{$list[1]['ID']}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">版权：</label>
+    <div class="layui-input-inline">
+      <input name="copyright" lay-verify="required" placeholder="请输入版权" autocomplete="off" class="layui-input" type="text" value="{$list[2]['value']}" data-id="{$list[2]['ID']}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">版权备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr2" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[2]['remarks']}" data-id="{$list[2]['ID']}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">公司：</label>
+    <div class="layui-input-inline">
+      <input name="company" lay-verify="required" placeholder="请输入公司名称" autocomplete="off" class="layui-input" type="text" value="{$list[3]['value']}" data-id="{$list[3]['ID']}">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">公司备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr3" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[3]['remarks']}" data-id="{$list[3]['ID']}">
+    </div>
+  </div> 
+    
+    <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="hidden" name="id0" value="{$list[0]['ID']}">
+                <input type="hidden" name="id1" value="{$list[1]['ID']}">
+                <input type="hidden" name="id2" value="{$list[2]['ID']}">              
+                <input type="hidden" name="id3" value="{$list[3]['ID']}">
+                <input class="layui-btn" lay-submit="" type="submit" lay-filter="add-role" data-href="{url:('admin/setup/update')}" value="修改">
+               
+            </div>
+        </div>
+</form>
+    </div>
+    <div class="layui-tab-item">内容2</div>
+    <div class="layui-tab-item">内容3</div>
+    
+  </div>
+</div>
+{include file="public/footer"}  
+<script>
+ layui.use(['form'], function(){
+        var $ = layui.jquery
+          ,form = layui.form();
+        //监听提交
+        form.on('submit(add-role)', function(data){
+            var sub=true;
+            // alert(sub);
+            var url=$(this).data('href');
+            if(url){
+                if(sub){
+                  // alert(data.field);
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                          // alert(data);  
+                          //$("#oop").attr('src',data[0]['value']); 
+                     parent.location.href="{:url('Index/index')}"; 
+                            if (data['code'] == 1) {      
+                               layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改成功'
+                                 });                                  
+                              
+                            }else{
+                               
+                                layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改失败',
+                                 });   
+                                  // layer.msg('数据修改失败', {icon: 5});
+                            }                           
+                        },                       
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+            return false;
+        });
+    });
+  layui.use(['form', 'layedit', 'laydate','upload'], function(){
+        var $ = layui.jquery;
+        $form = $('form');
+        var form = layui.form()
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+        //上传图片
+        layui.upload({
+            url: "{:url('Setup/uploads')}" //上传接口
+            ,before: function(input){
+                //返回的参数item，即为当前的input DOM对象
+                console.log('图片上传中');
+            }
+            ,title:'上传封面图'
+            ,elem: '#upload-image' //指定原始元素，默认直接查找class="layui-upload-file"
+            ,method: 'post' //上传接口的http类型
+            ,ext: 'jpg|png|gif'
+            ,type:'images'
+            ,success: function(data){ //上传成功后的回调
+                //console.log(res)
+                // alert(data);
+                 if(data.status==3){
+                    layer.open({
+                      title: '温馨提示',
+                      content: '请上传图片',
+                  }); 
+                  }
+                if(data.status == 1){
+                    $("#image").val('/public/upload/image/' +data.image_name);
+                    $("#img_path").attr('src', '/public/upload/image/' + data.image_name).show();
+
+                }else{
+                    // alert(data.error_info);
+                    layer.open({
+                      title: '温馨提示',
+                      content: '请上传图片',
+                  }); 
+                }
+            }
+        });
+
+    });
+ </script>          

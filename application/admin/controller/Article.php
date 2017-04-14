@@ -156,18 +156,23 @@ class Article extends Base
      */
     public function add_cate()
     {
-        if(request()->isAjax()){
-
-            $param = input('post.');
-            $cate = new ArticleCateModel();
-            $flag = $cate->insertCate($param);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-
         return $this->fetch();
     }
-
-
+    /**
+     * [add_cate 添加分类]
+     * @return [type] [description]
+     * @author
+     */
+        public function ajax_add_cate(){
+            if(request()->isAjax()){
+            
+                $param = input('post.');
+                $cate = new ArticleCateModel();
+                $flag = $cate->insertCate($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }   
+            
+        }
     /**
      * [edit_cate 编辑分类]
      * @return [type] [description]
@@ -176,19 +181,24 @@ class Article extends Base
     public function edit_cate()
     {
         $cate = new ArticleCateModel();
-
-        if(request()->isAjax()){
-
-            $param = input('post.');
-            $flag = $cate->editCate($param);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-
         $id = input('param.id');
         $this->assign('cate',$cate->getOneCate($id));
         return $this->fetch();
     }
-
+    /**
+     * [edit_cate 编辑分类]
+     * @return [type] [description]
+     * @author
+     */
+    public function ajax_edit_cate(){
+        $cate = new ArticleCateModel();
+        if(request()->isAjax()){
+            $param = input('post.');
+            $flag = $cate->editCate($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        } 
+        
+    }
 
     /**
      * [del_cate 删除分类]

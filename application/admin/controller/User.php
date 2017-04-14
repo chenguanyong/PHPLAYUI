@@ -50,8 +50,18 @@ class User extends Base
      */
     public function useradd()
     {
+        $role = new UserType();
+        $this->assign('role',$role->getRole());
+        return $this->fetch();
+    }
+    /**
+     * [userAdd 添加用户]
+     * @return [type] [description]
+     * @author
+     */
+    public function ajax_useradd(){
         if(request()->isAjax()){
-
+        
             $param = input('post.');
             $param['password'] = md5(md5($param['password']) . config('auth_key'));
             $user = new UserModel();
@@ -62,13 +72,8 @@ class User extends Base
             );
             $group_access = Db::name('auth_group_access')->insert($accdata);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-
-        $role = new UserType();
-        $this->assign('role',$role->getRole());
-        return $this->fetch();
+        }        
     }
-
 
     /**
      * [userEdit 编辑用户]
@@ -78,9 +83,22 @@ class User extends Base
     public function userEdit()
     {
         $user = new UserModel();
-
+        $id = input('param.id');
+        $role = new UserType();
+        $this->assign([
+            'user' => $user->getOneUser($id),
+            'role' => $role->getRole()
+        ]);
+        return $this->fetch();
+    }
+    /**
+     * [userEdit 编辑用户]
+     * @return [type] [description]
+     * @author
+     */
+    public function ajax_userEdit(){
+        $user = new UserModel();
         if(request()->isAjax()){
-
             $param = input('post.');
             if(empty($param['password'])){
                 unset($param['password']);
@@ -91,16 +109,7 @@ class User extends Base
             $group_access = Db::name('auth_group_access')->where('uid', $user['id'])->update(['group_id' => $param['groupid']]);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
-
-        $id = input('param.id');
-        $role = new UserType();
-        $this->assign([
-            'user' => $user->getOneUser($id),
-            'role' => $role->getRole()
-        ]);
-        return $this->fetch();
     }
-
 
     /**
      * [UserDel 删除用户]

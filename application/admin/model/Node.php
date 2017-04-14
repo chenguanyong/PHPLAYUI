@@ -48,7 +48,7 @@ class Node extends Model
         //超级管理员没有节点数组
         $where = empty($nodeStr) ? 'status = 1' : 'status = 1 and id in('.$nodeStr.')';
         $result = Db::name('auth_rule')->order('sort')->select();
-        if(config('template')['theme_name'] == "default"){
+        if(config('template')['theme_name'] == ""){
             $new_result=array();
             foreach($result as $k=>$v){
                 $new_result[$k]['id']=$v['id'];
@@ -72,7 +72,7 @@ class Node extends Model
     public function getDic($nodeStr = '')
     {
         $result = Db::name('dictionaries')->where('IsDelete',0)->order('orderby asc')->select();
-        if(config('template')['theme_name'] == "default"){
+        if(config('template')['theme_name'] == ""){
             $new_result=array();
             foreach($result as $k=>$v){
                 $new_result[$k]['id']=$v['id'];
@@ -94,19 +94,27 @@ class Node extends Model
     {
         $result = Db::name('currency_tree')->where(['IsDelete'=>0,'parentID'=>$nodeStr])->select();
         //var_dump($result);exit;
-        if(config('template')['theme_name'] == "default"){
+        if(config('template')['theme_name'] == ""){
             $new_result=array();
             foreach($result as $k=>$v){
                 $new_result[$k]['id']=$v['id'];
                 $new_result[$k]['pId']=(int)$v['parentID'];
                 $new_result[$k]['name']=$v['name'];
                 $new_result[$k]['iconSkin']=$v['css'];
-                $new_result[$k]['isParent']=true;
-                if($nodeStr == 0){
+                $new_result[$k]['isParent']=self::isParent($v['id']);
                 $new_result[$k]['url']='/index.php/admin/CurrencyTree/getCurrenyListByPage?id=' . $v['id'];
-                $new_result[$k]['target'] = 'list_currency';}
+                $new_result[$k]['target'] = 'list_currency';
             }
         }
         return $new_result;
+    }
+    
+    /**
+     * [isParent 检查是否父节点]
+     * @author
+     */
+    private function isParent($id){
+        $result = Db::name("currency_tree")->where(["parentID"=>$id,"IsDelete"=>0])->count();
+        return $result==0? false:true;
     }
 }

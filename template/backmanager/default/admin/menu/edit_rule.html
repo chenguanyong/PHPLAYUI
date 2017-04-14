@@ -1,0 +1,61 @@
+
+<div class="main-wrap">
+
+    <form  class="layui-form layui-form-pane" id="formrec" method="post" role="form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">默认顶级</label>
+            <div class="layui-input-inline" style="width: 30%">
+                <select data-val="true" style="display:block;padding-left:10px; height:38px;" lay-filter="pid" name="pid"  lay-verify="required">
+                    <option selected="selected" value="0">默认顶级</option>
+                    {foreach name="admin_rule" item="v"}
+                    <option value="{$v.id}" {if $v.id eq $menu['pid']}selected="selected"{/if}>
+                        {if $v.pid eq 0}{else}{if $v.lvl eq 2}　├{else}　　├{/if}{/if}{$v.title}
+                    </option>
+
+                    {/foreach}
+                </select>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单名称</label>
+            <div class="layui-input-block">
+                <input name="title" autocomplete="off" value="{$menu.title}" placeholder="菜单名称" class="layui-input" type="text" required  lay-verify="title">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">节点</label>
+            <div class="layui-input-block">
+                <input name="name" autocomplete="off" value="{$menu.name}" placeholder="模块/控制器/方法" class="layui-input" type="text" required  lay-verify="required">
+                <span>如：admin/user/adduser (一级节点添加“#”即可)</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">css样式</label>
+            <div class="layui-input-block">
+                <input name="css" autocomplete="off" value="{$menu.css}" placeholder="输入菜单名称前显示的CSS样式" class="layui-input" type="text">
+                <span>如fa fa-user</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-block">
+                <input name="sort" lay-verify="number" autocomplete="off" value="{$menu.sort}" placeholder="输入顺序" class="layui-input" type="text" style="width: 50%;">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;" id="status" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+        </div>
+        <div class="layui-form-item" style="display:none">
+            <a class="layui-btn layui-btn-small do-action" data-type="doGoBack" data-href=""><i class="fa fa-mail-reply"></i>返回上一页</a>
+            <input type="hidden" name="id" value="{$menu.id}">
+            <button id="submit" class="layui-btn" lay-submit="" lay-filter="add-role" data-href={:url('ajax_edit_rule')}>提交</button>
+        </div>
+    </form>
+</div>

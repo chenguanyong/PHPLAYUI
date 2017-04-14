@@ -32,3 +32,23 @@ use taobao\AliSms;
         $result = $alisms->sign($signname)->data($param)->code($code)->send($phone);
         return $result['info'];
 	}
+	//获取系统配置信息
+    function getConfig($name){
+        
+        $result = Db::name("config")->where("name",$name)->find();
+        if($result == null){
+            return null;
+        }else{
+            return $result['name'];
+        }
+    }
+    //获取字典信息
+    function getDictionaries($bianma,$pid){
+    
+        $result = Db::name("dictionaries")->where(["bianma"=>$name,'parentID'=>$pid])->find();
+        if($result == null){
+            return null;
+        }else{
+            return $result;
+        }
+    }

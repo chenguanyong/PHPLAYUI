@@ -10,7 +10,7 @@ class MemberModel extends Model
      */
     public function getMembersByWhere($map, $Nowpage, $limits)
     {
-        return $this
+        return $this->field('xx_user.*,leval_name')->join('xx_user_leval', 'xx_user.leval_id = xx_user_leval.id ')
             ->where($map)->page($Nowpage, $limits)->order('id desc')->select();
     }
 
@@ -20,7 +20,7 @@ class MemberModel extends Model
      */
     public function getAllMembers($where)
     {
-        return $this->where($where)->count();
+        return $this->join('xx_user_leval', 'xx_user.leval_id = xx_user_leval.id ')->where($where)->count();
     }
 
     /**

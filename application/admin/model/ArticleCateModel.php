@@ -22,6 +22,7 @@ class ArticleCateModel extends Model
         foreach($cate_list as $k=>$v){
 
             $cate_list[$k]['cate_sub_list']=$this->where('pid',$v['id'])->order('id asc')->select();
+            
         }
         return $cate_list;
     }

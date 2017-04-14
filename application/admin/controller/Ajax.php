@@ -25,8 +25,8 @@ class Ajax extends Controller
         $controller = strtolower(request()->controller());
         $action     = strtolower(request()->action());
         $url        = $module."/".$controller."/".$action;
-//var_dump(session('rule'));
-//echo $url;
+        //var_dump(session('rule'));
+        //echo $url;
         //跳过检测以及主页权限
         if(session('admin_uid')!=1){
 

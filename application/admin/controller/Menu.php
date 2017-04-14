@@ -29,22 +29,22 @@ class Menu extends Base
      */
 	public function add_rule()
     {
-        if(request()->isAjax()){
-            $param = input('post.');           
-            $menu = new MenuModel();
-            $flag = $menu->insertMenu($param);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
         $nav = new \org\Leftnav;
         $menu = new MenuModel();
         $admin_rule = $menu->getAllMenu();
         $arr = $nav::rule($admin_rule);
-        //var_dump($arr);
-       // exit;
         $this->assign('admin_rule',$arr);
         return $this->fetch();
     }
-
+    public function ajax_add_rule(){
+        
+        if(request()->isAjax()){
+            $param = input('post.');
+            $menu = new MenuModel();
+            $flag = $menu->insertMenu($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
 
 
     /**
@@ -55,23 +55,22 @@ class Menu extends Base
     public function edit_rule()
     {
         $menu = new MenuModel();
-
-        if(request()->isPost()){
-            $param = input('post.');
-            $flag = $menu->editMenu($param);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
         $nav = new \org\Leftnav;
-
         $admin_rule = $menu->getAllMenu();
         $arr = $nav::rule($admin_rule);
         $this->assign('admin_rule',$arr);
         $id = input('param.id');
         $this->assign('menu',$menu->getOneMenu($id));
-
         return $this->fetch();
     }
-
+    public function ajax_edit_rule(){
+        $menu = new MenuModel();
+        if(request()->isPost()){
+            $param = input('post.');
+            $flag = $menu->editMenu($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
 
     /**
      * [roleDel 删除角色]

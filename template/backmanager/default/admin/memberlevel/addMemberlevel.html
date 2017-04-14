@@ -1,0 +1,40 @@
+
+<div class="main-wrap hide" style="display:block" id="adduser">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">等级名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="leval_name" placeholder="会员名称" value="{$Member.leval_name}"  lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">等级积分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="number" name="leval_points" placeholder="积分" value="{$Member.leval_points}"  lay-verify="required">
+            </div>
+        </div>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">是否启用</label>
+		    <div class="layui-input-inline">
+		    <?php
+				 if($Member["status"] == 1){
+					 echo '<a href="javascript:;" id="status" data-on="1" data-value="on"  >';
+					 echo '<div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div>';
+					 echo '</a>';
+					}else{
+					 echo '<a href="javascript:;" id="status" data-on="0" data-value="off"  >';
+					 echo '<div class="layui-unselect layui-form-switch"><i></i></div>';
+					 echo '</a>';
+					}
+			?>
+		    </div>
+		  </div>
+        <div class="layui-form-item" style="display:none">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" id="submit" lay-filter="add-role" data-href="{:url('Memberleveladd')}">立即提交</button>
+                <a class="layui-btn layui-btn-small do-action" data-type="doGoBack" data-href=""><i class="fa fa-mail-reply"></i>返回上一页</a>
+            </div>
+        </div>
+    </form>
+
+</div>
