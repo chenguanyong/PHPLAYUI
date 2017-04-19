@@ -1,0 +1,97 @@
+{include file="public/header"}
+<body class="gray-bg" >
+   <div class="wrapper wrapper-content">
+        <div class="row">
+           <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>商品列表</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="table_basic.html#">选项1</a>
+                                </li>
+                                <li><a href="table_basic.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th></th>
+                                        <th>商品</th>
+                                        <th>价格</th>
+                                        <th>时间</th>
+                                        <th>数量</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php
+                                    foreach($list as $value){
+										echo "<tr>";
+										echo '<td><input data-id=' . $value["id"] . ' type="checkbox" /></td>';
+										echo "<td>" . $value["goods_name"] . "</td>";
+										echo "<td>" . $value["goods_price"] . "</td>";	
+										echo "<td>" . $value["goods_num"] . "</td>";	
+										echo "<td>" . $value["add_time"] . "</td>";
+										echo '<td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a></td></tr>';		
+									}?>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <span id="price">52</span>
+<a data-href="{:url('Order/ajaxBuildOrderByCar')}" class="btn" id="jiesuan">去结算</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{include file="public/footer"}
+
+<script>
+(function ($){
+	$(document).on("click","#jiesuan",function(){
+		var id = $(this).data("goodsid")
+		var goodsSize= $("#goodsSize").val();
+		var url = $(this).data("href");
+		var price =$("#price").text();
+		var json = "";
+		$(":checked").each(function(){
+			
+			json = $(this).attr("data-id") + "_" + json;
+		});
+		//alert(price);
+		if(url !=null){
+		$.post(url,{json:json,price:price},function(data){
+			
+			if(data.code == 1){
+				//alert(data.msg);
+				window.location = "{:url('Order/orderinfo')}?order_id="+data.data;
+			}else{
+				alert(data.msg);
+			}
+		},"json");
+		}
+	});
+	
+})(window.jQuery);
+
+
+</script>
+  

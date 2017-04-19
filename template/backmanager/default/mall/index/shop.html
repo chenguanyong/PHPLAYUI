@@ -1,0 +1,103 @@
+{include file="public/header"}
+<body class="gray-bg" >
+   <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Fancybox <small>宝贝页面</small></h5>
+
+                    </div>
+                    <div class="ibox-content">
+						<div class="row">
+							<div class="col-sm-5">
+							<a class="col-sm-12" href="__img__/p1.jpg" title="图片1">
+	                           <img alt="image" style="height:80px;" src="__img__/p_big1.jpg" />
+	                        </a>
+							</div>
+							<div class="col-sm-7">
+				<div class="ibox float-e-margins">
+				<div>手机</div>
+                    <div class="ibox-content">
+                    <h5>价格: <small id="price">200</small></h5>
+                        <form class="form-horizontal m-t" id="commentForm" novalidate="novalidate">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">数量：</label>
+                                <div class="col-sm-8">
+                                    <input id="goodsSize" name="goodsSize" minlength="2" type="text" class="form-control" required="" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">规格：</label>
+                                <div class="col-sm-8">
+                                    <input id="goodsSpec" type="text" class="form-control" name="goodsSpec" required="" aria-required="true">
+                                </div>
+                            </div>
+							<div class="user-button">
+		                           <div class="row">
+		                               <div class="col-sm-6">
+		                                   <a data-href="{:url('Order/ajaxBuildOrder')}" id="goOrder" class="btn btn-primary btn-sm btn-block" data-goodsid="{$shopId}"><i class="fa fa-envelope"></i>立即购买</a>
+		                               </div>
+		                               <div class="col-sm-6">
+		                                   <a data-href="{:url('ShopCar/addCard')}" id="addCar" class="btn btn-default btn-sm btn-block" data-goodsid="{$shopId}"><i class="fa fa-coffee"></i>加入购物车</a>
+		                               </div>
+		                           </div>
+		                    </div>
+                        </form>
+                    </div>
+                </div>
+							</div>
+						</div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <a class="btn" href="{:url('shopCar/index')}">购物车</a>
+{include file="public/footer"}
+<script>
+
+(function($){
+	
+	$(document).on("click","#goOrder",function(){
+		var id = $(this).data("goodsid")
+		var goodsSize= $("#goodsSize").val();
+		var url = $(this).data("href");
+		var price =$("#price").text();
+		//alert(price);
+		if(url !=null){
+		$.post(url,{id:id,goodsSize:goodsSize,price:price},function(data){
+			
+			if(data.code == 1){
+				alert(data.msg);
+				window.location = "{:url('Order/orderinfo')}?order_id="+data.data;
+			}else{
+				alert(data.msg);
+			}
+		},"json");
+		}
+	});
+	$(document).on("click","#addCar",function(){
+		var id = $(this).data("goodsid")
+		var goodsSize= $("#goodsSize").val();
+		var url = $(this).data("href");
+		var price =$("#price").text();
+		if(url !=null){
+		$.post(url,{id:id,goodsSize:goodsSize,price:price},function(data){
+			
+			if(data.code == 1){
+				alert(data.msg);
+			}else{
+				alert(data.msg);
+			}
+		},"json");
+		}
+	});
+})(window.jQuery);
+
+
+</script>
+
+  

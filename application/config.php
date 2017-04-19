@@ -64,6 +64,15 @@ return [
     'verify_type' => '0',   //验证码类型：0极验验证， 1数字验证码
     'gee_id'  => 'ca1219b1ba907a733eaadfc3f6595fad',
     'gee_key' => '9977de876b194d227b2209df142c92a0',
+    'view_replace_str' => array(
+        '__CSS__' => '/public/statisc/admin/css',
+        '__JS__'  => '/public/statisc/admin/js',
+        '__IMG__' => '/public/statisc/admin/images',
+        '__CS__'  =>'/public/statisc/css',
+        '__JSS__'  =>'/public/statisc/js',
+        '__IMAGE__'  =>'/public/statisc/images',
+        '__PLUG__'  =>'/public/statisc/plugins',
+    ),
 
 
 ];
