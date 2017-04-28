@@ -1,0 +1,45 @@
+{include file="public/header"/}
+<style>
+    .layui-form-switch {
+        padding-left: 0px;
+        transition: .1s linear;
+    }
+    .layui-table tr th{text-align: center;}
+    .layui-table tr td{text-align: center;}
+    #currency_tree{height:450px;}
+</style>
+<div class="main-wrap">
+        <h2>我的会员</h2>
+    <div style=" float:left; width:100%; border:1px solid #ddd">
+	    <div class="zTreeDemoBackground left" style="overflow:auto; max-height:500px;">
+		    <div class="form-group">
+		        <div class="col-sm-5">
+		            <ul id="currency_tree" class="ztree"  ></ul>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+{include file="public/footer"}
+<link rel="stylesheet" href="__PLUG__/zTree/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.exedit-3.5.js"></script>
+
+<script type="text/javascript">	
+
+	var  zNodes = '';
+   	var  setting = {
+			async: {
+				enable: true,
+				url:'{:url("Currencytree/getCurrencyList")}',
+				autoParam:["id", "name=n", "level=lv"],
+				otherParam:{"otherParam":"zTreeAsyncTest"},
+		}
+	};
+	$(document).ready(function(){
+		$.fn.zTree.init($("#currency_tree"), setting);
+	});
+
+</script>

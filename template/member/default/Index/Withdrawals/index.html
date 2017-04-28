@@ -1,0 +1,82 @@
+{include file="public/header"}
+<style type="text/css">
+#editable_paginate{
+	float: right;
+}
+table th, .table td { 
+
+text-align: center; 
+
+height:38px;
+
+}
+</style>
+    <div class="ibox-content">
+		<a href="{:url('add')}"><button type="button" class="btn btn-w-m btn-primary" >新增</button></a><br><br>
+                        <table class="table table-bordered">
+                            <thead >
+                                <tr width="auto">
+                                    <th>用户id</th>
+                            				<th>提现金额</th>
+                            				<th>银行名称</th>
+                            				<th>银行账户名</th>
+                                    <th>提现积分</th>
+                                    <th>提现备注</th>
+                                    <th>创建时间</th>
+                            				<th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {volist name="list" id="vo"}
+                                <tr width="auto">
+                                <td>{$vo.user_id}</td>
+                                <td>{$vo.money}</td>
+                                <td>{$vo.bank_name}</td>
+                                <td>{$vo.account_name}</td>
+                                <td>{$vo.points}</td>
+                                <td>{$vo.remark}</td>
+                                <td>{$vo.create_time}</td>
+                        			<td><a data-type="doDelOne" data-href="{:url('Del')}" data-id="{$vo.id}"><button type="button" class="btn btn-outline btn-success">删除</button></a>&nbsp;<a href="{:url('edit',array('id'=>$vo['id']))}"><button type="button" class="btn btn-outline btn-success">修改</button></a></td>
+                                </tr>
+                              {/volist}
+                            </tbody>
+                        </table>
+                        <div class="col-sm-6"><div class="dataTables_paginate paging_simple_numbers" id="editable_paginate"><ul class="pagination"></ul></div></div>
+    </div>
+    
+{include file="public/footer"}
+<script type="text/javascript">
+	 $(document).on('click','[data-type=doDelOne]', function () {  
+             
+              var id = $(this).data("id");
+              // alert(id);
+              var url = $(this).data("href");
+              // alert(url);
+              var that = this; 
+              layer.confirm('您确定要删除该用户？', {icon: 3, title:'提示'},function (){
+                  $.ajax({
+                      url: url ,
+                      type: 'post',
+                      dataType: 'json',
+                      data: {id:id},
+                      success: function (data) {
+                        // alert(data);
+                         if (data['code']== 1) {
+                            window.location.href="{:url('index')}";
+                            parent.layer.alert(data['msg'], {
+                            icon: 1,
+                            skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                          });
+                          }
+                        else {
+                        //       //common.layerAlertE(data.msg, '提示');
+                         }
+                         // layer.closeAll();
+                      },
+                      error: function (XMLHttpRequest, textStatus, errorThrown) {
+                          // common.layerAlertE(textStatus, '提示');
+                      }
+                  });
+              }); 
+          });
+</script>

@@ -17,7 +17,8 @@ return [
         '__JSS__'  =>'/public/statisc/js',
         '__IMAGE__'  =>'/public/statisc/images',
         '__PLUG__'  =>'/public/statisc/plugins',
-        '__LAY__'=>'/public/statisc/layui'
+        '__LAY__'=>'/public/statisc/layui',
+        '__LAYCSS__'=>'/public/statisc/layui/css'
     ),
     'template' => [
         // 模板引擎类型 支持 php think 支持扩展
@@ -26,4 +27,5 @@ return [
         //'theme_name'   =>'default',
         'theme_name'   =>'',
     ],
+    'order_prefix'=>'abcdef',
 ];

@@ -1,9 +1,10 @@
 <?php
 namespace app\member\controller;
-
-use app\admin\controller\Base;
+use think\Controller;
 use app\member\model\UserModel;
 use app\member\model\AddressModel;
+use app\member\controller\Base;
+use think\Session;
 class User extends Base
 {
     public function index(){
@@ -64,24 +65,25 @@ class User extends Base
             
           return json(array('code'=>0,"msg"=>"保存出错"));  
         }else{
-            
           return json(array('code'=>1,"data"=>"","msg"=>"保存成功"));
         }
     }
     public function ajaxEditPassword(){
         $password = input("post.");
         $user = new UserModel();
-        $id = $password['id'];
-        $result = $user->get(["userId"=>$id]);
+        $userID = Session::get("userId");
+       // $id = $password['id'];
+       
+        $result = $user->get(["userId"=>$userID]);
         if($result == null){
             return json(array('code'=>0,"msg"=>"无该用户"));  
         }
-        if($result["loginPwd"] == md5($password['oldpassword'])){
+        if($result["loginPwd"] == md5(md5($password['oldpassword']) . config('auth_key'))){
             
             if($password['password'] == $password["confirm_password"])
             {
-                $result = $user->save(["loginPwd"=>md5($password['password'])],["userId"=>$id]);
-                if($result){return json(array('code'=>0,"msg"=>"修改成功"));}else{return json(array('code'=>0,"msg"=>"修改错误"));}
+                $result = $user->save(["loginPwd"=>md5(md5($password['password']) . config('auth_key'))],["userId"=>$userID]);
+                if($result){return json(array('code'=>1,"msg"=>"修改成功"));}else{return json(array('code'=>0,"msg"=>"修改错误"));}
                 
             }else{
                 return json(array('code'=>0,"msg"=>"两次输入的密码不一致"));

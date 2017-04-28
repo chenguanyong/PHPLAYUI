@@ -3,13 +3,14 @@ namespace app\mall\model;
 
 use think\Model;
 use think\Db;
+use think\Session;
 class OrderModel extends Model
 {
     protected $name = "order";
     protected $pk = "order_id";
     
     public function buildOrder($data){
-        $address = Db::name("user_address")->where("userId",$data['userID'])->find();
+        $address = Db::name("user_address")->where(["userId"=>$data['userID'],"isDefault"=>1])->find();
         if($address == null){
             return null;
         }
@@ -30,11 +31,11 @@ class OrderModel extends Model
         }
         $order['address'] = $address['userAddress'];
         $order['order_sn'] = time();//订单编号
-        $order['user_id'] = 5;//用户id
+        $order['user_id'] = Session::get("userId");//用户id
         $order['consignee']= $address["userName"];//收货人
         $order['mobile'] = $address["userPhone"];//手机号
-        $order['user_money'] = $data['allprice'];//总价
-        
+        $order['goods_price'] = $data['allprice'];//总价
+        $order['order_amount'] = $data['allprice'];//总价
         $action = array();
         $action['order_id']=0;
         $action["action_user"] = $data['userID'];//用户id
@@ -59,7 +60,8 @@ class OrderModel extends Model
          $result = $this->save($order);//保存订单
 
          $order_id = $this->order_id;
-        // 
+         $order_sn = buildOrserSn($order_id);
+         $result = $this->save(["order_sn"=>$order_sn],["order_id"=>$order_id]);
           $actions = new OrderActionModel();
           $action['order_id'] = $order_id;
           $actions->save($action);//保存订单动作
@@ -77,8 +79,9 @@ class OrderModel extends Model
     
     public function getOrdersByWhere($map, $Nowpage, $limits)
     {
-        return $this->
-        where($map)->page($Nowpage, $limits)->order('order_id desc')->select();
+        
+        return $this
+        ->where($map)->page($Nowpage, $limits)->order('xx_order.order_id desc')->select();
     }
     
     //删除订单
@@ -119,11 +122,11 @@ class OrderModel extends Model
         }
                 $order['address'] = $address['userAddress'];
                 $order['order_sn'] = time();//订单编号
-                $order['user_id'] = 5;//用户id
+                $order['user_id'] = Session::get("userId");//用户id
                 $order['consignee']= $address["userName"];//收货人
                 $order['mobile'] = $address["userPhone"];//手机号
-                $order['user_money'] = $data['allprice'];//总价
-        
+                $order['goods_price'] = $data['allprice'];//总价
+                $order['order_amount'] = $data['allprice'];//总价        
                 $action = array();
                 $action['order_id']=0;
                 $action["action_user"] = $data['userID'];//用户id
@@ -133,18 +136,14 @@ class OrderModel extends Model
                 $this->startTrans();
                 try{
                     $this->save($order);//保存订单
-                    //var_dump($order);
-                   
                     $order_id = $this->order_id;
-
+                    $order_sn = buildOrserSn($order_id);
+                    $result = $this->save(["order_sn"=>$order_sn],["order_id"=>$order_id]);
                     $actions = new OrderActionModel();
                     $action['order_id'] = $order_id;
                     $actions->save($action);//保存订单动作
-                   // var_dump($action);
-
                     $goodss= new OrderGoodsModel();
-                    //$goods['order_id'] = $order_id;
-                    $shopid = explode("_",$datashop);
+                    $shopid = explode(",",$datashop);
                     if(!is_array($shopid)){
                         return null;
                     }  
@@ -165,10 +164,7 @@ class OrderModel extends Model
                         $goods[$key]["bar_code"] = "dvfd";//商品规格
                         Db::name("cart")->where("id",$value)->delete();
                     }
-//var_dump($goods);
                   $result = $goodss->saveAll($goods);//保存货物与订单的关系
-//
-                  //var_dump($result);
                   $this->commit();
                 }catch(\Exception $e){
                     $this->rollback();

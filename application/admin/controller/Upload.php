@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\File;
 use think\Request;
+
 class Upload extends Base
 {
 
@@ -47,8 +48,7 @@ class Upload extends Base
     public function upload(){
         $type = input('get.type');
         $path = 'article';
-        if($type == 1){
-            
+        if($type == 1){           
             $path = 'images';
         }
        $file = request()->file('file');
@@ -91,6 +91,23 @@ class Upload extends Base
             echo $info->getSaveName();
         }else{
             echo $file->getError();
+        }
+    }
+    
+    //商品图片上传
+    public function uploadGoods(){
+    
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'upload/image/goods');
+        if($info){
+            $res['status']=1;
+            $res['image_name']=$info->getSaveName();
+            $res['info'] = $info->getInfo();
+            return json($res);
+        }else{
+            $res['status']=0;
+            $res['error_info']=$file->getError();
+            return json($res);
         }
     }
 

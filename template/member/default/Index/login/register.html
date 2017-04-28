@@ -1,0 +1,93 @@
+{include file="public/header"/}
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">H+</h1>
+
+            </div>
+            <h3>欢迎注册 H+</h3>
+            <p>创建一个H+新账户</p>
+            <form class="m-t" role="form" id="validate">
+                <div for="loginName" class="form-group">
+                    <input type="text" class="form-control" name="loginName" placeholder="请输入用户名" >
+                </div>
+                <div for="loginPwd" class="form-group">
+                    <input type="password" id="loginPwd" class="form-control" name="loginPwd" placeholder="请输入密码" >
+                </div>
+                <div for="confirm_loginPwd" class="form-group">
+                    <input type="password" class="form-control" name="confirm_loginPwd" placeholder="请再次输入密码" >
+                </div>                             
+                <button type="submit" class="btn btn-primary block full-width m-b">注 册</button>
+                <p class="text-muted text-center"><small>已经有账户了？</small><a href="{:url('index')}">点此登录</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+{include file="public/footer"/}
+	<script src="__js__/plugins/iCheck/icheck.min.js"></script>
+    <script src="__js__/jquery.cookie.js"></script>
+    <script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+    <script src="__js__/plugins/validate/messages_zh.min.js"></script>
+    <script>
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+    //验证
+    $().ready(function() {
+    // 在键盘按下并释放及提交后验证提交表单
+      $("#validate").validate({
+    	    rules: {
+    	      loginName: {
+    	        required: true,
+    	        minlength: 2
+    	      },
+    	      loginPwd: {
+    	        required: true,
+    	        minlength: 6
+    	      },
+    	      confirm_loginPwd: {
+    	        required: true,
+    	        minlength: 6,
+    	        equalTo: "#loginPwd"
+    	      },
+    	      parentid: {
+      	        required: true,
+      	      }
+    	    },
+    	});
+    });
+    $.validator.setDefaults({
+        submitHandler: function() {
+            var parentid_v=$.cookie('tuijianren__cookie__');
+        	//console.info(parentid_v);
+        	if(!parentid_v){
+        		layer.alert('本系统需要根据推荐人发送的链接才能注册，请向您的推荐人索取。', {icon: 2});
+        		return false;
+        	}
+        	var name = document.getElementsByTagName('input');
+    		var loginName = name[0].value;
+    		var loginPwd = name[1].value;
+    		var loginPwd2 = name[2].value;
+    		
+        	$.ajax({
+                url: '{:url("userRegister")}',
+                type: "POST",
+                dataType: "json",
+                data:{'loginName':loginName, 'loginPwd':loginPwd, 'parentId':parentid_v  },
+                success: function(data){
+                    if(data.code == 1){
+                        layer.open({
+                        	  title: '提示'
+                        	  ,content: data.msg
+                        	  ,yes: function(){
+                        		  window.location.href="{:url('login/index')}";
+                        	  }
+                        });
+                    }else{
+                    	layer.alert(data.msg)
+                    }
+                },
+            });          
+        }
+    });
+</script>

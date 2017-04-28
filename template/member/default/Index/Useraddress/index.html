@@ -1,0 +1,67 @@
+{include file="public/header"}
+<style type="text/css">
+#editable_paginate{
+	float: right;
+}
+</style>
+    <div class="ibox-content">
+		<a href="{:url('add_address')}"><button type="button" class="btn btn-w-m btn-primary" >新增</button></a><br><br>
+                        <table class="table table-bordered">
+                            <thead >
+                                <tr width="auto">
+                                    <th>会员id </th>
+                            				<th>收货人</th>
+                            				<th>收货人电话</th>
+                            				<th>详细地址</th>
+                            				<th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	{volist name="list" id="vo"}
+                                <tr width="auto">
+                                    <td>{$vo.userId}</td>
+                        			<td>{$vo.userName}</td>
+                        			<td>{$vo.userPhone}</td>
+                        			<td>{$vo.userAddress}</td> 
+                        			<td><a data-type="doDelOne" data-href="{:url('Del')}" data-id="{$vo.addressId}"><button type="button" class="btn btn-outline btn-success">删除</button></a><a href="{:url('edit',array('id'=>$vo['addressId']))}"><button type="button" class="btn btn-outline btn-success">修改</button></a></td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                        <div class="col-sm-6"><div class="dataTables_paginate paging_simple_numbers" id="editable_paginate"><ul class="pagination">{$list->render()}</ul></div></div>
+    </div>
+    
+{include file="public/footer"}
+<script type="text/javascript">
+	 $(document).on('click','[data-type=doDelOne]', function () {  
+             
+              var id = $(this).data("id");
+              // alert(id);
+              var url = $(this).data("href");
+              // alert(url);
+              var that = this; 
+              layer.confirm('您确定要删除该用户？', {icon: 3, title:'提示'},function (){
+                  $.ajax({
+                      url: url ,
+                      type: 'post',
+                      dataType: 'json',
+                      data: {id:id},
+                      success: function (data) {
+                        // alert(data);
+                         if (data['code']== 1) {
+                        //     common.layerAlertE(data.msg, '提示');
+
+                             window.location.href = 'index';
+                          }
+                        else {
+                        //       //common.layerAlertE(data.msg, '提示');
+                         }
+                         // layer.closeAll();
+                      },
+                      error: function (XMLHttpRequest, textStatus, errorThrown) {
+                          // common.layerAlertE(textStatus, '提示');
+                      }
+                  });
+              }); 
+          });
+</script>

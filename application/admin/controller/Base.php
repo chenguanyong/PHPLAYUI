@@ -21,13 +21,10 @@ class Base extends Controller
 
         //跳过检测以及主页权限
         if(session('admin_uid')!=1){
-            if($module == "member"){
-                
-            }else{
-                if(!in_array($url, [ 'admin/index/index','admin/index/center','admin/index/indexpage'])){
-                    if(!$auth->check($url,session('admin_uid'))){
-                        $this->error('抱歉，您没有操作权限');
-                    }
+
+            if(!in_array($url, ['admin/index/index','admin/index/center','admin/index/indexpage'])){
+                if(!$auth->check($url,session('admin_uid'))){
+                    $this->error('抱歉，您没有操作权限');
                 }
             }
         }

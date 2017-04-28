@@ -1,0 +1,52 @@
+
+<div class="main-wrap">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">登录帐号</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="loginName" placeholder="登录帐号"  lay-verify="title">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="password" name="loginPwd" placeholder="密码"  lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="userName" placeholder="真实姓名"  lay-verify="required">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员类型</label>
+            <div class="layui-input-inline">
+                <select name="userType" style="display:block;padding-left:10px; height:38px;" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">普通用户</option>
+                    <option value="1">门店用户</option>
+                </select>                
+            </div>
+        </div>                
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;" id="userStatus" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="display:none">
+            <div class="layui-input-block">
+                <button id="submit" class="layui-btn" lay-submit="" lay-filter="add-role" data-href="{:url('ajax_useradd')}">立即提交</button>
+                <a class="layui-btn layui-btn-small do-action" data-type="doGoBack" data-href=""><i class="fa fa-mail-reply"></i>返回上一页</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+

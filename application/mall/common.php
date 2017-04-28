@@ -1,6 +1,6 @@
 <?php
 
-
+use think\Config;
 /**
  * 将字符解析成数组
  * @param $str
@@ -157,5 +157,13 @@ function format_bytes($size, $delimiter = '') {
     }
     return $size . $delimiter . $units[$i];
 }
-
-
+/**
+ * 生成订单编号
+ * @param  number $size      字节数
+ * @param  string $delimiter 数字和单位分隔符
+ * @return string            格式化后的带单位的大小
+ */
+function buildOrserSn($order_id){
+    
+    return Config::get('order_prefix').date('ymdhm',time()).$order_id;
+}

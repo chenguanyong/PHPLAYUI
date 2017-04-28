@@ -3,12 +3,19 @@ namespace app\mall\model;
 
 use think\Model;
 use think\Db;
+use think\Session;
 class ShopCarModel extends Model
 {
     protected $name = "cart";
     //添加到购物车
+    /**
+     * [addCart 添加订单]
+     * @return [type] [description]
+     * @author cgy
+     */
     public function addCart($data){
         $goodresult = Db::name("goods")->where("goodsId",$data['goods_id'])->find();//查询商品
+       //var_dump($goodresult);
         $goods = array();
         $goods['user_id'] = $data["user_id"];//订单id
         $goods["goods_id"] = $data['goods_id'];
@@ -26,10 +33,14 @@ class ShopCarModel extends Model
         $goods["prom_id"] =$data["prom_id"];//活动id
         $goods["session_id"] = $data['session_id'];
         $goods["member_goods_price"] = $data['member_goods_price'];
-        
+       // var_dump($goods);
         return $this->save($goods);
     }
-    //删除购物车
+    /**
+     * [deleCard 删除购物车]
+     * @return [type] [description]
+     * @author cgy
+     */
     public function deleCard($data){
         
         if(count($data) == 1){
@@ -42,11 +53,13 @@ class ShopCarModel extends Model
     }
     
     /**
-     * 根据搜索条件获取用户列表信息
+     * [getCardsByWhere 根据搜索条件获取用户列表信息]
+     * @return [type] [description]
+     * @author cgy
      */
     public function getCardsByWhere($map, $Nowpage, $limits)
     {
-        return $this->
+        return $this->join('xx_goods', 'xx_cart.goods_id = xx_goods.goodsId')->
             where($map)->page($Nowpage, $limits)->order('id desc')->select();
     }
 }

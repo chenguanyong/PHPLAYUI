@@ -1,0 +1,71 @@
+{include file="public/header"/}
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">H+</h1>
+
+            </div>
+            <h3>欢迎使用 H+</h3>
+            <form class="m-t" role="form" id="validate">
+                <div for="loginName" class="form-group">
+                    <input type="text" name="loginName" class="form-control" placeholder="用户名" >
+                </div>
+                <div for="loginPwd" class="form-group">
+                    <input type="password" name="loginPwd" class="form-control" placeholder="密码">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">登 录
+                </button>
+                <p class="text-muted text-center"> 
+                    <small>welcome you </small>
+                </p>
+            </form>    
+        </div>
+    </div>
+
+{include file="public/footer"}
+<script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__js__/plugins/validate/messages_zh.min.js"></script>
+<script >
+
+    //验证
+    $().ready(function() {
+    // 在键盘按下并释放及提交后验证提交表单
+      $("#validate").validate({
+            rules: {
+              loginName: {
+                required: true,
+              },
+              loginPwd: {
+                required: true,
+              }
+            },
+        });
+    });
+    $.validator.setDefaults({
+        submitHandler: function() {
+            var name = document.getElementsByTagName('input');
+            var loginName = name[0].value;
+            var loginPwd = name[1].value;     
+            $.ajax({
+                url: '{:url("login/login")}',
+                type: "POST",
+                dataType: "json",
+                data:{'loginName':loginName, 'loginPwd':loginPwd },
+                success: function(data){
+                    if(data.code == 1){
+                        layer.open({
+                            title: '提示'
+                            ,content: data.msg
+                            ,yes: function(){
+                                window.location.href="{:url('index/index')}";
+                            }
+                        }); 
+                    }else{
+                        layer.alert(data.msg)
+                    }
+                },
+            });           
+        }
+    })
+</script>

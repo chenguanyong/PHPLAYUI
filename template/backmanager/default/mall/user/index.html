@@ -1,0 +1,262 @@
+{include file="public/header"/}
+<style>
+    .layui-form-switch {
+        padding-left: 0px;
+        transition: .1s linear;
+    }
+    .layui-table tr th{text-align: center;}
+    .layui-table tr td{text-align: center;}
+</style>
+<div class="main-wrap">
+    <blockquote class="layui-elem-quote fhui-admin-main_hd">
+        <h2>会员列表</h2>
+    </blockquote>
+    <div class="y-role">
+        <!--工具栏-->
+        <div id="floatHead" class="toolbar-wrap">
+            <div class="toolbar">
+                <div class="box-wrap">
+                    <a class="menu-btn"></a>
+                    <div class="l-list">
+                        <a href="javascript:;" class="layui-btn layui-btn-small " data-type="doAdd" ><i class="fa fa-plus"></i>添加会员</a>
+
+                        <a class="layui-btn layui-btn-small do-action" data-type="doRefresh" data-href=""><i class="fa fa-refresh fa-spin"></i>刷新</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--文字列表-->
+        <div class="fhui-admin-table-container">
+
+            <table class="layui-table">
+                <colgroup>
+                    <col width="5%">
+                    <col width="5%">
+                    <col width="3%">
+                    <col width="8%">
+                    <col width="5%">
+                    <col width="8%">
+                    <col width="3%">
+                    <col width="15%">
+                </colgroup>
+                <thead>
+	                <tr>
+						<th>ID</th>
+						<th>会员名称</th>
+						<th>性别</th>
+						<th>会员手机</th>
+						<th>会员积分</th>
+						<th>最后登陆IP</th>
+						<th>帐号状态</th>
+						<th>操作</th>
+	                </tr>
+                </thead>
+                <script id="arlist" type="text/html">
+                    {{# for(var i=0;i<d.length;i++){  }}
+
+                    <tr class="long-td">
+						<td>{{d[i].userId}}</td>
+						<td>{{d[i].userName}}</td>
+						<td>{{d[i].userSex}}</td>
+						<td>{{d[i].userPhone}}</td>
+						<td>{{d[i].userScore}}</td>
+						<td>{{d[i].lastIP}}</td>
+						<td>
+                                {{# if(d[i].userStatus==1){ }}
+                                <a href="javascript:;" class="change_status"  data-id="{{d[i].userId}}">
+                                    <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div>
+
+                                </a>
+                                {{# }else{ }}
+                                <a href="javascript:;" class="change_status" data-id="{{d[i].userId}}">
+
+                                    <div class="layui-unselect layui-form-switch"><i></i></div>
+                                </a>
+                                {{# } }}
+						</td>
+                        <td>
+                                <a  class="layui-btn layui-btn-small " data-type="doEdit"  data-id="{{d[i].userId}}">
+                                    <i class="icon-edit  fa fa-pencil-square-o"></i>编辑
+                                </a>
+                                <a class="layui-btn layui-btn-small do-action" data-type="doDelOne" data-href="{:url('userDel')}" data-id="{{d[i].userId}}">
+                                    <i class="icon-edit  fa fa-pencil-square-o"></i>删除
+                                </a>
+                        </td>
+					</tr>
+                    {{# } }}
+                </script>
+                <tbody id="article_list"></tbody>
+            </table>
+
+        </div>
+        <div id="AjaxPage" style="margin-top: -57px;float: right;"></div>
+        <div style="float: right;margin-top: -9px;margin-right: 13px;">
+            共{$count}条数据，<span id="allpage"></span>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer"}
+<script>
+    /**
+     * [user_state 用户]
+     * @param  {[type]} val [description]
+     * @Author
+     */
+    var laytpl,laypage;
+    var url='{:url("User/index")}';
+    var allpages='{$allpage}';
+    layui.use(['layer', 'laypage','common', 'icheck','laytpl','form'], function () {
+        var $ = layui.jquery
+                , layer = layui.layer
+                , common = layui.common ,form = layui.form();
+        
+        laytpl =layui.laytpl;
+        //分页
+        laypage = layui.laypage;
+        common.Ajaxpage();
+
+		//更改用户状态
+        $(document).on('click','.change_status', function () {
+            var id=$(this).attr('data-id');
+            var obs=$(this);
+            $.ajax({
+                url: '{:url("user_state")}',
+                dataType: "json",
+                data:{'id':id},
+                type: "POST",
+                success: function(data){
+                    if(data.code == 1){
+                        obs.find('div').removeClass('layui-form-onswitch');
+                        layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
+                    }else{
+                        obs.find('div').addClass('layui-form-onswitch');
+                        layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
+                    }
+                },
+                error:function(ajaxobj)
+                {
+                    if(ajaxobj.responseText!='')
+                        alert(ajaxobj.responseText);
+                }
+            });
+
+        });
+		
+        //帐号状态样式显示
+        $(document).on('click','#userStatus', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+        	if(id == "1"){
+        		obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+            	obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+        
+        //验证
+        form.verify({
+            title:function(value){
+                if(value == ""){
+                    return '会员名称不能为空';
+                }
+            }
+        });
+        
+      
+        //监听提交
+        form.on('submit(add-role)', function(data){
+            var sub=true;
+            var url=$(this).data('href');
+            data.field.userStatus = $("#userStatus").attr("data-value");
+            data.field.userId = $("#AjaxPage").attr("data-id");
+            if(url){
+                if(sub){
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                            if (data.code == 1) { 
+                                layer.open({
+                                	  title: '提示'
+                                	  ,content: data.msg
+                                	  ,yes: function(){
+                                		  window.location.href="{:url('user/index')}";
+                                	  }
+                                	}); 
+                                
+                            }
+                            else {
+                                common.layerAlertE(data.msg, '提示');
+                            }
+                        },
+                        beforeSend: function () {
+                            //一般是禁用按钮等 防止用户重复提交
+                            $(data.elem).attr("disabled", "true").text("提交中...");
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            common.layerAlertE(textStatus, '提示');
+                        }
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+            return false;
+        });
+        
+        //添加会员
+      	$(document).on('click','[data-type=doAdd]', function () {  
+        	 $.post('{:url("useradd")}', {ids:0}, function(str){
+        		 layer.open({
+  	    	        type: 1 //此处以iframe举例
+    	    	        ,title: "会员添加",
+    	    	      	closeBtn: 1,
+    	    	        shade: 0.001,
+    	    	      	shadeClose: false
+    	    	        ,maxmin: true
+    	    	        ,content: str
+    	    	        ,btn: ['确定', '关闭'] 
+    	    	        ,yes: function(){
+    	    	        	  $('#submit').click();
+    	    	        }
+    	    	        ,btn2: function(){
+    	    	          layer.closeAll();
+    	    	        } 
+      		  });
+      		});
+    	  });
+        
+        //修改菜单
+      	$(document).on('click','[data-type=doEdit]', function () {  
+        	var id= $(this).attr("data-id"); 
+      		$.post('{:url("userEdit")}', {id:id}, function(str){
+        		 layer.open({
+  	    	        type: 1 //此处以iframe举例
+    	    	        ,title: "编辑会员信息",
+    	    	      	closeBtn: 1,
+    	    	        shade: 0.001,
+    	    	      	shadeClose: false
+    	    	        ,maxmin: true
+    	    	        ,content: str
+    	    	        ,btn: ['确定', '关闭']
+    	    	        ,yes: function(){
+    	    	    		  $("#AjaxPage").attr("data-id",id);
+    	    	        	  $('#submit').click();
+    	    	        }
+    	    	        ,btn2: function(){
+    	    	          layer.closeAll();
+    	    	        } 
+      		  });
+      		});
+    	  });
+    });
+</script>

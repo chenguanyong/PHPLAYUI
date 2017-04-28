@@ -1,0 +1,27 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加</h4>
+      </div>
+      <div class="modal-body">         
+            <form class="form-horizontal m-t" id="signupForm" novalidate="novalidate"  >
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">快递名称：</label>
+                    <div for="expressName" class="col-sm-4">
+                        <input id="expressName" name="expressName" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="expressId" value="">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">确定</button>
+                </div> 
+            </form>
+      </div>
+
+    </div>
+  </div>
+</div>

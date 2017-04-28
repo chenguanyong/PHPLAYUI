@@ -1,0 +1,176 @@
+{include file="public/header"}
+                    <div class="bs-example" data-example-id="simple-nav-stacked">
+    <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
+      <li role="presentation" class="active"><a href="#">修改</a></li>
+      
+    </ul>
+  </div>
+  <br><br><br>
+						<form class="form-horizontal m-t" id="signupForm" novalidate="novalidate"  >
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">提现金额：</label>
+                                <div for="money" class="col-sm-4">
+                                    <input id="money" name="money" class="form-control" type="text" value="{$list.money}">
+                                   
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">银行名称：</label>
+                                <div for="bank_name" class="col-sm-4" >
+                                    <input id="bank_name" name="bank_name" class="form-control" type="text" value="{$list.bank_name}">
+                                    
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">银行账号：</label>
+                                <div for="account_bank" class="col-sm-4" >
+                                    <input id="account_bank" name="account_bank" class="form-control" type="text" value="{$list.account_bank}">
+                                    
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">银行账户名：</label>
+                                <div for="account_name" class="col-sm-4" >
+                                    <input id="account_name" name="account_name" class="form-control" type="text" value="{$list.account_name}">
+                                    
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">提现团队业绩：</label>
+                                <div for="tuanduiyeji" class="col-sm-4" >
+                                    <input id="tuanduiyeji" name="tuanduiyeji" class="form-control" type="text" value="{$list.tuanduiyeji}">
+                                    
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">提现直属业绩：</label>
+                                <div for="zhishuyeji" class="col-sm-4" >
+                                    <input id="zhishuyeji" name="zhishuyeji" class="form-control" type="text" value="{$list.zhishuyeji}">
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">提现积分：</label>
+                                <div for="points" class="col-sm-4" >
+                                    <input id="points" name="points" class="form-control" type="text" value="{$list.points}">
+                                    
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">提现备注：</label>
+                                <div for="remark" class="col-sm-4" >
+                                    <input id="remark" name="remark" class="form-control" type="text" value="{$list.remark}">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-sm-offset-2">
+                                    <input type="hidden" name="id" value="{$list.id}">
+                                    <button class="btn btn-primary" type="submit" lay-filter="add-role" data-href="">保存内容</button>
+                                    
+                                </div>
+                        </form>
+{include file="public/footer"}
+<script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__js__/plugins/validate/messages_zh.min.js"></script>
+<script type="text/javascript">
+        $.validator.setDefaults({
+    submitHandler: function() {
+      // alert("提交事件!");
+       // var url=$(this).data('href');
+       var d=$("#signupForm").serializeArray();
+        $.post("{:url('edit')}",{data:d},function(data){
+            // alert(data);
+            if(data['code']==1){
+            window.location.href="{:url('index')}";
+            parent.layer.alert(data['msg'], {
+                icon: 1,
+                skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                });
+            }
+            
+        },"json");
+        return false;
+    }
+});
+$().ready(function() {
+// 在键盘按下并释放及提交后验证提交表单
+  $("#signupForm").validate({
+        rules: {
+          // userName: "required",
+          // userPhone: "required",
+          money: {
+            required: true,
+            number:true,
+          },
+          bank_name: {
+            required: true,
+            maxlength:8,    
+          },
+          account_bank:{
+            required:true,
+            creditcard:true,
+          },
+          account_name:{
+            required:true,
+            maxlength:8,
+          },
+          tuanduiyeji:{
+            required:true,
+            number:true,
+            maxlength:10,
+          },
+          zhishuyeji:{
+            required:true,
+            maxlength:10,
+            number:true,
+
+          },
+          points:{
+            required:true,
+            number:true,
+          },
+          remark:{
+            required:true,
+            maxlength:5,
+          },
+          
+        },
+        messages: {
+          money: {
+            required: "请输入提现金额",
+            number:"必须合法数字",
+          },
+          bank_name: {
+            required: "请输银行名称",
+            maxlength:"银行名称不能超过8个汉字",
+          },
+          account_bank: {
+            required: "请输银行账号",
+            creditcard:"请输入合法的银行账户",
+          },
+          account_name: {
+            required: "请输银行帐户名",
+            maxlength: "银行账户名称不能超过8个汉字",
+          },
+          tuanduiyeji:{
+            required: "请输入团队业绩",
+            number:"必须为合法数字",
+            maxlength:"你输入的数字太大",
+          },
+          zhishuyeji:{
+            required: "请输入直属业绩",
+            number:"必须为合法数字",
+            maxlength:"你输入的数字太大",
+          },
+          points:{
+            required: "请输入提现积分",
+            number:"请输入合法的数字",
+          },
+          remark:{
+            required: "请输入提现备注",
+            maxlength:"输入长度超出限制条件",
+          },
+        }
+    });
+});
+</script>

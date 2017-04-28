@@ -1,12 +1,17 @@
 <?php
 namespace app\mall\controller;
 
-use app\admin\controller\Base;
+use app\member\controller\Base;
 use app\mall\model\ShopCarModel;
 use think\Session;
 use think\Db;
 class ShopCar extends Base
 {
+    /**
+     * [index 首页]
+     * @return [type] [description]
+     * @author cgy
+     */
     public function index(){
         $key = input('key');
         $map = [];
@@ -14,7 +19,7 @@ class ShopCar extends Base
         {
             
         }
-        $map=array("user_id"=>0);
+        $map=array("user_id"=>Session::get("userId"));
         $Nowpage = input('get.page') ? input('get.page'):1;
         $limits = 10;// 获取总条数
         $count = Db::name('cart')->where($map)->count();//计算总页面
@@ -28,13 +33,17 @@ class ShopCar extends Base
         $this->assign("list",$lists);
         return $this->fetch();
     }
-
+    /**
+     * [ajaxDeleOrder 删除订单]
+     * @return [type] [description]
+     * @author cgy
+     */
     public function addCard(){
         $data = input("post.");
         $card = new ShopCarModel();
         $cardinfo = array();
-        $cardinfo["user_id"] = 0;//Session::get("userid");//用户id
-        $cardinfo["goods_id"] = 1;//$data["goods_id"];//货物id
+        $cardinfo["user_id"] = Session::get("userId");//用户id
+        $cardinfo["goods_id"] = $data["id"];//货物id
         $cardinfo["size"] = $data["goodsSize"];//订单数量
         $cardinfo["selected"] = 0;//$data["selected"];//在购物车中的状态
         $cardinfo["prom_type"] = 0;//$data["promtype"];//活动id

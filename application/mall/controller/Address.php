@@ -1,7 +1,7 @@
 <?php
 namespace app\mall\controller;
 
-use app\admin\controller\Base;
+use app\member\controller\Base;
 class Address extends Base
 {
     public function index(){

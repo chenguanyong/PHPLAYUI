@@ -7,27 +7,24 @@
                 <div class="ibox-content p-xl">
                     <div class="row">
                         <div class="col-sm-6">
-                            <address>
-                                        <strong>北京百度在线网络技术有限公司</strong><br>
-                                        北京市海淀区上地十街10号<br>
-                                        <abbr title="Phone">总机：</abbr> (+86 10) 5992 8888
-                                    </address>
                         </div>
 
                         <div class="col-sm-6 text-right">
                             <h4>单据编号：</h4>
-                            <h4 class="text-navy">H+-000567F7-00</h4>
+                            <h4 class="text-navy">{$order.order_sn}</h4>
                             <address>
-                                        <strong>阿里巴巴集团</strong><br>
-                                        中国杭州市华星路99号东部软件园创业大厦6层(310099)<br>
-                                        <abbr title="Phone">总机：</abbr> (86) 571-8502-2088
+                                        <strong>{$order.consignee}</strong><br>
+                             中国-{$province}-{$city}-{$district}- {$order.address} <br>
+                                        <abbr title="Phone">总机：</abbr>{$order.mobile}
                                     </address>
                             <p>
-                                <span><strong>日期：</strong> 2014-11-11</span>
+                                <span><strong>日期：</strong>{$order.add_time}</span>
                             </p>
                         </div>
                     </div>
-<div><a class="btn" href="{:url('Address/index')}">修改地址</a></div>
+<div><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  修改地址
+</button></div>
                     <div class="table-responsive m-t">
                         <table class="table invoice-table">
                             <thead>
@@ -54,23 +51,36 @@
                         </table>
                     </div>
                     <!-- /table-responsive -->
+<div class="row">
+                        <div class="col-sm-6">
 
+                        </div>
+
+                        <div class="col-sm-6 text-right">
+                            <h4>使用积分</h4>
+                            <h4 class="text-navy">52</h4>
+							<p>使用优惠卷</p>	
+                            <p>
+                             		  使用折扣
+                            </p>
+                        </div>
+                    </div>
                     <table class="table invoice-total">
                         <tbody>
                             <tr>
-                                <td><strong>总价：</strong>
-                                </td>
-                                <td>&yen;1026.00</td>
-                            </tr>
-                            <tr>
-                                <td><strong>税：</strong>
-                                </td>
-                                <td>&yen;235.98</td>
-                            </tr>
-                            <tr>
                                 <td><strong>总计</strong>
                                 </td>
-                                <td>&yen;1261.98</td>
+                                <td>&yen;{$order.goods_price}</td>
+                            </tr>                        
+                            <tr>
+                                <td><strong>邮费</strong>
+                                </td>
+                                <td>&yen;{$order.shipping_price}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>应付</strong>
+                                </td>
+                                <td>&yen;{$order.order_amount}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -84,5 +94,85 @@
             </div>
         </div>
     </div>
-    {include file="public/footer"}
+    <!-- Button trigger modal -->
 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">请选择地址</h4>
+      </div>
+      <div class="modal-body">
+<div class="ibox float-e-margins">
+
+                    <div class="ibox-content">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>收货人</th>
+                                    <th>手机号</th>
+                                    <th>地址</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="address" id="vo"}
+                                <tr id="{$vo.addressId}">
+                                    <td><input type="checkbox"></td>
+                                    <td>{$vo.userName}</td>
+                                    <td>{$vo.userPhone}</td>
+                                    <td>{$vo.userAddress}</td>
+                                </tr>
+							{/volist}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" id="save" class="btn btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    {include file="public/footer"}
+<script>
+
+(function ($){
+	
+	$(document).on("click","td input[type=checkbox]",function (){
+		
+		if(!$(this).is(':checked')){
+			$("td input[type=checkbox]").prop('checked',false);
+		}else{
+			$("td input[type=checkbox]").prop('checked',false);
+			$(this).prop('checked',true);
+		}
+		
+	});
+	$("#save").on("click",function(){
+		var id = $("td :checked").parent("td").parent("tr").attr("id");
+    	$.post("{:url('Order/editAddress')}",{id:id,order:{$order.order_id}},function(data){
+    		if(data.code == 1){
+    			window.location="{:url('Order/orderinfo')}?order_id="+data.data;
+    		}else{
+    			alert(data.msg);
+    		}
+    		
+    	},"json");
+		
+	});
+	
+	
+	
+})(window.jQuery);
+
+
+</script>

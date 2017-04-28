@@ -1,19 +1,153 @@
-{include file="public/header"}
-<body class="gray-bg" >
-<div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>完整验证表单</h5>
+	{include file="public/header"}
+	
+	<body class="gray-bg" >
+	  <style>
+    .container {
+      max-width: 960px;
+      margin: 20px auto;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .row,
+    .preview {
+      overflow: hidden;
+    }
+
+    .col {
+      float: left;
+    }
+
+    .col-6 {
+      width: 50%;
+    }
+
+    .col-3 {
+      width: 25%;
+    }
+
+    .col-2 {
+      width: 16.7%;
+    }
+
+    .col-1 {
+      width: 8.3%;
+    }
+  </style>
+	<div class="ibox float-e-margins">
+		<div class="row">
+			<div class="col-sm-5">
+				<div class="ibox-title">
+				                        <h5>修改个人资料</h5>
+				                        <div class="ibox-tools">
+				                            <a class="collapse-link">
+				                                <i class="fa fa-chevron-up"></i>
+				                            </a>
+				                            <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+				                                <i class="fa fa-wrench"></i>
+				                            </a>
+				                            <ul class="dropdown-menu dropdown-user">
+				                                <li><a href="form_basic.html#">选项1</a>
+				                                </li>
+				                                <li><a href="form_basic.html#">选项2</a>
+				                                </li>
+				                            </ul>
+				                            <a class="close-link">
+				                                <i class="fa fa-times"></i>
+				                            </a>
+				                        </div>
+				                    </div>
+				<div class="ibox-content" style="display: block;">
+		                        <form class="form-horizontal " id="signupForm" >
+		
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">真实名字：</label>
+		                                <div class=" input-group date  col-sm-8">
+		                                    <input id="trueName" name="trueName" class="form-control" type="text" aria-required="true" aria-invalid="false">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">用户名：</label>
+		                                <div for="userName" class=" input-group date  col-sm-8">
+		                                    <input id="loginName" name="loginName" class="form-control" type="text" aria-required="true" aria-invalid="true">
+		                                </div>
+		                            </div>
+		
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">E-mail：</label>
+		                                <div for="userEmail" class=" input-group date  col-sm-8">
+		                                    <input id="userEmail" name="userEmail" class="form-control" type="email">
+		                                </div>
+		                            </div>
+								    <div class="form-group">
+								        <label class="col-sm-3 control-label">昵称：</label>
+								        <div for="loginName" class=" input-group date col-sm-8">
+								            <input type="text" id="userName" name="userName" class="form-control" placeholder="请输入文本">
+								        </div>
+								    </div>
+			                        <div class="form-group" id="data_2">
+			                            <label class="col-sm-3 control-label">生日：</label>
+			                            <div for="brithday" class="input-group date col-sm-8 ">
+			                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+			                                <input type="text" id="brithday" name="brithday" class="form-control" >
+			                            </div>
+			                        </div>
+								    <div class="form-group">
+								        <label class="col-sm-3 control-label">手机号：</label>
+								        <div for="userPhone" class=" input-group date  col-sm-8">
+								            <input type="text" id="userPhone" name="userPhone" class="form-control" placeholder="请输入文本"> 
+								        </div>
+								    </div>
+								    <div class="form-group">
+								        <label class="col-sm-3 control-label">QQ：</label>
+								        <div for="userQQ" class=" input-group date  col-sm-8">
+								            <input type="text" id="userQQ" name="userQQ" class="form-control" placeholder="请输入文本"> 
+								        </div>
+								    </div>
+								    <div class="form-group">
+								        <label class="col-sm-3 control-label">性别：</label>
+								        <div for="userQQ" class=" input-group date  col-sm-8">
+										<fieldset>
+		                                    <div class="radio radio-info radio-inline">
+		                                        <input type="radio"   value="0" name="userSex" checked="">
+		                                        <label for="inlineRadio1">保密 </label>
+		                                    </div>
+		                                    <div class="radio radio-inline">
+		                                        <input type="radio"   value="1" name="userSex">
+		                                        <label for="inlineRadio2"> 男 </label>
+		                                    </div>
+		                                    <div class="radio radio-inline">
+		                                        <input type="radio"   value="2" name="userSex">
+		                                        <label for="inlineRadio2"> 女 </label>
+		                                    </div>                                    
+		                                </fieldset>
+								        </div>
+								    </div>						    
+		                            <div class="form-group">
+		                                <div class="col-sm-8 col-sm-offset-3">
+		                                    <button id="submit" class="btn btn-primary" data-id="{$userid}"  lay-submit="" lay-filter="add-role">提交</button>
+		                                </div>
+		                            </div>
+		                        </form>
+		                    </div>
+			</div>
+			<div class="col-sm-7">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title  back-change">
+                        <h5>修改头像</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 <i class="fa fa-wrench"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-user">
-                                <li><a href="form_basic.html#">选项1</a>
+                                <li><a href="#">选项 01</a>
                                 </li>
-                                <li><a href="form_basic.html#">选项2</a>
+                                <li><a href="#">选项 02</a>
                                 </li>
                             </ul>
                             <a class="close-link">
@@ -21,132 +155,133 @@
                             </a>
                         </div>
                     </div>
-                    <div class="ibox-content" style="display: block;">
-                        <form class="form-horizontal " id="signupForm" >
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">真实名字：</label>
-                                <div class="col-sm-8">
-                                    <input id="trueName" name="trueName" class="form-control" type="text" aria-required="true" aria-invalid="false">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">用户名：</label>
-                                <div for="userName" class="col-sm-8">
-                                    <input id="username" name="userName" class="form-control" type="text" aria-required="true" aria-invalid="true">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">E-mail：</label>
-                                <div for="userEmail" class="col-sm-8">
-                                    <input id="userEmail" name="userEmail" class="form-control" type="email">
-                                </div>
-                            </div>
-						    <div class="form-group">
-						        <label class="col-sm-3 control-label">昵称：</label>
-						        <div for="loginName" class="col-sm-9">
-						            <input type="text" id="loginName" name="loginName" class="form-control" placeholder="请输入文本"> <span class="help-block m-b-none">说明文字</span>
-						        </div>
-						    </div>
-						    <div class="form-group">
-						        <label class="col-sm-3 control-label">生日：</label>
-						        <div for="brithday" class="col-sm-9">
-						            <input type="text" id="brithday" name="brithday" class="form-control" placeholder="请输入文本"> <span class="help-block m-b-none">说明文字</span>
-						        </div>
-						    </div>
-						    <div class="form-group">
-						        <label class="col-sm-3 control-label">手机号：</label>
-						        <div for="userPhone" class="col-sm-9">
-						            <input type="text" id="userPhone" name="userPhone" class="form-control" placeholder="请输入文本"> <span class="help-block m-b-none">说明文字</span>
-						        </div>
-						    </div>
-						    <div class="form-group">
-						        <label class="col-sm-3 control-label">QQ：</label>
-						        <div for="userQQ" class="col-sm-9">
-						            <input type="text" id="userQQ" name="userQQ" class="form-control" placeholder="请输入文本"> <span class="help-block m-b-none">说明文字</span>
-						        </div>
-						    </div>
-                            <div class="form-group">
-                                <div class="col-sm-8 col-sm-offset-3">
-                                    <button id="submit" class="btn btn-primary" data-id="{$userid}"  lay-submit="" lay-filter="add-role">提交</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                    <div class="ibox-content">
+					    <div class="row">
+					      <div class="col col-sm-6">
+					        <img id="image" src="__img__/a2.jpg"  alt="Picture">
+					      </div>
+					      <div class="col col-sm-3">
+					        <div class="preview"></div>
+					      </div>
+					      <div class="col col-sm-2">
+					        <div class="preview"></div>
+					      </div>
+					      <div class="col col-sm-1">
+					        <div class="preview"></div>
+					      </div>
+					    </div> 
+					    <div class="row ff">
+					    <div class="col-sm-5">
+							<div class="btn-group">
+							          <button type="button" class="btn btn-primary" data-method="move" data-option="-10" data-second-option="0" title="Move Left">
+							            <span class="docs-tooltip" data-toggle="tooltip" data-animation="false" title="" data-original-title="$().cropper(&quot;move&quot;, -10, 0)">
+							              <span class="fa fa-arrow-left"></span>
+							            </span>
+							          </button>
+							          <button type="button" class="btn btn-primary" data-method="move" data-option="10" data-second-option="0" title="Move Right">
+							            <span class="docs-tooltip" data-toggle="tooltip" data-animation="false" title="" data-original-title="$().cropper(&quot;move&quot;, 10, 0)">
+							              <span class="fa fa-arrow-right"></span>
+							            </span>
+							          </button>
+							          <button type="button" class="btn btn-primary" data-method="move" data-option="0" data-second-option="-10" title="Move Up">
+							            <span class="docs-tooltip" data-toggle="tooltip" data-animation="false" title="" data-original-title="$().cropper(&quot;move&quot;, 0, -10)">
+							              <span class="fa fa-arrow-up"></span>
+							            </span>
+							          </button>
+							          <button type="button" class="btn btn-primary" data-method="move" data-option="0" data-second-option="10" title="Move Down">
+							            <span class="docs-tooltip" data-toggle="tooltip" data-animation="false" title="" data-original-title="$().cropper(&quot;move&quot;, 0, 10)">
+							              <span class="fa fa-arrow-down"></span>
+							            </span>
+							          </button>
+							  </div>					    
+					    </div>
+					    
+					    </div>               
+		    		</div>
+			</div>
+		</div>
+	</div>
 	{include file="public/footer"}
-	    <script src="__js__/plugins/validate/jquery.validate.min.js"></script>
-    <script src="__js__/plugins/validate/messages_zh.min.js"></script>
-      <script  type="text/javascript">
+	<script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+	<script src="__js__/plugins/validate/messages_zh.min.js"></script>
+	<script src="__js__/plugins/datapicker/bootstrap-datepicker.js"></script>
+	<script src="__js__/plugins/cropper/cropper.js"></script>   
+	<script src="__js__/f.js"></script>    
+    <script  type="text/javascript">
 
-var input = {};
-$("#submit").on("click",function(){
-	$("#signupForm").find("input").each(function(){
-		
-		//input.$(this).attr("name") = $(this).val();
-		//alert($(this).val());
-		eval("input."+$(this).attr("name")+"='"+$(this).val()+"';");
-	});
-	input.id=$("#submit").attr("data-id");
-	
-});
-$.validator.setDefaults({
-    submitHandler: function() {
-    	$.post("{:url('ajaxEditProfile')}",input,function(){
-    		alert("保存成功");
-    		
-    	},"json");
-    	return false;
-    }
-    
-});
-$().ready(function() {
-	// 在键盘按下并释放及提交后验证提交表单
-	  $("#signupForm").validate({
-		    rules: {
-		     trueName: "required",
-		     userName: {
-		        required: true,
-		        minlength: 2
-		      },
-		      userEmail: {
-		        required: true,
-		        email: true
-		      },
-		      userPhone:{
-		    	  required: true, 
-		    		rangelength:[11,12]
-		      },
-		      brithday:{
-		    	  required: true, 
-		    	  date:true
-		      },
-		      loginName:{
-		    	  required: true, 
-		    		rangelength:[5,10]
-		      },
-		      userQQ:{
-		    	  number:true,
-		    	  rangelength:[5,13]
-		      },
-		      agree: "required"
-		    },
-		    messages: {
-		    	trueName: "请输入您的名字",
-		    	userName: {
-		        required: "请输入用户名",
-		        minlength: "用户名必需由两个字母组成"
-		      },
-		      userEmail: "请输入一个正确的邮箱",
-		      userPhone: "请接受我们的声明",
-		      brithday: "请输入你的生日",
-		      loginName: "请输入你的登录名",
-		      userQQ: "请输入qq"
-		      
-		    }
-		});
-	});
+      $("#data_2 .input-group.date").datepicker({startView:1,todayBtn:"linked",keyboardNavigation:!1,forceParse:!1,autoclose:!0,format:"yyyy-mm-dd"});
+			var input = {};
+			$("#submit").on("click",function(){
+				$("#signupForm").find("input").each(function(){
+					
+					//input.$(this).attr("name") = $(this).val();
+					//alert($(this).val());
+					eval("input."+$(this).attr("name")+"='"+$(this).val()+"';");
+				});
+				input.id=$("#submit").attr("data-id");
+				input.userSex=$(":checked").val();
+			});
+			$.validator.setDefaults({
+			    submitHandler: function() {
+			    	$.post("{:url('ajaxEditProfile')}",input,function(data){
+			    		if(data.code == 1){
+			    			window.location="{:url('index')}";
+			    		}else{
+			    			alert(data.msg);
+			    		}
+			    		
+			    	},"json");
+			    	return false;
+			    }
+			    
+			});
+			$().ready(function() {
+				// 在键盘按下并释放及提交后验证提交表单
+				  $("#signupForm").validate({
+					    rules: {
+					     trueName: "required",
+					     userName: {
+					        required: true,
+					        minlength: 2
+					      },
+					      userEmail: {
+					        required: true,
+					        email: true
+					      },
+					      userPhone:{
+					    	  required: true, 
+					    		rangelength:[11,12]
+					      },
+					      brithday:{
+					    	  required: true, 
+					    	  date:true
+					      },
+					      loginName:{
+					    	  required: true, 
+					    		rangelength:[5,10]
+					      },
+					      userQQ:{
+					    	  number:true,
+					    	  rangelength:[5,13]
+					      },
+					      agree: "required"
+					    },
+					    messages: {
+					    	trueName: "请输入您的名字",
+					    	loginName: {
+					        required: "请输入用户名",
+					        minlength: "用户名必需由两个字母组成"
+					      },
+					      userEmail: "请输入一个正确的邮箱",
+					      userPhone: "请输入一个正确手机号",
+					      brithday: "请输入你的生日",
+					      userName: "请输入你的昵称",
+					      userQQ: "请输入qq"
+					      
+					    }
+					});
+				});
+
     </script>
 
   

@@ -1,0 +1,36 @@
+{include file="public/header"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>推广链接</h5>
+                </div>
+                <div class="ibox-content">
+					<p>{$link}</p>
+					<a href="{$link}" >点击注册</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>二维码</h5>
+                </div>
+                <div id="code" class="ibox-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>        
+{include file="public/footer"}
+<script type="text/javascript" src="__js__/jquery.qrcode.min.js"></script>
+<script>
+$("#code").qrcode({ 
+    render: "table", //table方式 
+    width: 200, //宽度 
+    height:200, //高度 
+    text: "{$link}" //任意内容 
+}); 
+</script>

@@ -1,0 +1,350 @@
+{include file="public/header"}
+<style>
+    .ibox-content {
+        padding-left: 0px;
+        transition: .1s linear;
+    }
+    .table tr th{text-align: center;}
+    .table tr td{text-align: center;}
+    .wrapper-content {
+        background-color: #fff;
+        padding-top: 0;
+    }
+</style>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>商品分类</h5>
+            </div>
+            <div class="ibox-content">
+                <div >
+                 <button type="button"  onclick="addGoods()" class="btn btn-primary" data-toggle="modal" data-target="#myModal6">
+            		    添加分类
+                </button>
+                </div>                   
+                <table class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th> 商品名称</th>
+                            <th>父级分类</th>
+                            <th>catSort</th>
+                            <th>操作</th>                  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            foreach($lists as $value){
+                            echo '<tr class="gradeX" data-id="' . $value['catId'] . '" >';
+                            echo '<td>' .$value['catId'] . '</td>';
+                            echo '<td>' .$value['catName'] . '</td>';
+                            echo '<td>' .$value['parentId'] . '</td>';
+                            echo '<td>' .$value['catSort'] . '</td>';
+                            echo '<td>';
+
+
+                            echo '<button type="button" data-type="doEdit" class="btn btn-primary" data-toggle="modal" data-target="#myModal7" data-id="' . $value['catId'] . '" data-pid="' . $value['parentId'] . '" data-name="' . $value['catName'] . '" >';
+                            echo '<i class="icon-edit  fa fa-pencil-square-o" >修改分类</i>';
+                            echo '</button>';   
+
+                            echo '<button type="button"  onclick="addGoods()" class="btn btn-primary" data-toggle="modal" data-target="#myModal6" >';
+                            echo '<i class="icon-edit  fa fa-pencil-square-o" >添加分类</i>';
+
+                            echo '</button>'; 
+                            echo '<button type="button" data-type="doDel" class="btn btn-primary"  data-id="' . $value['catId'] . '" >';
+                            echo '<i class="icon-edit  fa fa-pencil-square-o" >删除分类</i>';
+                            echo '</button>';
+
+                            echo '<button type="button" data-type="doUp" class="btn btn-primary"  data-id="' . $value['catId'] . '" data-order="' . $value['catSort'] . '">';
+                            echo '<i class="icon-edit  fa fa-pencil-square-o" >上移</i>';
+                            echo '</button>';
+
+                            echo '<button type="button" data-type="doDown"  class="btn btn-primary" data-id="' . $value['catId'] . '" data-order="' . $value['catSort'] . '">';
+                            echo '<i class="icon-edit  fa fa-pencil-square-o" >下移</i>';
+                            echo '</button>';
+
+                            echo '</tr>';
+                            }
+                            ?>                           
+                    </tbody>                          
+				</table>
+			</div>
+	</div>
+</div>
+
+<div class="modal inmodal fade" id="myModal6"  tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h6 class="modal-title">添加分类</h6>
+            </div>
+            <form role="form" id="validate">
+            <div class="modal-body">               
+                <div class="form-group">
+                    <label>父级分类：</label> 
+                    <input type="text" id="parent" placeholder="父级分类" readonly="readonly" class="form-control">
+                </div>
+                <div for="catName" class="form-group">
+                    <label>分类名称</label> 
+                    <input type="text" id="cat" placeholder="请输入分类名称" class="form-control" required="" aria-required="true" >
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">添加</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="myModal7"  tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h6 class="modal-title">修改分类</h6>
+            </div>
+            <form role="form" id="validate">
+            <div class="modal-body">               
+                <div class="form-group">
+                    <label>父级分类：</label> 
+                    <input type="text" id="parentEdit" placeholder="父级分类" readonly="readonly" class="form-control">
+                </div>
+                <div for="catName" class="form-group">
+                    <label>分类名称</label> 
+                    <input type="text" id="catEdit" placeholder="请输入分类名称" class="form-control" required="" aria-required="true" >
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                <button type="button" data-type="goEdit" class="btn btn-primary">提交</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="public/footer"}
+<link href="__css__/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+<script src="__js__/plugins/jeditable/jquery.jeditable.js"></script>
+<script src="__js__/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="__js__/plugins/dataTables/dataTables.bootstrap.js"></script> 
+<script src="__js__/content.min.js"></script>
+<script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__js__/plugins/validate/messages_zh.min.js"></script>
+<script src="__js__/demo/form-validate-demo.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".dataTables-example").dataTable({
+                "bSort" : false, //是否启动各个字段的排序功能 
+                "bFilter" : false, //是否启动过滤、搜索功能
+                "bLengthChange": false,//启一页显示多少条数据的下拉菜单                  
+                "aaSorting" : [[3, "asc"]]
+            });
+        var oTable = $('.dataTables-example').dataTable();  
+        oTable.fnSetColumnVis( 3, false);
+    });
+
+    $().ready(function() {
+        // 在键盘按下并释放及提交后验证提交表单
+        $("#validate").validate({
+            rules: {
+              catName: {
+                required: true,
+              }
+            },
+        });
+    });
+
+    //获取父级分类名称
+    function addGoods(){
+        var pid = {$val};
+        $.ajax({
+            url: '{:url("goodcats/getName")}',
+            type: "POST",
+            dataType: "json",
+            data:{'parentId':pid },
+            success: function(data){
+                if(data.code == 1){
+                    document.getElementById("parent").value=data.data;
+                }else{
+                    layer.alert(data.msg)
+                }
+            },
+        });         
+    }
+
+    //删除信息
+    $('[data-type="doDel"]').on('click',function (){
+    	var id = $(this).data('id');
+    	layer.confirm('您确定要删除该用户？', {icon: 3, title:'提示'},function (){
+	        $.ajax({
+	            url: '{:url("goodcats/doDel")}',
+	            dataType: "json",
+	            data:{'id':id},
+	            type: "POST",
+	            success: function(data){
+	                if(data.code == 1){
+	                    
+	                    layer.msg('成功',{icon:1,time:1500,shade: 0.1,});
+	                    window.location.href="/index.php/mall/goodcats/getGoodsListByPage?id={$val}";
+	                }else{
+	                    
+	                    layer.msg('失败',{icon:2,time:1500,shade: 0.1,});
+	                }
+	            },
+	        });
+    	});
+    })
+
+    //获取当前信息以修改
+    $('[data-type="doEdit"]').on('click',function (){
+        document.getElementById("catEdit").value = $(this).data('name');
+        var pid = $(this).data('pid');
+        var id = $(this).data('id');
+        $('[data-type="goEdit"]').attr('data-id', id);
+        $.ajax({
+            url: '{:url("goodcats/getName")}',
+            type: "POST",
+            dataType: "json",
+            data:{'parentId':pid },
+            success: function(data){
+                if(data.code == 1){
+                    document.getElementById("parentEdit").value=data.data;
+                }else{
+                    layer.alert(data.msg)
+                }
+            },
+        }); 
+    })
+
+    //提交修改
+    $('[data-type="goEdit"]').on('click',function (){
+        var catName = document.getElementById("catEdit").value;
+        var cid = $(this).data('id');
+            $.ajax({
+                url: '{:url("goodcats/editGoods")}',
+                type: "POST",
+                dataType: "json",
+                data:{'catId':cid, 'catName':catName },
+                success: function(data){
+                    if(data.code == 1){
+                        layer.open({
+                              title: '提示'
+                              ,content: data.msg
+                              ,yes: function(){
+                                  parent.location.href="{:url('goodcats/index')}";
+                              }
+                        });
+                    }else{
+                        layer.alert(data.msg)
+                    }
+                },
+            });         
+        
+    })
+
+    //添加分类提交
+    $.validator.setDefaults({
+        submitHandler: function() {
+            var cat = document.getElementById('cat').value;
+            var cid = {$val};
+            $.ajax({
+                url: '{:url("goodcats/addGoods")}',
+                type: "POST",
+                dataType: "json",
+                data:{'parentId':cid, 'catName':cat },
+                success: function(data){
+                    if(data.code == 1){
+                        layer.open({
+                              title: '提示'
+                              ,content: data.msg
+                              ,yes: function(){
+                                  parent.location.href="{:url('goodcats/index')}";
+                              }
+                        });
+                    }else{
+                        layer.alert(data.msg)
+                    }
+                },
+            });          
+        }
+    });
+    $('[data-type=doUp]').on("click",function(){
+        var id = $(this).data("id");
+        var order = $(this).data("order");
+        var indexs = 0;
+
+        $('tr').each(function (index){
+            
+            if($(this).data('id') == id){
+                indexs = index;
+                return false;
+            }
+        });
+
+        if(indexs-1 == 0){layer.msg('到顶了');return false;}
+        //$('tbody').find('tr').eq(indexs-1);
+        $($('tbody').find('tr').eq(indexs-1)).insertBefore($('tbody').find('tr').eq(indexs-2));
+        var order2 = $('tbody').find('tr').eq(indexs-2).find('[data-order]').attr('data-order');
+        if(order2 == order){                  
+            order -=1;
+        }else {
+            order =order - (order2-order)-1;
+        }
+            ajax_order(id,order);
+    });
+    $('[data-type=doDown]').on("click",function(){
+        var id = $(this).data("id");
+        var order = $(this).data("order");
+        var indexs = 0;
+        var length = $('tbody').children('tr').toArray().length;
+        $('tr').each(function (index){
+            
+            if($(this).data('id') == id){
+                
+                indexs = index;
+                return false;
+            }
+        });
+        //$('tbody').find('tr').eq(indexs-1);
+        if(indexs == length){layer.msg('到底了');return false;}
+        $($('tbody').find('tr').eq(indexs-1)).insertAfter($('tbody').find('tr').eq(indexs));
+        var order2 = $('tbody').find('tr').eq(indexs).find('[data-order]').attr('data-order');
+        if(order2 == order){
+            
+            order +=1;
+        }else {
+            
+            order = (order2-order)+order+1;
+        }
+        ajax_order(id,order);
+    });
+
+    //排序
+    function ajax_order(id, orders){
+        $.ajax({
+            url: '{:url("goodcats/ajaxOrder")}',
+            dataType: "json",
+            data:{'catId':id,'catSort':orders},
+            type: "POST",
+            success: function(data){
+                if(data.code == 1){                   
+                    layer.msg('成功',{icon:1,time:1500,shade: 0.1,});
+                    window.location.href="/index.php/mall/goodcats/getGoodsListByPage?id={$val}";
+                }else{
+                    layer.msg('失败',{icon:2,time:1500,shade: 0.1,});
+                }
+            },
+            error:function(ajaxobj)
+            {
+                if(ajaxobj.responseText!=''){}
+                    //alert(ajaxobj.responseText);
+            }
+        });
+        
+    }    
+</script>

@@ -1,0 +1,214 @@
+{include file="public/header"}
+<style>
+    .site-demo-upload,
+    .site-demo-upload img{width: 200px; height: 200px; border-radius: 100%;}
+    .site-demo-upload{position: relative; background: #e2e2e2;}
+    .site-demo-upload .site-demo-upbar{position: absolute; top: 50%; left: 50%; margin: -18px 0 0 -56px;}
+    .site-demo-upload .layui-upload-button{background-color: rgba(0,0,0,.2); color: rgba(255,255,255,1);}
+    .upload-img{
+        margin-left: 95px;
+        margin-top: 10px;
+    }
+    .upload-img img{
+        margin-top: -38px;
+    }
+</style>
+<div class="main-wrap" >
+    <blockquote class="layui-elem-quote fhui-admin-main_hd">
+        <h2>添加商品</h2>
+    </blockquote>
+    <form  class="layui-form layui-form-pane" id="formrec" method="post" role="form">
+        <div class="layui-form-item">
+            <label class="layui-form-label" >父级分类</label>
+            <div class="layui-input-block" >
+                <input id="nodename" autocomplete="off"  disabled="disabled"   placeholder="父级分类" class="layui-input" type="text" required   lay-verify>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品编号</label>
+            <div class="layui-input-block">
+                <input name="goodsSn" autocomplete="off"  placeholder="请输入商品编号" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品货号</label>
+            <div class="layui-input-block">
+                <input name="productNo" autocomplete="off"  placeholder="请输入商品名称" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>        
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block">
+                <input name="goodsName" autocomplete="off"  placeholder="请输入商品名称" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>       
+        
+		<fieldset class=" layui-field-title" >
+		  <label class="layui-form-label">上传商品图片</label>
+		</fieldset>        
+		<div class="site-demo-upload">
+		  <img id="LAY_demo_upload" src="">
+		  <div class="site-demo-upbar">
+		    <input type="file" name="file" class="layui-upload-file" id="uploads" >
+		  </div>
+		</div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">门店ID</label>
+            <div class="layui-input-block">
+                <input name="shopId" autocomplete="off"  placeholder="请输入门店ID" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">市场价格</label>
+            <div class="layui-input-block">
+                <input name="marketPrice" autocomplete="off"  placeholder="请输入市场价格" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">门店价格</label>
+            <div class="layui-input-block">
+                <input name="shopPrice" autocomplete="off"  placeholder="请输入门店价格" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单位</label>
+            <div class="layui-input-block">
+                <input name="goodsUnit" autocomplete="off"  placeholder="请输入单位名称" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品分类ID路径</label>
+            <div class="layui-input-block">
+                <input name="goodsCatIdPath" autocomplete="off"  placeholder="请输入分类路径" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">门店商品分类第一级ID</label>
+            <div class="layui-input-block">
+                <input name="shopCatId1" autocomplete="off"  placeholder="请输入门店商品分类第一级ID" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">门店商品分类第二级ID</label>
+            <div class="layui-input-block">
+                <input name="shopCatId2" autocomplete="off"  placeholder="请输入门店商品分类第二级ID" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">品牌ID</label>
+            <div class="layui-input-block">
+                <input name="brandId" autocomplete="off"  placeholder="请输入品牌ID" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品描述</label>
+            <div class="layui-input-block">
+                <input name="goodsDesc" autocomplete="off"  placeholder="请输入商品描述" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品库存</label>
+            <div class="layui-input-block">
+                <input name="goodsStock" autocomplete="off"  placeholder="请输入商品库存" class="layui-input" type="text" required    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="submit" class="layui-btn"  lay-submit="" lay-filter="demo1" data-nodeid="{$id}" data-href="{:url('goods/ajaxaddgoods')}">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="public/footer"}
+<link rel="stylesheet" href="//res.layui.com/layui/build/css/layui.css"  media="all">
+<script src="__lay__/layui.js"></script>
+<script>
+var imagedata = [];
+var bigimagedata = [];
+layui.use(['form', 'upload'], function(){
+	 var $ = layui.jquery, layer = layui.layer;
+
+   $form = $('form');
+   var form = layui.form()
+           ,layer = layui.layer
+           ,layedit = layui.layedit
+           ,laydate = layui.laydate;
+   
+  	layui.upload({
+		url: '{:url("admin/upload/uploadGoods")}'
+		,before: function(input){
+			//返回的参数item，即为当前的input DOM对象
+   		    console.log('文件上传中');
+   		}
+    	,elem: '#uploads' //指定原始元素，默认直接查找class="layui-upload-file"
+    	,method: 'post' //上传接口的http类型
+        ,ext: 'jpg|png|gif'
+    	,success: function(data){
+				if(data.status ==1 ){
+	            	tempdata = {};
+	            	tempdata.imagename = '/public/upload/image/goods/' +data.image_name;
+	            	tempdata.name = data.info.name;
+	            	tempdata.size = data.info.size;
+	                }else{
+	                    alert(data.error_info);
+	                }
+                imagedata[imagedata.length] = tempdata;
+    	}
+  	});
+
+
+	//监听提交
+	form.on('submit(demo1)', function(data){
+		
+	    var sub=true;
+	    var url=$(this).data('href');
+	    var small = '[';
+		for( x in imagedata){
+			if(imagedata[x].imagename == "undefined"){continue;}
+			small =small+'{"imagename":"'+imagedata[x].imagename+'","name":"'+imagedata[x].name+'","size":"'+imagedata[x].size+'"},';
+		}
+		small = small.substr(0,small.length-1)+']';
+		//console.log(small);	
+		data.field.small = small;
+	   	data.field.nodeID =$(this).data('nodeid');
+	    if(url){
+	        if(sub){
+	            $.ajax({
+	                url: url,
+	                type: 'post',
+	                dataType: 'json',
+	                data: data.field,
+	                success: function (data) {
+	                   if (data.code == 1) {
+	                           layer.open({
+	                           	  title: '提示'
+	                           	  ,content: data.msg
+	                           	  ,yes: function(){
+	                           		window.location.href="{:url('goods/index')}";
+	                           	  }
+	                           });
+	                    }
+	                    else {
+	                    	layer.alert(data.msg);
+	                    }
+	                },
+	                beforeSend: function () {
+	                   // 一般是禁用按钮等防止用户重复提交
+	                    $(data.elem).attr("disabled", "true").text("提交中...");
+	                },
+
+	                error: function (XMLHttpRequest, textStatus, errorThrown) {
+	                   //common.layerAlertE(textStatus, '提示');
+	                }
+	            });
+	        }
+	    }else{
+	        //common.layerAlertE('链接错误！', '提示');
+	    }
+	    
+	    return false;
+	});
+});
+</script>

@@ -1,0 +1,94 @@
+{include file="public/header"}
+<style>
+    .ibox-content {
+        padding-left: 0px;
+        transition: .1s linear;
+    }
+    .table tr th{text-align: center;}
+    .table tr td{text-align: center;}
+    .wrapper-content {
+        background-color: #fff;
+        padding-top: 0;
+    }
+</style>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-title">
+	                <h5>商品列表</h5>
+	            </div>
+	            <div class="ibox-content">
+					<div class="row">
+
+						<div class="col-xs-12 col-sm-12">
+							
+								<div class="row">
+									{foreach name="shop" item="vo" key="k"}
+										<div class="col-xs-6 col-sm-3 col-md-3">
+											<!-- #section:pages/search.thumb -->
+											<div class="thumbnail search-thumbnail">
+												<a onclick="parent.location='{:url('mall/Index/shop')}?id={$vo.goodsId}';"><img class="media-object"  alt="100%x200" src='{$vo.goodsImg}'  style="height: 200px; width: 100%; display: block;"></a>
+												<div class="caption">
+													<div class="clearfix">
+														<span class="pull-right label label-grey info-label">London</span>
+									
+														<div class="pull-left bigger-110">
+															<i class="ace-icon fa fa-star orange2"></i>
+									
+															<i class="ace-icon fa fa-star orange2"></i>
+									
+															<i class="ace-icon fa fa-star orange2"></i>
+									
+															<i class="ace-icon fa fa-star-half-o orange2"></i>
+									
+															<i class="ace-icon fa fa-star light-grey"></i>
+														</div>
+													</div>
+									
+													<h3 class="search-title">
+														<a href="#" class="blue">￥ {$vo.shopPrice}</a>
+													</h3>
+													<p>{$vo.goodsName}</p>
+													<p>{$vo.goodsTips}</p>
+												</div>
+											</div>
+									
+											<!-- /section:pages/search.thumb -->
+										</div>
+
+									{/foreach}
+								</div>
+
+						</div>
+ <div class="btn-group" id="demo1" style="clear:both;float:right; margin-right:10px;">
+                            </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+			
+{include file="public/footer"}
+
+<script src="__LAY__/layui.js"></script>
+<script >
+  layui.use(['laypage', 'layer'], function(){
+  var laypage = layui.laypage
+  ,layer = layui.layer;
+  
+  laypage({
+    cont: 'demo1'
+    ,pages: {$allpage} //总页数
+    ,groups: 5 //连续显示分页数
+    ,curr:{$Nowpage}
+    ,jump: function(obj, first){
+        if(!first){
+            window.location="{:url('mall/Shopping/goodsList')}?id={$val}&page="+obj.curr;
+          }
+        }
+  });
+  });
+</script>

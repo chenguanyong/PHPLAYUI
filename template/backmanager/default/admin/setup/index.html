@@ -1,9 +1,16 @@
-{include file="public/header"/}             
+{include file="public/header"/}  '
+<style type="text/css">
+.layui-form-pane .layui-form-label{
+  width: 250px;
+}
+</style>           
 <div class="layui-tab">
   <ul class="layui-tab-title">
     <li class="layui-this">网站设置</li>
-    <li class="">微信设置</li>
-  </ul>
+    <li class="">商城设置</li>
+    <li class="">短信设置</li>
+    <li class="">邮件设置</li>
+ </ul>
   <div class="layui-tab-content">
     <div class="layui-tab-item layui-show">
      <!-- 网站建设 -->
@@ -23,67 +30,310 @@
     <div class="layui-input-inline">
       <!-- <input name="Logo" type="file" id="upload-image"> -->
       <input type="file" name="file" class="layui-upload-file" id="upload-image">
-      <input type="hidden" id="image" name="Logo" data-id="{$list[0]['ID']}" lay-verify="Logo">
+      <input type="hidden" id="image" name="Logo" data-id="{$list[0]['ID']}" lay-verify="Logo"><br>
     </div>
   </div> 
-  <div class="layui-form-item">
-    <label class="layui-form-label">Logo备注：</label>
-    <div class="layui-input-inline">
-      <input name="descr0" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[0]['remarks']}" data-id="{$list[0]['ID']}">
-    </div>
-  </div> 
+  <!-- 备注:{$list[0]['remarks']} -->
   <div class="layui-form-item">
     <label class="layui-form-label">系统名称：</label>
     <div class="layui-input-inline">
-      <input name="systename" lay-verify="required" placeholder="请输入系统名称" autocomplete="off" class="layui-input" type="text" value="{$list[1]['value']}" data-id="{$list[1]['ID']}">
+      <input name="systename" lay-verify="systename" placeholder="请输入系统名称" autocomplete="off" class="layui-input" type="text" value="{$list[1]['value']}" data-id="{$list[1]['ID']}"><br>
     </div>
   </div> 
-  <div class="layui-form-item">
-    <label class="layui-form-label">系统备注：</label>
-    <div class="layui-input-inline">
-      <input name="descr1" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[1]['remarks']}" data-id="{$list[1]['ID']}">
-    </div>
-  </div> 
+  <!-- 备注:{$list[1]['remarks']} -->
   <div class="layui-form-item">
     <label class="layui-form-label">版权：</label>
     <div class="layui-input-inline">
-      <input name="copyright" lay-verify="required" placeholder="请输入版权" autocomplete="off" class="layui-input" type="text" value="{$list[2]['value']}" data-id="{$list[2]['ID']}">
+      <input name="copyright" lay-verify="copyright" placeholder="请输入版权" autocomplete="off" class="layui-input" type="text" value="{$list[2]['value']}" data-id="{$list[2]['ID']}"><br>
     </div>
   </div> 
-  <div class="layui-form-item">
-    <label class="layui-form-label">版权备注：</label>
-    <div class="layui-input-inline">
-      <input name="descr2" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[2]['remarks']}" data-id="{$list[2]['ID']}">
-    </div>
-  </div> 
+  <!-- 备注:{$list[2]['remarks']} -->
   <div class="layui-form-item">
     <label class="layui-form-label">公司：</label>
     <div class="layui-input-inline">
-      <input name="company" lay-verify="required" placeholder="请输入公司名称" autocomplete="off" class="layui-input" type="text" value="{$list[3]['value']}" data-id="{$list[3]['ID']}">
+      <input name="company" lay-verify="company" placeholder="请输入公司名称" autocomplete="off" class="layui-input" type="text" value="{$list[3]['value']}" data-id="{$list[3]['ID']}"><br>
     </div>
   </div> 
-  <div class="layui-form-item">
-    <label class="layui-form-label">公司备注：</label>
+  <!-- 备注:{$list[3]['remarks']} -->
+   <div class="layui-form-item">
+    <label class="layui-form-label">附件上传大小</label>
     <div class="layui-input-inline">
-      <input name="descr3" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[3]['remarks']}" data-id="{$list[3]['ID']}">
+      <input name="upload_file_size" lay-verify="upload_file_size" placeholder="请输入附件上传大小" autocomplete="off" class="layui-input" type="text" value="{$list[4]['value']}" data-id="{$list[4]['ID']}">
     </div>
   </div> 
-    
+  <!-- <br>备注:{$list[4]['remarks']}  -->
     <div class="layui-form-item">
             <div class="layui-input-block">
                 <input type="hidden" name="id0" value="{$list[0]['ID']}">
                 <input type="hidden" name="id1" value="{$list[1]['ID']}">
                 <input type="hidden" name="id2" value="{$list[2]['ID']}">              
                 <input type="hidden" name="id3" value="{$list[3]['ID']}">
-                <input class="layui-btn" lay-submit="" type="submit" lay-filter="add-role" data-href="{url:('admin/setup/update')}" value="修改">
+                <input type="hidden" name="id4" value="{$list[4]['ID']}">
+
+                <input class="layui-btn" lay-submit="" type="submit" lay-filter="add-role" data-href="{url:('admin/setup/index')}" value="修改">
                
             </div>
         </div>
 </form>
     </div>
-    <div class="layui-tab-item">内容2</div>
-    <div class="layui-tab-item">内容3</div>
-    
+    <div class="layui-tab-item">
+         <form class="layui-form layui-form-pane" id="signupForm">
+  <br>
+  <br>
+  <div class="layui-form-item">
+    <label class="layui-form-label">订单金额满多少免运费：</label>
+    <div class="layui-input-inline">
+      <input name="freight_free" lay-verify="freight_free" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[5]['value']}" data-id="{$list[5]['ID']}"><br>
+    </div>
+  </div>
+  <!-- 备注:{$list[5]['remarks']} -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">减库存时机：</label> 
+  <div class="layui-input-block">
+      <input name="reduce" value="1" title="订单支付时" checked="" type="radio"><div class="layui-unselect layui-form-radio "><i class="layui-anim layui-icon"></i><span>订单支付时</span></div>
+      <input name="reduce" value="2" title="发货时" type="radio" >
+      <div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><span>发货时</span></div>
+    </div>
+  </div> 
+  <!-- <br>备注: {$list[9]['remarks']} -->
+   <div class="layui-form-item">
+    <label class="layui-form-label">默认库存数量：</label> 
+    <div class="layui-input-inline">
+      <input name="default_storage" lay-verify="default_storage" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[6]['value']}" data-id="{$list[5]['ID']}"><br>
+    </div>
+  </div>
+  <!-- 备注:{$list[6]['remarks']} -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">库存预警数量</label> 
+    <div class="layui-input-inline">
+      <input name="warning_storage" lay-verify="warning_storage" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[7]['value']}" data-id="{$list[5]['ID']}"><br>
+    </div>
+  </div>
+  <!-- 备注:{$list[7]['remarks']} -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">发票税率：</label> 
+    <div class="layui-input-inline">
+      <input name="point_rate" lay-verify="point_rate" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[8]['value']}" data-id="{$list[5]['ID']}"><br>
+    </div>
+  </div>
+  <!-- 备注:{$list[8]['remarks']} -->
+    <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="hidden" name="id5" value="{$list[5]['ID']}">
+                <input type="hidden" name="id6" value="{$list[6]['ID']}">
+                <input type="hidden" name="id7" value="{$list[7]['ID']}">              
+                <input type="hidden" name="id8" value="{$list[8]['ID']}">
+                <input type="hidden" name="id9" value="{$list[9]['ID']}">
+
+                <input class="layui-btn" lay-submit="" type="submit" lay-filter="add-roles" data-href="{:url('admin/setup/shop')}" value="修改">
+               
+            </div>
+        </div>
+</form>
+
+    </div>
+    <div class="layui-tab-item">
+              <form class="layui-form layui-form-pane" id="signupForm">
+  <br>
+  <br>
+  <div class="layui-form-item">
+    <label class="layui-form-label">阿里大鱼[appkey]</label> 
+    <div class="layui-input-inline">
+      <input name="sms_appkey" lay-verify="sms_appkey" placeholder="请输入内容" autocomplete="off" class="layui-input" type="text" value="{$list[10]['value']}" data-id="{$list[5]['ID']}"><br>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">阿里大鱼[secretKey]</label> 
+    <div class="layui-input-inline">
+      <input name="sms_secretKey" lay-verify="sms_secretKey" placeholder="请输入内容" autocomplete="off" class="layui-input" type="text" value="{$list[11]['value']}" data-id="{$list[5]['ID']}"><br>
+    </div>
+  </div>
+    <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr11" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[11]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>  -->
+  <div class="layui-form-item">
+            <label class="layui-form-label">用户注册时</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;"  id="st" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+    </div>
+    <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr12" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[12]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>  -->
+  <div class="layui-form-item">
+            <label class="layui-form-label">用户找回密码时</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;"  id="pass" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+    </div>
+   <!--  <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr13" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[13]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+            <label class="layui-form-label">身份验证时</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;"  id="pa" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+    </div>
+   <!--  <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr14" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[14]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+            <label class="layui-form-label">用户下单时是否发送短信给指定管理员</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;"  id="ps" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+    </div>
+   <!--  <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr15" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[15]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+            <label class="layui-form-label">商家发货时是否给客户发短信</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;"  id="shops" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a>
+            </div>
+    </div>
+    <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr16" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[16]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">短信码超时时间</label>
+    <div class="layui-input-inline">
+      <input name="sms_time_out" lay-verify="sms_time_out"  autocomplete="off" class="layui-input" type="text" value="{$list[17]['value']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>
+  <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr17" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[17]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+    <div class="layui-form-item">
+            <div class="layui-input-block">
+                <input type="hidden" name="id10" value="{$list[10]['ID']}">
+                <input type="hidden" name="id11" value="{$list[11]['ID']}">
+                <input type="hidden" name="id12" value="{$list[12]['ID']}">              
+                <input type="hidden" name="id13" value="{$list[13]['ID']}">
+                <input type="hidden" name="id14" value="{$list[14]['ID']}">
+                <input type="hidden" name="id15" value="{$list[15]['ID']}">
+                <input type="hidden" name="id16" value="{$list[16]['ID']}">
+                <input type="hidden" name="id17" value="{$list[17]['ID']}">
+
+
+                <input class="layui-btn" lay-submit="" type="submit" lay-filter="add-rolel" data-href="{:url('admin/setup/appkey')}" value="修改">
+               
+            </div>
+        </div>
+</form>
+    </div>
+    <div class="layui-tab-item">
+     <form class="layui-form layui-form-pane" id="signupForm">
+  <br>
+  <br>
+    <div class="layui-form-item">
+    <label class="layui-form-label">邮件发送服务器（SMTP）：</label>
+    <div class="layui-input-inline">
+      <input name="smtp_server" lay-verify="smtp_server" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[18]['value']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>
+  <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr18" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[18]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+   <div class="layui-form-item">
+    <label class="layui-form-label">服务器（SMTP）端口：</label>
+    <div class="layui-input-inline">
+      <input name="smtp_port" lay-verify="smtp_port" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[19]['value']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>
+  <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr19" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[19]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">邮箱账号：</label>
+    <div class="layui-input-inline">
+      <input name="smtp_user" lay-verify="email" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[20]['value']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+  <!--   <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr20" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" type="text" value="{$list[20]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">邮箱密码：</label>
+    <div class="layui-input-inline">
+      <input name="smtp_pwd" lay-verify="smtp_pwd" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="password" value="" data-id="{$list[7]['ID']}">
+    </div>
+  </div>
+ <!--  <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr21" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[21]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+   <div class="layui-form-item">
+            <label class="layui-form-label">邮箱验证</label>
+            <div class="layui-input-block">
+                <a  href="javascript:;"  id="email" data-value="1" data-on=1  > <div class="layui-unselect layui-form-switch layui-form-onswitch"><i></i></div> </a><br><br>{$list[22]['remarks']}
+            </div>
+    </div>
+   <!--  <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr22" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[22]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+  <div class="layui-form-item">
+    <label class="layui-form-label">测试接收的邮件地址：</label>
+    <div class="layui-input-inline">
+      <input name="test_eamil" lay-verify="test_eamil" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[23]['value']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div>
+   <!-- <div class="layui-form-item">
+    <label class="layui-form-label">备注：</label>
+    <div class="layui-input-inline">
+      <input name="descr23" lay-verify="required" placeholder="请输入备注内容" autocomplete="off" class="layui-input" type="text" value="{$list[23]['remarks']}" data-id="{$list[7]['ID']}">
+    </div>
+  </div> -->
+    <div class="layui-form-item">
+            <div class="layui-input-block">
+               
+                <input type="hidden" name="id18" value="{$list[18]['ID']}">
+                <input type="hidden" name="id19" value="{$list[19]['ID']}">
+                <input type="hidden" name="id20" value="{$list[20]['ID']}">
+                <input type="hidden" name="id21" value="{$list[21]['ID']}">
+                <input type="hidden" name="id22" value="{$list[22]['ID']}">
+                <input type="hidden" name="id23" value="{$list[23]['ID']}">
+                <input class="layui-btn" lay-submit="" type="submit" lay-filter="add-rolell" data-href="{:url('admin/setup/email')}" value="修改">           
+            </div>
+        </div>
+</form>
+    </div>
   </div>
 </div>
 {include file="public/footer"}  
@@ -96,6 +346,7 @@
             var sub=true;
             // alert(sub);
             var url=$(this).data('href');
+            // alert(url);
             if(url){
                 if(sub){
                   // alert(data.field);
@@ -130,7 +381,352 @@
             }
             return false;
         });
+        form.verify({
+           systename : function(value){
+                if(value == ""){
+                    return '系统名称不能为空';
+                }
+            }
+            ,copyright:function(value){
+                if(value == ""){
+                    return '不能为空';
+                }
+            },company:function(value){
+              if(! /^[a-zA-Z\u4e00-\u9fa5]+$/g.test(value)){
+                return "只能为汉字";
+              }
+            },upload_file_size:function(value){
+                if(!/^[\d]+\.?\d*$/.test(value)){
+                return "只能为数值";
+              }
+            },
+
+
+        });
+       // $(document).on('click','#status', function () {
+        //     var id=$(this).attr('data-on');
+        //     var obs=$(this);
+        //   if(id == "1"){
+        //     obs.find('div').addClass('layui-form-onswitch');
+        //         $(this).attr('data-value',"1");
+        //         $(this).attr('data-on',"0");
+        //     }else{
+        //       obs.find('div').removeClass('layui-form-onswitch');
+        //         $(this).attr('data-value',"0");
+        //         $(this).attr('data-on',"1");
+        //     }
+        
+        // });
+       // $(document).on('click','#statu', function () {
+       //      var id=$(this).attr('data-on');
+       //      var obs=$(this);
+       //    if(id == "1"){
+       //      obs.find('div').addClass('layui-form-onswitch');
+       //          $(this).attr('data-value',"1");
+       //          $(this).attr('data-on',"0");
+       //      }else{
+       //        obs.find('div').removeClass('layui-form-onswitch');
+       //          $(this).attr('data-value',"0");
+       //          $(this).attr('data-on',"1");
+       //      }
+        
+       //  });
+       $(document).on('click','#pass', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+          if(id == "1"){
+            obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+              obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+       $(document).on('click','#st', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+          if(id == "1"){
+            obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+              obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+       $(document).on('click','#pa', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+          if(id == "1"){
+            obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+              obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+        $(document).on('click','#ps', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+          if(id == "1"){
+            obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+              obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+        $(document).on('click','#shops', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+          if(id == "1"){
+            obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+              obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+        $(document).on('click','#email', function () {
+            var id=$(this).attr('data-on');
+            var obs=$(this);
+          if(id == "1"){
+            obs.find('div').addClass('layui-form-onswitch');
+                $(this).attr('data-value',"1");
+                $(this).attr('data-on',"0");
+            }else{
+              obs.find('div').removeClass('layui-form-onswitch');
+                $(this).attr('data-value',"0");
+                $(this).attr('data-on',"1");
+            }
+        
+        });
+    }); 
+
+    
+    layui.use(['form'], function(){
+        var $ = layui.jquery
+          ,form = layui.form();
+        //监听提交
+        form.on('submit(add-roles)', function(data){
+            var sub=true;
+            // alert(sub);
+            var url=$(this).data('href');
+            // alert(url);
+            if(url){
+                if(sub){
+                  // alert(data.field);
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                          // alert(data);  
+                          //$("#oop").attr('src',data[0]['value']); 
+                     parent.location.href="{:url('Index/index')}"; 
+                            if (data['code'] == 1) {      
+                               layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改成功'
+                                 });                                  
+                              
+                            }else{
+                               
+                                layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改失败',
+                                 });   
+                                  // layer.msg('数据修改失败', {icon: 5});
+                            }                           
+                        },                       
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+            return false;
+        });
+          //自定义验证规则商城设置
+          form.verify({
+           point_rate : function(value){
+                if(!/[0,1,2]\.?[0-9]{0,6}\%/.test( value )){
+                    return '发票税率太大';
+                }
+            }
+            ,copyright:function(value){
+                if(value == ""){
+                    return '不能为空';
+                }
+            },freight_free:function(value){
+              if(!/^[\d]+\.?\d*$/.test(value)){
+                return "只能为数值";
+              }
+            },default_storage:function(value){
+              if(!/^[\d]+\.?\d*$/.test(value)){
+                return "只能为数值";
+              }
+            },warning_storage:function(value){
+              if(!/^[\d]+\.?\d*$/.test(value)){
+                return "只能为数值";
+              }
+            },
+
+        });
+        
     });
+            //监听提交
+        layui.use(['form'], function(){
+        var $ = layui.jquery
+          ,form = layui.form();
+        //监听提交
+        form.on('submit(add-rolel)', function(data){
+            var sub=true;
+            // alert(sub);
+            var url=$(this).data('href');
+             // data.field.sms_appkey = $("#status").attr("data-value");
+             // data.field.sms_secretKey = $("#statu").attr("data-value");
+             data.field.regis_sms_enable = $("#st").attr("data-value");
+             data.field.forget_pwd_sms_enable = $("#pass").attr("data-value");
+             data.field.bind_mobile_sms_enable = $("#pa").attr("data-value");
+             data.field.order_add_sms_enable = $("#ps").attr("data-value");
+             data.field.order_shipping_sms_enable = $("#shops").attr("data-value");
+            // alert(status);
+            if(url){
+                if(sub){
+                  // alert(data.field);
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                          // alert(data);  
+                          // $("#oop").attr('src',data[0]['value']); 
+                     parent.location.href="{:url('Index/index')}"; 
+                            if (data['code'] == 1) {      
+                               layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改成功'
+                                 });                                  
+                              
+                            }else{
+                               
+                                layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改失败',
+                                 });   
+                                  // layer.msg('数据修改失败', {icon: 5});
+                            }                           
+                        },                       
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+            return false;
+            
+         });
+            form.verify({
+          
+            sms_time_out:function(value){
+              if(!/^[\d]+\.?\d*$/.test(value)){
+                return "只能为数值";
+              }
+            },
+          // });
+        });
+          //监听提交
+        form.on('submit(add-rolell)', function(data){
+            var sub=true;
+            // alert(sub);
+            var url=$(this).data('href');
+            // alert(url);
+             data.field.regis_smtp_enable= $("#email").attr("data-value");
+            // alert(status);
+            if(url){
+                if(sub){
+                  // alert(data.field);
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        data: data.field,
+                        success: function (data) {
+                          // alert(data);  
+                          // $("#oop").attr('src',data[0]['value']); 
+                     parent.location.href="{:url('Index/index')}"; 
+                            if (data['code'] == 1) {      
+                               layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改成功'
+                                 });                                  
+                              
+                            }else{
+                               
+                                layer.open({
+                                      title: '温馨提示',
+                                      content: '数据修改失败',
+                                 });   
+                                  // layer.msg('数据修改失败', {icon: 5});
+                            }                           
+                        },                       
+                    });
+                }
+            }else{
+                common.layerAlertE('链接错误！', '提示');
+            }
+            return false;
+        });
+          form.verify({
+            smtp_pwd: function(value){
+                if(!/^[\S]{6,12}$/.test( value )){
+                    return '密码必须6到12位，且不能出现空格';
+                }
+            }
+            ,email:function(value){
+                if(!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test( value )){
+                    return '请输入正确的邮箱格式';
+                }
+            },test_eamil:function(value){
+                if(!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test( value )){
+                    return '请输入正确的邮箱格式';
+                }
+              },smtp_server:function(value){
+                if(value==""){
+                  return "不能为空";
+                }
+              },smtp_port:function(value){
+                if(!/^[\d]+\.?\d*$/.test(value)){
+                return "只能为数值";
+              }
+              },smtp_server:function(value){
+                if(!/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test( value )){
+                    return '请输入正确的邮箱格式';
+                }
+              },
+
+
+        });
+    });
+        
+    
+    
+    
   layui.use(['form', 'layedit', 'laydate','upload'], function(){
         var $ = layui.jquery;
         $form = $('form');

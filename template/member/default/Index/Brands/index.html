@@ -1,0 +1,319 @@
+{include file="public/header"}
+<style type="text/css">
+#editable_paginate{
+	float: right;
+}
+table th, .table td { 
+
+text-align: center; 
+
+height:38px;
+
+}
+</style>
+<style>
+   <style>
+*{ margin:0; padding:0;}
+#box{ margin:50px auto; width:200px; min-height:200px; background:#FF9}
+#demo{ margin:50px auto; width:200px; min-height:200px; background:#CF9}
+</style>
+</style>
+    <div class="ibox-content">
+		    <!-- Button trigger modal -->
+
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  新增
+</button>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加品牌</h4>
+      </div>
+      <div class="modal-body">         
+            <form class="form-horizontal m-t" action="{:url('add')}" id="signupForm" novalidate="novalidate"  enctype="multipart/from-data">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">品牌名称：</label>
+                    <div for="expressName" class="col-sm-6">
+                        <input id="barndName" name="barndName" class="form-control" type="text">
+                    </div>
+                </div>
+           <!--      <div class="layui-form-item layui-form-text">
+            <label class="col-sm-3 control-label">品牌名称：</label>
+            <div class="site-demo-upload upload-img" class="col-sm-6">
+                <img id="img_path" src="__IMG__/tong.jpg">
+                    上传<input type="file" name="file" class="layui-upload-file" id="upload-image">
+
+                <div class="site-demo-upbar" style="display:block">
+                    <input type="hidden" id="image" name="image" >
+                </div>
+            </div>
+        </div> -->
+               <div class="form-group">
+                  <label class="col-sm-3 control-label">品牌图标：</label>
+                  <div for="expressName" class="col-sm-6">
+                      <input id="file-0b" class="file" type="text" multiple data-min-file-count="1">
+                        <script>
+                        $(document).on('ready', function(){$("#file-0b").fileinput();});
+                        </script>
+                  </div>      
+              </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">品牌介绍：</label>
+                      <div class="col-sm-6">
+                          <textarea id="barndDesc" name="barndDesc" class="form-control" required="" aria-required="true"></textarea>
+                                    
+                      </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">确定</button>
+                </div> 
+            </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+                        <table class="table table-bordered">
+                            <thead >
+                                <tr>
+                            				<th>品牌名称</th>
+                            				<th>品牌图标</th>
+                                    <th>品牌描述</th>
+                                    <th>创建时间</th>
+                            				<th>操作</th>
+                                </tr>
+                            </thead>
+                              
+                            <tbody>
+                              {volist name="list" id="vo"}
+                              <tr text-align="">
+                                <td text-algin="center">{$vo.brandName}</td>
+                                <td>{$vo.brandImg}</td>
+                                <td>{$vo.brandDesc}</td>
+                                <td>{$vo.createTime}</td>
+                        			  <td><a data-type="doDelOne" data-href="{:url('Del')}" data-id="{$vo.brandId}"><button type="button" class="btn btn-outline btn-success">删除</button></a><button type="button" class="btn btn-outline btn-success" data-toggle="modal" data-type="doEdit" data-id="" data-target="#myModal1">修改</button></a></td>
+                              </tr>
+                              {/volist}
+                            </tbody>
+                        </table>
+                        <div class="col-sm-6"><div class="dataTables_paginate paging_simple_numbers" id="editable_paginate"><ul class="pagination"></ul></div></div>
+    </div>
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">修改</h4>
+      </div>
+      <div class="modal-body">         
+            <form class="form-horizontal m-t" id="signupForms" novalidate="novalidate"  >
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">快递名称：</label>
+                    <div for="expressName" class="col-sm-4">
+                        <input id="expressNames" name="expressNames" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">品牌序列号：</label>
+                    <div for="expressName" class="col-sm-4">
+                        <input id="expressNames" name="expressNames" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="expressId" value="" id="expressId">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary" onclick="fun()">确定</button>
+                </div> 
+            </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+    
+{include file="public/footer"}
+<script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__js__/plugins/validate/messages_zh.min.js"></script>
+<script type="text/javascript" src="__file__/js/webuploader.html5only.min.js"></script>
+<script type="text/javascript" src="__file__/js/diyUpload.js"></script>
+<script type="text/javascript">
+  $(document).on('click','[data-type=doEdit]', function () {  
+          var id= $(this).attr("data-id"); 
+          // alert(id);
+          
+          $.post("{:url('edit')}",{id:id},function(data){
+            // alert(data);
+            $("#expressNames").val(data['expressName']);
+            $("#expressId").val(data['expressId']);
+            
+          });
+
+});
+	 $(document).on('click','[data-type=doDelOne]', function () {  
+             
+              var id = $(this).data("id");
+              // alert(id);
+              var url = $(this).data("href");
+              // alert(url);
+              var that = this; 
+              layer.confirm('您确定要删除该用户？', {icon: 3, title:'提示'},function (){
+                  $.ajax({
+                      url: url ,
+                      type: 'post',
+                      dataType: 'json',
+                      data: {id:id},
+                      success: function (data) {
+                        // alert(data);
+                         if (data['code']== 1) {
+
+                             window.location.href = 'index';
+                              parent.layer.alert(data['msg'], {
+                              icon: 1,
+                              skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+                              });
+                          }
+                        else {
+                              //common.layerAlertE(data.msg, '提示');
+                         }
+                         // layer.closeAll();
+                      },
+                      error: function (XMLHttpRequest, textStatus, errorThrown) {
+                          // common.layerAlertE(textStatus, '提示');
+                      }
+                  });
+              }); 
+          });
+
+$.validator.setDefaults({
+    submitHandler: function() {
+      // alert("提交事件!");
+       // // var url=$(this).data('href');
+       var d=$("#signupForm").serializeArray();
+        $.post("{:url('add')}",{data:d},function(data){
+            alert(data);
+            // if(data['code']==1){
+            // window.location.href="{:url('index')}";
+            // parent.layer.alert(data['msg'], {
+            //   icon: 1,
+            //   skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+            //   });
+            // }
+            
+        },"json");
+        return false;
+    }
+});
+$().ready(function() {
+// 在键盘按下并释放及提交后验证提交表单
+  $("#signupForm").validate({
+        rules: {
+          // userName: "required",
+          barndName: "required",
+          expressName: {
+            required: true,
+          },
+          userPhone: {
+            required: true,    
+          },
+          account1:{
+            required:true,
+          },
+          account2:{
+            required:true,
+          },
+          account:{
+            required:true,
+          },
+          
+        },
+        messages: {
+         expressName: {
+            required: "请输入品牌名称",
+           
+          },
+          userPhone: {
+            required: "请输入手机号",
+          },
+          confirm_password: {
+            required: "请输入密码",
+            minlength: "密码长度不能小于 5 个字母",
+            equalTo: "两次密码输入不一致"
+          },
+          email: "请输入一个正确的邮箱",
+          agree: "请接受我们的声明",
+          topic: "请选择两个主题"
+        }
+    });
+});
+function fun() {
+$.validator.setDefaults({
+    submitHandler: function() {
+      // alert("提交事件!");
+       // // var url=$(this).data('href');
+       var d=$("#signupForms").serializeArray();
+       // alert(d);
+        $.post("{:url('update')}",{data:d},function(data){
+            // alert(data);
+            if(data['code']==1){
+            window.location.href="{:url('index')}";
+            parent.layer.alert(data['msg'], {
+              icon: 1,
+              skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+              });
+            }
+            
+        },"json");
+        return false;
+    }
+});
+
+// 在键盘按下并释放及提交后验证提交表单
+  $("#signupForms").validate({
+        rules: {
+          // userName: "required",
+          expressNames: "required",
+          expressNames: {
+            required: true,
+          },
+          userPhone: {
+            required: true,    
+          },
+          account1:{
+            required:true,
+          },
+          account2:{
+            required:true,
+          },
+          account:{
+            required:true,
+          },
+          
+        },
+        messages: {
+         expressNames: {
+            required: "请输入快递名称",
+           
+          },
+          userPhone: {
+            required: "请输入手机号",
+          },
+          confirm_password: {
+            required: "请输入密码",
+            minlength: "密码长度不能小于 5 个字母",
+            equalTo: "两次密码输入不一致"
+          },
+          email: "请输入一个正确的邮箱",
+          agree: "请接受我们的声明",
+          topic: "请选择两个主题"
+        }
+
+});
+ }  
+ 
+</script>
+

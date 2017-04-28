@@ -1,0 +1,209 @@
+{include file="public/header"}
+                        <form class="form-horizontal m-t" id="signupForm" novalidate="novalidate">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">收货人名称：</label>
+                                <div for="userName" class="col-sm-4">
+                                    <input id="userName" name="userName" class="form-control" type="text" value="{$list.userName}">                                
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">收货人手机：</label>
+                                <div for="userPhone" class="col-sm-4" >
+                                    <input id="userPhone" name="userPhone" class="form-control" type="text" value="{$list.userPhone}">                                
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">城市级联：</label>
+                                <div for="account1" class="col-sm-2">
+                                   <select class="form-control m-b" name="account1" id="sid">
+                                        <option value="" id="account1">请选择</option>                       
+                                    </select>
+                                </div>
+                                <div for="account2" class="col-sm-2">
+                                   <select class="form-control m-b" name="account2" id="ssid">
+                                        <option value="" id="account3">请选择</option>
+                                        
+                                    </select>
+                                   
+                                </div>
+                                <div for="account3" class="col-sm-2">
+                                   <select class="form-control m-b" name="account3" id="wid">
+                                        <option value="" id="account3">请选择</option>
+                                        
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">详细地址：</label>
+                                <div class="col-sm-4">
+                                    <textarea id="ccomment" name="userAddress" class="form-control" required="" aria-required="true">{$a}</textarea>
+                                    
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">默认地址：</label>
+                                <div class="col-sm-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input checked="" value="1" id="optionsRadios1" name="optionsRadios" type="radio">默认</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input checked="" value="0" id="optionsRadios1" name="optionsRadios" type="radio">不默认</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-sm-offset-2">
+                                    <input type="hidden" name="id" value="{$list.addressId}">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                    <button class="btn btn-white" type="submit">取消</button>
+                                </div>
+                        </form>
+{include file="public/footer"}
+    <script src="__js__/plugins/validate/jquery.validate.min.js"></script>
+    <script src="__js__/plugins/validate/messages_zh.min.js"></script>
+<script type="text/javascript">      
+$(document).ready(function(){
+        var url='{:url("add_csjl")}';
+        // alert(url);
+         $.ajax({
+                url:url,
+                dataType: "json",
+                data:{'parentId':0},
+                type: "POST",
+                success: function(data){
+                    
+                    for (var i=0;i<data.length;i++) {
+                        var info='<option value="'+data[i].areaId+'" id="did" name="'+data[i].areaName+'">'+data[i].areaName+'</option>';
+                        $("#sid").append(info);                    
+                    }
+                    
+                },
+                error:function(ajaxobj)
+                {
+                    if(ajaxobj.responseText!='')
+                        alert(ajaxobj.responseText);
+                }
+                  // var p = decument.getElementById('sid');
+                  // alert(p);
+                  //   p.value = '120000';                
+            });
+
+
+});
+
+            //省份
+            $('#sid').change(function(){
+
+                $('#ssid').empty();
+                // alert($('#sid').val());
+                var city=$("#sid").val();
+                //alert(city);
+                var url='{:url("add_csjls")}';
+                     $.ajax({
+                url:url,
+                dataType:"json",
+                data:{'parentId':city},
+                type: "POST",
+                success: function(data){
+                    for (var i=0;i<data.length;i++) {
+                        // var info='<option  value="" >'++'</option>';
+                        var info='<option value="'+data[i].areaId+'" id="did">'+data[i].areaName+'</option>';
+                        $("#ssid").append(info);
+                    }
+                },
+                error:function(ajaxobj)
+                {
+                    if(ajaxobj.responseText!='')
+                        alert(ajaxobj.responseText);
+                }
+            });
+                
+            });
+
+            //市
+            $('#ssid').change(function(){
+                $('#wid').empty();          
+                var city=$("#ssid").val();
+                // alert(id);
+                var url='{:url("add_csjls")}';
+                     $.ajax({
+                url:url,
+                dataType:"json",
+                data:{'parentId':city},
+                type: "POST",
+                success: function(data){
+                    for (var i=0;i<data.length;i++) {
+                        // var info='<option  value="" >'++'</option>';
+                        var info='<option value="'+data[i].areaId+'" id="did">'+data[i].areaName+'</option>';
+                        $("#wid").append(info);
+                    }
+                },
+                error:function(ajaxobj)
+                {
+                    if(ajaxobj.responseText!='')
+                        alert(ajaxobj.responseText);
+                }
+            });
+                
+            });
+        $.validator.setDefaults({
+            submitHandler: function() {
+              // alert("提交事件!");
+               var d=$("#signupForm").serializeArray();
+                $.post("{:url('update')}",{data:d},function(data){
+                    // alert(data);
+                    if(data['code']==1){
+                         window.location.href="{:url('index')}";
+                    }
+                    // alert(data);
+                },"json");
+                return false;
+
+    }
+});
+$().ready(function() {
+// 在键盘按下并释放及提交后验证提交表单
+  $("#signupForm").validate({
+        rules: {
+          // userName: "required",
+          // userPhone: "required",
+          userName: {
+            required: true,
+          },
+          userPhone: {
+            required: true,    
+          },
+          account1:{
+            required:true,
+          },
+          account2:{
+            required:true,
+          },
+          account:{
+            required:true,
+          },
+          
+        },
+        messages: {
+          userName: {
+            required: "请输入用户名",
+           
+          },
+          userPhone: {
+            required: "请输入手机号",
+          },
+          confirm_password: {
+            required: "请输入密码",
+            minlength: "密码长度不能小于 5 个字母",
+            equalTo: "两次密码输入不一致"
+          },
+          email: "请输入一个正确的邮箱",
+          agree: "请接受我们的声明",
+          topic: "请选择两个主题"
+        }
+    });
+});
+</script>

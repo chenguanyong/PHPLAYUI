@@ -5,7 +5,7 @@
            <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>商品列表</h5>
+                        <h5>购物车</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -36,7 +36,7 @@
                                         <th>价格</th>
                                         <th>时间</th>
                                         <th>数量</th>
-                                        <th>操作</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,18 +45,34 @@
                                     foreach($list as $value){
 										echo "<tr>";
 										echo '<td><input data-id=' . $value["id"] . ' type="checkbox" /></td>';
-										echo "<td>" . $value["goods_name"] . "</td>";
+										echo "<td><img style='width:80px;height:80px' src='" . $value["goodsImg"] . "'>" . $value["goods_name"] . "</td>";
 										echo "<td>" . $value["goods_price"] . "</td>";	
-										echo "<td>" . $value["goods_num"] . "</td>";	
-										echo "<td>" . $value["add_time"] . "</td>";
-										echo '<td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a></td></tr>';		
+										echo "<td>" . date('Y-m-d',$value["add_time"]) . "</td>";	
+										echo "<td><input type='number' value='" . $value["goods_num"] . "' class='form-control'></td>";
 									}?>
 
                                 </tbody>
                             </table>
                         </div>
-                        <span id="price">52</span>
-<a data-href="{:url('Order/ajaxBuildOrderByCar')}" class="btn" id="jiesuan">去结算</a>
+                        
+                        <table class="table invoice-total">
+                        <tbody>
+                            <tr>
+                                <td><strong>已选择：</strong>
+                                </td>
+                                <td id="allshop">0</td>
+                            </tr>
+                            <tr>
+                                <td><strong>总计</strong>
+                                </td>
+                                <td  >¥<span id="price">0</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-right">
+                        <a data-href="{:url('Order/ajaxBuildOrderByCar')}" class="btn btn-w-m btn-primary" id="jiesuan">去结算</a>
+                    </div>
+
                     </div>
                 </div>
             </div>
@@ -72,13 +88,20 @@
 		var url = $(this).data("href");
 		var price =$("#price").text();
 		var json = "";
-		$(":checked").each(function(){
+		var size = "";
+		if($("tbody tr td :checked").length == 0){
+			parent.layer.alert('请选择一个宝贝');
+			return false;
+			}
+		$("tbody tr td :checked").each(function(){
 			
-			json = $(this).attr("data-id") + "_" + json;
+			json = $(this).attr("data-id") + "," + json;
+			 sizes = $(this).parent("td").parent("tr").find("[type=number]").val();
+			size = size + "_" +sizes;	
 		});
 		//alert(price);
 		if(url !=null){
-		$.post(url,{json:json,price:price},function(data){
+		$.post(url,{json:json,price:price,size:size},function(data){
 			
 			if(data.code == 1){
 				//alert(data.msg);
@@ -89,7 +112,21 @@
 		},"json");
 		}
 	});
-	
+	$(document).on("click","tbody tr td input[type=checkbox]",function (){
+		
+		var allprice = 0;
+		var allshop = 0;
+		$("tbody tr td :checked").each(function (){
+			var price = $(this).parent("td").parent("tr").children("td").eq(2).text();
+			
+			var size = $(this).parent("td").parent("tr").find("[type=number]").val();
+			allprice = parseFloat(price) * size +allprice;
+		});
+		
+		allshop = $("tbody tr td :checked").length;
+		$("#price").text(allprice);
+		$("#allshop").text(allshop);
+	});
 })(window.jQuery);
 
 

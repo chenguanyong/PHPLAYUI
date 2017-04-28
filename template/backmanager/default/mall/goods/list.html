@@ -1,0 +1,132 @@
+{include file="public/header"/}
+<style>
+    .layui-table tr th{text-align: center;}
+    .layui-table tr td{text-align: center;}
+	.layui-form-label{width:110px !important;}
+</style>
+<div class="main-wrap">
+
+    <div class="y-role">
+        <!--工具栏-->
+        <div id="floatHead" class="toolbar-wrap">
+            <div class="toolbar">
+                <div class="box-wrap">
+                    <a class="menu-btn"></a>
+                    <div class="l-list">
+
+                        <a data-href="{:url('goods/addgoods')}?id={$val}" id="add" class="layui-btn layui-btn-small " >  <i class="fa fa-plus"></i>添加节点</a>
+
+                        <a class="layui-btn layui-btn-small do-action" data-type="doRefresh" data-href=""><i class="fa fa-refresh fa-spin"></i>刷新</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--文字列表-->
+        <div class="fhui-admin-table-container">
+
+            <table class="layui-table" style="width:100%">
+                <colgroup>
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="25%">
+					<col width="5%">
+                    <col width="5%">
+                    <col width="5%">
+                    <col width="30%">
+                </colgroup>
+                <thead>
+                     <tr>
+                         <th>商品编号</th>
+                         <th>商品名称</th>
+                         <th>商品图片</th>
+                         <th>市场价</th>
+                         <th>门店价</th>
+                         <th>库存</th>  
+                         <th>操作</th>                
+                     </tr>
+                </thead>
+                <tbody id="article_list">
+<?php
+foreach($lists as $value){
+echo '<tr class="long-td" data-id="' . $value['goodsId'] . '" >';
+echo '<td>' .$value['goodsSn'] . '</td>';
+echo '<td>' .$value['goodsName'] . '</td>';
+echo '<td><img src="' . $value['goodsImg'] . '" /></td>';
+echo '<td>' .$value['marketPrice'] . '</td>';
+echo '<td>' .$value['shopPrice'] . '</td>';
+echo '<td>' .$value['goodsStock'] . '</td>';
+echo '<td>';
+echo '<a class="layui-btn layui-btn-mini "  data-type="doEdit"  >';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>修改';
+echo '</a>';
+echo '<a class="layui-btn layui-btn-mini " data-type="doDelOne"  data-id="' . $value['goodsId'] . '">';
+echo '<i class="icon-edit  fa fa-pencil-square-o"></i>删除';
+echo '</a>';
+echo '</td>';
+echo '</tr>';
+}
+?> 
+                </tbody>
+            </table>
+
+        </div>
+        <div style="float: right;margin-top: -50px;margin-right: 13px;">
+            <div id="demo1" style="float: right"></div>
+        </div>
+        
+    </div>
+</div>
+
+
+{include file="public/footer"}
+<link href="__lay__/css/layui.css" rel="stylesheet" />
+<link href="/template/backmanager/default/statisc/css/style.css" rel="stylesheet" />
+<link href="/template/backmanager/default/statisc/Font-Awesome/css/font-awesome.css" rel="stylesheet" />
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="__PLUG__/zTree/jquery.ztree.exedit-3.5.js"></script>
+<script src="__lay__/layui.js"></script>
+<script src="/template/backmanager/default/statisc/js/global.js"></script>
+
+<script>
+layui.use(['laypage', 'layer','form','common'], function(){
+	  var laypage = layui.laypage
+	  ,layer = layui.layer,form = layui.form(),common=layui.common ,$ = layui.jquery;
+	  
+		laypage({
+			cont: 'demo1'
+			,pages: {$allpage}//总页数
+			,groups: 5 //连续显示分页数
+			,curr:{$Nowpage}
+		});
+		
+    	$('[data-page]').on("click",function(){
+
+    		window.location.href="{:url('mall/goods/getGoodsListByPage')}?id={$val}&page="+$(this).data('page');
+    	});
+    	
+    $('#add').on('click', function(){
+    	parent.location.href=$('#add').attr('data-href');
+	});
+    
+	$('[data-type=doDelOne]').on('click', function(){
+		var id = $(this).data('id');
+        $.ajax({
+            url: '{:url("goodcats/getName")}',
+            type: "POST",
+            dataType: "json",
+            data:{'parentId':pid },
+            success: function(data){
+                if(data.code == 1){
+                    document.getElementById("parentEdit").value=data.data;
+                }else{
+                    layer.alert(data.msg)
+                }
+            },
+        });
+ 	});
+
+});
+</script>
+
